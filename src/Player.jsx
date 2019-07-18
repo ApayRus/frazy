@@ -1,9 +1,12 @@
 import React from 'react'
+import { Typography } from '@material-ui/core'
+import PlayerControls from './PlayerControls'
 
 function Player() {
     return (
         <div>
-            Player
+            <Typography variant="h3">Player</Typography>
+            <PlayerControls />
         </div>
     )
 }
