@@ -1,7 +1,7 @@
 import React from 'react'
 import './Phrases.css'
 import { PlayArrow } from '@material-ui/icons'
-import { audio } from './howler'
+import { audio } from '../howler'
 import { ButtonBase, Typography } from '@material-ui/core'
 
 function Phrases(props) {

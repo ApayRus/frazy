@@ -8,7 +8,7 @@ import {
   Edit
 } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core'
-import { audio } from './howler'
+import { audio } from '../howler'
 
 function PlayerControls() {
   const play = () => {

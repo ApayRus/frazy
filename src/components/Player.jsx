@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography } from '@material-ui/core'
 import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
-import { exampleChapter } from './dumyData/exampleChapter'
+import { exampleChapter } from '../dumyData/exampleChapter'
 import { map } from 'lodash'
 
 function Player() {
