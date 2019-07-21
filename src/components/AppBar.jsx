@@ -1,17 +1,22 @@
 import React from 'react'
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
 import { Menu, Settings, Help } from '@material-ui/icons'
-import { store } from '../dumyStore'
+import { connect } from 'react-redux'
+import { toggleHeadingDrawer } from '../store/appStateActions'
 
-function Appbar() {
-  const toggleHeadingDrawer = () => {
-    store.headingDrawerOpen = !store.headingDrawerOpen
-  }
+function Appbar(props) {
+  const { toggleHeadingDrawer } = props
 
   return (
     <AppBar>
       <Toolbar>
-        <IconButton onClick={toggleHeadingDrawer} color='inherit' aria-label='Menu'>
+        <IconButton
+          onClick={() => {
+            toggleHeadingDrawer({ showHeadingDrawer: true })
+          }}
+          color='inherit'
+          aria-label='Menu'
+        >
           <Menu />
         </IconButton>
         <Typography variant='h6'>FraZish</Typography>
@@ -28,4 +33,13 @@ function Appbar() {
   )
 }
 
-export default Appbar
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload))
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Appbar)

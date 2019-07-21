@@ -4,6 +4,7 @@ import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
 import { exampleChapter } from '../dumyData/exampleChapter'
 import { map } from 'lodash'
+import DrawerHeading from './DrawerHeading'
 
 function Player() {
   let { phrases } = exampleChapter //object
@@ -13,6 +14,7 @@ function Player() {
 
   return (
     <div>
+      <DrawerHeading />
       <Typography variant='h3'>Player</Typography>
       <PlayerControls />
       <Phrases phrases={phrases} />
