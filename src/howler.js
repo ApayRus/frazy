@@ -1,4 +1,4 @@
-import { Howl, Howler } from 'howler'
+import { Howl /* Howler */ } from 'howler'
 import { exampleChapter } from './dumyData/exampleChapter'
 
 // console.log('exampleChapter', exampleChapter)
