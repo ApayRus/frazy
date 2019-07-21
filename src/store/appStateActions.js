@@ -5,6 +5,13 @@ export const toggleHeadingDrawer = payload => {
   }
 }
 
+export const toggleSettingsDrawer = payload => {
+  return {
+    type: 'TOGGLE_SETTINGS_DRAWER',
+    payload
+  }
+}
+
 /* 
 const exampleToggleHeadingDrawerToTrue = {
   type: 'TOGGLE_HEADING_DRAWER',

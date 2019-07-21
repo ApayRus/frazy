@@ -2,10 +2,10 @@ import React from 'react'
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
 import { Menu, Settings, Help } from '@material-ui/icons'
 import { connect } from 'react-redux'
-import { toggleHeadingDrawer } from '../store/appStateActions'
+import { toggleHeadingDrawer, toggleSettingsDrawer } from '../store/appStateActions'
 
 function Appbar(props) {
-  const { toggleHeadingDrawer } = props
+  const { toggleHeadingDrawer, toggleSettingsDrawer } = props
 
   return (
     <AppBar>
@@ -24,7 +24,13 @@ function Appbar(props) {
           <IconButton color='inherit' aria-label='Settings'>
             <Help />
           </IconButton>
-          <IconButton color='inherit' aria-label='Settings'>
+          <IconButton
+            onClick={() => {
+              toggleSettingsDrawer({ showSettingsDrawer: true })
+            }}
+            color='inherit'
+            aria-label='Settings'
+          >
             <Settings />
           </IconButton>
         </div>
@@ -35,7 +41,8 @@ function Appbar(props) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload))
+    toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload)),
+    toggleSettingsDrawer: payload => dispatch(toggleSettingsDrawer(payload))
   }
 }
 
