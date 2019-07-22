@@ -13,6 +13,10 @@ function Player() {
     return { id: key, ...elem }
   }) //array
 
+  import('../text/dynamicImport').then(module => {
+    console.log(module.or1_1, module.ti1_1, module.tr1_1)
+  })
+
   return (
     <div>
       <DrawerHeading />
