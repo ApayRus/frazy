@@ -1,14 +1,14 @@
 import React from 'react'
 import './Phrases.css'
 import { PlayArrow } from '@material-ui/icons'
-import { audio } from '../howler'
+// import { audio } from '../howler'
 import { ButtonBase, Typography } from '@material-ui/core'
 
 function Phrases(props) {
-  const playPhrase = id => event => {
+  /*   const playPhrase = id => event => {
     audio.pause()
     audio.play(id)
-  }
+  } */
   const { phrases } = props
 
   return (
@@ -17,7 +17,7 @@ function Phrases(props) {
         return (
           <ButtonBase
             style={{ display: 'block', width: '100%' }}
-            onClick={playPhrase(phrase.id)}
+            /* onClick={playPhrase(phrase.id)} */
             key={`phrase-${phrase.id}`}
           >
             <div className='phrase'>
