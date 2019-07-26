@@ -22,3 +22,7 @@
   font-size: 9px;
   color: gray;
 }
+
+.id.current {
+  color: #088dc2;
+}

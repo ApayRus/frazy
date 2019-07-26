@@ -4,14 +4,10 @@ import { PlayArrow } from '@material-ui/icons'
 // import { audio } from '../howler'
 import { ButtonBase, Typography } from '@material-ui/core'
 
-function Phrases(props) {
-  /*   const playPhrase = id => event => {
-    audio.pause()
-    audio.play(id)
-  } */
-  const { phrases, playPhrase } = props
+import { connect } from 'react-redux'
 
-  // console.log('waveformComponent', waveformComponent)
+function Phrases(props) {
+  const { phrases, playPhrase, currentPhraseId } = props
 
   return (
     <div className='phrases'>
@@ -23,7 +19,7 @@ function Phrases(props) {
             key={`phrase-${phrase.id}`}
           >
             <div className='phrase' onClick={playPhrase(phrase.id)}>
-              <div className='id'>
+              <div className={'id ' + (currentPhraseId === phrase.id ? 'current' : '')}>
                 {phrase.id} <PlayArrow fontSize='inherit' />{' '}
               </div>
               <div className='text'>
@@ -40,4 +36,10 @@ function Phrases(props) {
   )
 }
 
-export default Phrases
+const mapStateToProps = state => {
+  return {
+    currentPhraseId: state.playerState.currentPhraseId
+  }
+}
+
+export default connect(mapStateToProps)(Phrases)
