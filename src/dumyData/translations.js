@@ -1,5 +1,6 @@
 export const translations = {
-  blablabla: {
+  hobbit1_1_ru: {
+    id: 'hobbit1_1_ru',
     lang: 'ru',
     for: 'hobbit1_1',
     phrases: {
