@@ -3,11 +3,10 @@ import { PlayArrow, Pause, SkipNext, SkipPrevious, Replay, Edit } from '@materia
 import { IconButton } from '@material-ui/core'
 //import { audio } from '../howler'
 
-function PlayerControls() {
-  /* const play = () => {
-    audio.play()
-  }
+function PlayerControls(props) {
+  const { play } = props
 
+  /*
   const pause = () => {
     audio.pause()
   }
@@ -22,7 +21,7 @@ function PlayerControls() {
       <IconButton aria-label='Previous'>
         <SkipPrevious />
       </IconButton>
-      <IconButton /* onClick={play} */ aria-label='Play'>
+      <IconButton onClick={play} aria-label='Play'>
         <PlayArrow />
       </IconButton>
       <IconButton /* onClick={pause} */ aria-label='Pause'>

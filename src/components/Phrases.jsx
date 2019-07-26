@@ -9,7 +9,9 @@ function Phrases(props) {
     audio.pause()
     audio.play(id)
   } */
-  const { phrases } = props
+  const { phrases, playPhrase } = props
+
+  // console.log('waveformComponent', waveformComponent)
 
   return (
     <div className='phrases'>
@@ -17,10 +19,10 @@ function Phrases(props) {
         return (
           <ButtonBase
             style={{ display: 'block', width: '100%' }}
-            /* onClick={playPhrase(phrase.id)} */
+            onClick={playPhrase(phrase.id)}
             key={`phrase-${phrase.id}`}
           >
-            <div className='phrase'>
+            <div className='phrase' onClick={playPhrase(phrase.id)}>
               <div className='id'>
                 {phrase.id} <PlayArrow fontSize='inherit' />{' '}
               </div>
@@ -28,7 +30,7 @@ function Phrases(props) {
                 <Typography variant='body1'>{phrase.text}</Typography>
               </div>
               <div className='translation ru'>
-                <Typography variant='body2'>{phrase.transl.ru}</Typography>
+                <Typography variant='body2'>{phrase.text}</Typography>
               </div>
             </div>
           </ButtonBase>
