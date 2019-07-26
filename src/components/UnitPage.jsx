@@ -10,6 +10,9 @@ function UnitPage() {
   const play = () => {
     waveformComponent.current.wavesurfer.play()
   }
+  const pause = () => {
+    waveformComponent.current.wavesurfer.pause()
+  }
 
   const playPhrase = id => event => {
     waveformComponent.current.wavesurfer.regions.list[id].play()
@@ -18,7 +21,7 @@ function UnitPage() {
   return (
     <div>
       <Waveform ref={waveformComponent} />
-      <PlayerControls play={play} playPhrase={playPhrase} />
+      <PlayerControls play={play} pause={pause} playPhrase={playPhrase} />
       <Phrases phrases={regions} playPhrase={playPhrase} />
     </div>
   )
