@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
+// WAVESURFER
 import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min'
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min'
-
 //REDUX
 import { connect } from 'react-redux'
 import { setPlayerState } from '../store/playerStateActions'
-
+//MY
 import { regions } from '../dumyData/regions'
 // const mediaLink = `https://booktits.firebaseapp.com/hobbit/audio/hobbit1_1.mp3`
 const mediaLink = `../audio/hobbit1_1.mp3`
@@ -45,15 +45,26 @@ export class Waveform extends Component {
     })
     this.wavesurfer.on('region-in', region => {
       this.props.setPlayerState(['currentPhraseId', region.id])
-      console.log('region in', region.id)
+      //console.log('region in', region.id)
     })
     this.wavesurfer.on('region-out', region => {
-      console.log('region out', region.id)
+      //console.log('region out', region.id)
+      //this.props.setPlayerState(['currentPhraseNum', 10])
     })
+    this.wavesurfer.on('play', () => {
+      this.props.setPlayerState(['play', true])
+    })
+    this.wavesurfer.on('pause', () => {
+      this.props.setPlayerState(['play', false])
+    })
+    /* 
+    this.wavesurfer.on('audioprocess', () => {
+      console.log('on play', this.wavesurfer.getCurrentTime())
+    })
+     */
   }
 
   render() {
-    // const { currentPhraseNum, currentTime } = this.props
     return (
       <div style={{ border: '1px solid gold', marginTop: 75 }}>
         <div ref={el => (this.waveformElem = el)} />
@@ -76,9 +87,9 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-// export default Waveform
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  null,
+  { forwardRef: true }
 )(Waveform)

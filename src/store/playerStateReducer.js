@@ -1,7 +1,8 @@
 const initState = {
   currentPhraseNum: 0,
   currentPhraseId: '',
-  currentTime: 0
+  currentTime: 0,
+  play: false
 }
 
 const playerStateReducer = (state = initState, action) => {
