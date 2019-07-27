@@ -19,18 +19,18 @@ import { map, orderBy } from 'lodash'
 export function joinPhrasesAndTranslations(unit, translation) {
   const { phrases: orPhrases } = unit //original phrases
   const { phrases: trPhrases, lang: trLang } = translation
-
-  //all existing translations we added to original phrases
-  for (let key in trPhrases) {
-    orPhrases[key]['translations'] = { [trLang]: trPhrases[key]['text'] }
-  }
-  //for all original phrases we added color
-  for (let key in trPhrases) {
-    orPhrases[key]['color'] = randomColor(0.5)
-    orPhrases[key]['attributes'] = { label: orPhrases[key]['text'] }
-  }
   //convert phrases object to array of objects, and external keys put inside to "id"
-  let phrasesArray = map(orPhrases, (elem, key) => ({ ...elem, id: key }))
+  let phrasesArray = map(orPhrases, (elem, key) => {
+    const tr = trPhrases[key]
+    const transl = tr ? tr.text : ''
+    return {
+      ...elem,
+      id: key,
+      attributes: { label: elem.text },
+      color: randomColor(0.5),
+      translations: { [trLang]: transl }
+    }
+  })
 
   phrasesArray = orderBy(phrasesArray, 'start')
 
