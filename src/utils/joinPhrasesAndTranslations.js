@@ -26,7 +26,7 @@ export function joinPhrasesAndTranslations(unit, translation) {
   }
   //for all original phrases we added color
   for (let key in trPhrases) {
-    orPhrases[key]['color'] = `rgba(247, 81, 227, 0.5)`
+    orPhrases[key]['color'] = randomColor(0.5)
     orPhrases[key]['attributes'] = { label: orPhrases[key]['text'] }
   }
   //convert phrases object to array of objects, and external keys put inside to "id"
