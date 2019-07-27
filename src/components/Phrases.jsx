@@ -26,7 +26,7 @@ function Phrases(props) {
                 <Typography variant='body1'>{phrase.text}</Typography>
               </div>
               <div className='translation ru'>
-                <Typography variant='body2'>{phrase.text}</Typography>
+                <Typography variant='body2'>{phrase.translations.ru}</Typography>
               </div>
             </div>
           </ButtonBase>
