@@ -6,6 +6,7 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min'
 //REDUX
 import { connect } from 'react-redux'
 import { setPlayerState } from '../store/playerStateActions'
+import './Wavesurfer.css'
 //MY
 // import { regions } from '../dumyData/regions'
 // const mediaLink = `https://booktits.firebaseapp.com/hobbit/audio/hobbit1_1.mp3`
