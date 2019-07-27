@@ -87,3 +87,23 @@ export const setPhrasesArray = payload => {
     payload
   }
 }
+
+/**
+ *
+ * @example
+const setMediaLinkExample = {
+  type: 'SET_MEDIA_LINK',
+  payload: '../audio/hobbit1_1.mp3'
+}
+ */
+export const setMediaLink = payload => {
+  return {
+    type: 'SET_MEDIA_LINK',
+    payload
+  }
+}
+
+const setMediaLinkExample = {
+  type: 'SET_MEDIA_LINK',
+  payload: '../audio/hobbit1_1.mp3'
+}

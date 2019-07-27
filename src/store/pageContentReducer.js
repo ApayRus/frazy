@@ -16,6 +16,9 @@ const pageContentReducer = (state = initState, action) => {
     case 'SET_PHRASES_ARRAY': {
       return { ...state, phrasesArray: action.payload }
     }
+    case 'SET_MEDIA_LINK': {
+      return { ...state, mediaLink: action.payload }
+    }
     default:
       return state
   }
