@@ -1,4 +1,4 @@
-import { assSubtitlesToPhrases } from './plainTextToPhrasesObject.js'
+import { assSubtitlesToPhrases, writePhrasesWithText } from './plainTextToPhrasesObject.js'
 import cheerio from 'cheerio'
 import fs from 'fs'
 
@@ -33,6 +33,11 @@ const unitIds = headingArray.map(elem => {
 })
 
 const timingText = $(`#ti-${unitIds[0]}`).text()
-const phrases = assSubtitlesToPhrases(timingText)
+const originalText = $(`#or-${unitIds[0]}`).text()
+const translationText = $(`#tr-${unitIds[0]}`).text()
 
-console.log(phrases)
+const phrases = assSubtitlesToPhrases(timingText) //just timing, empty text
+const originalPhrases = writePhrasesWithText(phrases, originalText, 'original')
+const translationPhrases = writePhrasesWithText(phrases, translationText, 'translation')
+
+console.log(translationPhrases)
