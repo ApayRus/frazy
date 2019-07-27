@@ -53,3 +53,37 @@ export const setUnitTranslation = payload => {
     payload
   }
 }
+
+/**
+ *
+ * @param {Array} payload - ordered array with unitPhrases + unitTranslations + color + label
+ *@example
+const setPhrasesArrayExample = {
+    type:'SET_PRASES_ARRAY', 
+    payload: [
+        {
+          id: '1ode4easgv',
+          start: 0.04,
+          end: 1.11,
+          text: 'The Hobbit',
+          attributes: { label: 'The Hobbit' },
+          color: 'rgba(247, 81, 227, 0.5)',
+          translations: { ru: 'Хоббит' }
+        },
+        {
+          id: 'q6ua1mrpcdg',
+          start: 4.35,
+          end: 5.63,
+          text: 'Chapter 1. ',
+          attributes: { label: 'Chapter 1. ' },
+          color: 'rgba(247, 81, 227, 0.5)',
+          translations: { ru: 'Глава 1.' }
+        }]
+}
+ */
+export const setPhrasesArray = payload => {
+  return {
+    type: 'SET_PRASES_ARRAY',
+    payload
+  }
+}
