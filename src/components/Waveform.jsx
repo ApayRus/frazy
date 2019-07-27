@@ -7,9 +7,9 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min'
 import { connect } from 'react-redux'
 import { setPlayerState } from '../store/playerStateActions'
 //MY
-import { regions } from '../dumyData/regions'
+// import { regions } from '../dumyData/regions'
 // const mediaLink = `https://booktits.firebaseapp.com/hobbit/audio/hobbit1_1.mp3`
-const mediaLink = `../audio/hobbit1_1.mp3`
+// const mediaLink = `../audio/hobbit1_1.mp3`
 
 export class Waveform extends Component {
   constructor(props) {
@@ -21,6 +21,7 @@ export class Waveform extends Component {
   }
 
   componentDidMount() {
+    const { regions, mediaLink } = this.props
     this.wavesurfer = WaveSurfer.create({
       container: this.waveformElem,
       scrollParent: true,
@@ -35,8 +36,7 @@ export class Waveform extends Component {
         })
       ]
     })
-
-    this.wavesurfer.load(mediaLink)
+    if (mediaLink) this.wavesurfer.load(mediaLink)
 
     this.wavesurfer.on('region-click', (region, e) => {
       e.stopPropagation()
