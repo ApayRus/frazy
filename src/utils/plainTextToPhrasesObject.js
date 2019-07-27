@@ -1,5 +1,5 @@
-import { assRowToPhraseObject } from './subtitlesFunctions'
-import { map, orderBy, keyBy } from 'lodash'
+import { assRowToPhraseObject } from './subtitlesFunctions.js'
+import _ from 'lodash'
 
 /**
  * gets subtitle rows, and returns phrases object with ids
@@ -21,11 +21,11 @@ export function writePhrasesWithText(phrases, text, mode) {
   const textArray = text.trim().split('\n')
   const phrasesObject = {}
 
-  let phrasesArray = map(phrases, (elem, key) => {
+  let phrasesArray = _.map(phrases, (elem, key) => {
     return { ...elem, id: key }
   })
 
-  phrasesArray = orderBy(phrasesArray, 'start')
+  phrasesArray = _.orderBy(phrasesArray, 'start')
 
   phrasesArray.forEach((phrase, index) => {
     const { id, start, end } = phrase
