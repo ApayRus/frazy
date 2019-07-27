@@ -21,7 +21,7 @@ export class Waveform extends Component {
   }
 
   componentDidMount() {
-    const { regions, mediaLink } = this.props
+    const { phrasesArray: regions, mediaLink } = this.props
     this.wavesurfer = WaveSurfer.create({
       container: this.waveformElem,
       scrollParent: true,
@@ -77,7 +77,9 @@ export class Waveform extends Component {
 const mapStateToProps = state => {
   return {
     currentPhraseNum: state.playerState.currentPhraseNum,
-    currentTime: state.playerState.currentTime
+    currentTime: state.playerState.currentTime,
+    phrasesArray: state.pageContent.phrasesArray,
+    mediaLink: state.pageContent.mediaLink
   }
 }
 
