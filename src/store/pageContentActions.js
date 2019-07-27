@@ -59,7 +59,7 @@ export const setUnitTranslation = payload => {
  * @param {Array} payload - ordered array with unitPhrases + unitTranslations + color + label
  *@example
 const setPhrasesArrayExample = {
-    type:'SET_PRASES_ARRAY', 
+    type:'SET_PHRASES_ARRAY', 
     payload: [
         {
           id: '1ode4easgv',
@@ -83,7 +83,7 @@ const setPhrasesArrayExample = {
  */
 export const setPhrasesArray = payload => {
   return {
-    type: 'SET_PRASES_ARRAY',
+    type: 'SET_PHRASES_ARRAY',
     payload
   }
 }

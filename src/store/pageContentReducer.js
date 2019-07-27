@@ -13,7 +13,7 @@ const pageContentReducer = (state = initState, action) => {
       const newTranslation = { ...state.unitTranslations, [action.payload.lang]: action.payload }
       return { ...state, unitTranslations: newTranslation }
     }
-    case 'SET_PRASES_ARRAY': {
+    case 'SET_PHRASES_ARRAY': {
       return { ...state, phrasesArray: action.payload }
     }
     default:
