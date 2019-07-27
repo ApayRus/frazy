@@ -11,7 +11,7 @@ function Phrases(props) {
 
   return (
     <div className='phrases'>
-      {phrasesArray.map(phrase => {
+      {phrasesArray.map((phrase, index) => {
         return (
           <ButtonBase
             style={{ display: 'block', width: '100%' }}
@@ -20,7 +20,7 @@ function Phrases(props) {
           >
             <div className='phrase' onClick={playPhrase(phrase.id)}>
               <div className={'id ' + (currentPhraseId === phrase.id ? 'current' : '')}>
-                {phrase.id} <PlayArrow fontSize='inherit' />{' '}
+                {index + 1} <PlayArrow fontSize='inherit' />{' '}
               </div>
               <div className='text'>
                 <Typography variant='body1'>{phrase.text}</Typography>
