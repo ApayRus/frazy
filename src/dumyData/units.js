@@ -1,7 +1,7 @@
 export const units = {
   hobbit1_1_en: {
     id: 'hobbit1_1_en',
-    mediaLink: 'https://booktits.firebaseapp.com/hobbit/audio/hobbit1_1.mp3',
+    mediaLink: `../audio/hobbit1_1.mp3`,
     lang: 'en',
     phrases: {
       '1ode4easgv': {
