@@ -15,7 +15,9 @@ export function assSubtitlesToPhrases(subsTiming) {
 
 /**
  * get multirow text, phrases object and rewrites each phrase.text with row-text
- *
+ * @param {object} phrases - object with phrases
+ * @param {string} text - multiline text, for rewrite "text" property in all {phrases}
+ * @param {string} mode - "original" or "translation"
  */
 export function writePhrasesWithText(phrases, text, mode) {
   const textArray = text.trim().split('\n')
