@@ -7,7 +7,12 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 
 //TEMPORARY
-import { setUnitContent, setUnitTranslation, setPhrasesArray } from '../store/pageContentActions'
+import {
+  setUnitContent,
+  setUnitTranslation,
+  setPhrasesArray,
+  setMediaLink
+} from '../store/pageContentActions'
 
 // import { regions } from '../dumyData/regions'
 import { joinPhrasesAndTranslations } from '../utils/joinPhrasesAndTranslations'
@@ -23,12 +28,15 @@ function UnitPage(props) {
     phrasesArray,
     setUnitContent,
     setUnitTranslation,
-    setPhrasesArray
+    setPhrasesArray,
+    setMediaLink
   } = props
 
   const setDataToRedux = () => {
     setUnitContent(units['hobbit1_1_en'])
     setUnitTranslation(translations['hobbit1_1_ru'])
+    const mediaLink = units['hobbit1_1_en']['mediaLink']
+    setMediaLink(mediaLink)
   }
 
   const setPhrasesArrayToRedux = () => {
@@ -52,9 +60,9 @@ function UnitPage(props) {
     <div>
       {phrasesArray.length ? (
         <div>
-          <Waveform mediaLink={unit.mediaLink} regions={phrasesArray} ref={waveformComponent} />
+          <Waveform ref={waveformComponent} />
           <PlayerControls play={play} pause={pause} playPhrase={playPhrase} />
-          <Phrases phrases={phrasesArray} playPhrase={playPhrase} />
+          <Phrases playPhrase={playPhrase} />
         </div>
       ) : (
         <div style={{ marginTop: 200 }}>
@@ -81,7 +89,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setUnitContent: payload => dispatch(setUnitContent(payload)),
     setUnitTranslation: payload => dispatch(setUnitTranslation(payload)),
-    setPhrasesArray: payload => dispatch(setPhrasesArray(payload))
+    setPhrasesArray: payload => dispatch(setPhrasesArray(payload)),
+    setMediaLink: payload => dispatch(setMediaLink(payload))
   }
 }
 
