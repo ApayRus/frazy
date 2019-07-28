@@ -11,7 +11,8 @@
 # production
 /build
 
-/src/dumyData/hobbit.html
+src/dumyData/hobbit.html
+src/content
 
 # misc
 .DS_Store
