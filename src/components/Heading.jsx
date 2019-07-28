@@ -17,7 +17,10 @@ function Heading(props) {
     const mediaLink = unit.mediaLink
     toggleHeadingDrawer({ showHeadingDrawer: false })
     setPhrasesArray(phrasesArray)
-    setMediaLink(mediaLink)
+    setMediaLink('') //for unmount old Waveform, and mount new one
+    setTimeout(() => {
+      setMediaLink(mediaLink)
+    }, 1)
   }
 
   return (
