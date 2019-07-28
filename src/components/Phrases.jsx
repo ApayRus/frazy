@@ -38,8 +38,7 @@ function Phrases(props) {
 
 const mapStateToProps = state => {
   return {
-    currentPhraseId: state.playerState.currentPhraseId,
-    phrasesArray: state.pageContent.phrasesArray
+    currentPhraseId: state.playerState.currentPhraseId
   }
 }
 
