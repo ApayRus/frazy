@@ -2,7 +2,10 @@ import { assRowToPhraseObject } from './subtitlesFunctions.js'
 import _ from 'lodash'
 
 /**
- * gets subtitle rows, and returns phrases object with ids
+ *
+ * @param {string} subsTiming - multi string text
+ * @returns {Object} phrases= { id: {start: 0.1, end: 2.2, text: "blabla"} }
+ *
  */
 export function assSubtitlesToPhrases(subsTiming) {
   const assRows = subsTiming.trim().split('\n')
@@ -40,27 +43,6 @@ export function writePhrasesWithText(phrases, text, mode) {
   })
 
   return phrasesObject
-}
-
-/**
- *
- * @param {string} timing - multi string text
- * @param {string} text - multi string text
- * @returns {Object} phrases= { id: {start: 0.1, end: 2.2, text: "blabla"} }
- *
- */
-export function plainTextToPhrasesObject(timing, text) {
-  const phrases = {}
-
-  const timingArray = timing.trim().split('\n')
-  const textArray = text.trim().split('\n')
-  timingArray.forEach((elem, index) => {
-    const { start, end } = assRowToPhraseObject(elem)
-    const text = textArray[index]
-    phrases[index + 1] = { start, end, text }
-  })
-
-  return phrases
 }
 
 function getId(prefix) {
