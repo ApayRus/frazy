@@ -102,8 +102,3 @@ export const setMediaLink = payload => {
     payload
   }
 }
-
-const setMediaLinkExample = {
-  type: 'SET_MEDIA_LINK',
-  payload: '../audio/hobbit1_1.mp3'
-}
