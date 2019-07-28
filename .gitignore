@@ -13,6 +13,7 @@
 
 src/dumyData/hobbit.html
 src/content
+public/audio
 
 # misc
 .DS_Store
