@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { setPlayerState } from '../store/playerStateActions'
 import './Wavesurfer.css'
 
+import findIndex from 'lodash/findIndex'
 export class Waveform extends Component {
   constructor(props) {
     super(props)
@@ -18,7 +19,7 @@ export class Waveform extends Component {
   }
 
   componentDidMount() {
-    const { phrasesArray: regions, mediaLink } = this.props
+    const { phrasesArray, mediaLink, setPlayerState } = this.props
 
     this.wavesurfer = WaveSurfer.create({
       container: this.waveformElem,
@@ -26,7 +27,7 @@ export class Waveform extends Component {
       //   minPxPerSec: 200,
       plugins: [
         RegionsPlugin.create({
-          regions,
+          regions: phrasesArray,
           dragSelection: true
         }),
         TimelinePlugin.create({
@@ -37,13 +38,21 @@ export class Waveform extends Component {
 
     if (mediaLink) this.wavesurfer.load(mediaLink)
 
+    this.wavesurfer.on('ready', e => {
+      this.setState({ isReady: true })
+    })
+
     this.wavesurfer.on('region-click', (region, e) => {
       e.stopPropagation()
       // this.playRegion(region);
       region.play()
     })
+
     this.wavesurfer.on('region-in', region => {
-      this.props.setPlayerState(['currentPhraseId', region.id])
+      const { id } = region
+      const num = findIndex(phrasesArray, { id }) + 1
+      setPlayerState(['currentPhraseId', id])
+      setPlayerState(['currentPhraseNum', num])
       //console.log('region in', region.id)
     })
     this.wavesurfer.on('region-out', region => {
@@ -51,10 +60,10 @@ export class Waveform extends Component {
       //this.props.setPlayerState(['currentPhraseNum', 10])
     })
     this.wavesurfer.on('play', () => {
-      this.props.setPlayerState(['play', true])
+      setPlayerState(['play', true])
     })
     this.wavesurfer.on('pause', () => {
-      this.props.setPlayerState(['play', false])
+      setPlayerState(['play', false])
     })
     /* 
     this.wavesurfer.on('audioprocess', () => {
@@ -77,12 +86,14 @@ export class Waveform extends Component {
   }
 }
 
+/* 
 const mapStateToProps = state => {
   return {
     currentPhraseNum: state.playerState.currentPhraseNum,
     currentTime: state.playerState.currentTime
   }
 }
+ */
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -91,7 +102,8 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  mapStateToProps,
+  /* mapStateToProps */
+  null,
   mapDispatchToProps,
   null,
   { forwardRef: true }
