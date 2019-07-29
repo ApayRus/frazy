@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import { setPlayerState } from '../store/playerStateActions'
 import './Wavesurfer.css'
 
-import findIndex from 'lodash/findIndex'
 import { CircularProgress } from '@material-ui/core'
 
 export class Waveform extends Component {
@@ -52,7 +51,7 @@ export class Waveform extends Component {
 
     this.wavesurfer.on('region-in', region => {
       const { id } = region
-      const num = findIndex(phrasesArray, { id }) + 1
+      const num = phrasesArray.findIndex(elem => elem.id === id)
       setPlayerState(['currentPhraseId', id])
       setPlayerState(['currentPhraseNum', num])
       //console.log('region in', region.id)
