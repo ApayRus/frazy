@@ -9,13 +9,15 @@ import { setPlayerState } from '../store/playerStateActions'
 import './Wavesurfer.css'
 
 import findIndex from 'lodash/findIndex'
+import { CircularProgress } from '@material-ui/core'
+
 export class Waveform extends Component {
   constructor(props) {
     super(props)
     this.waveformElem = null
     this.timelineElem = null
-
     this.wavesurfer = null
+    this.state = { isReady: false }
   }
 
   componentDidMount() {
@@ -77,8 +79,10 @@ export class Waveform extends Component {
   }
 
   render() {
+    const { isReady } = this.state
     return (
       <div style={{ border: '1px solid gold', marginTop: 75 }}>
+        {isReady ? '' : <CircularProgress />}
         <div ref={el => (this.waveformElem = el)} />
         <div ref={el => (this.timelineElem = el)} />
       </div>

@@ -3,7 +3,6 @@ import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
 import Waveform from './Waveform'
 import { connect } from 'react-redux'
-import { CircularProgress } from '@material-ui/core'
 
 function UnitPage(props) {
   const { phrasesArray, mediaLink } = props
@@ -31,7 +30,7 @@ function UnitPage(props) {
         </div>
       ) : (
         <div style={{ marginTop: 200 }}>
-          {phrasesArray.length ? <CircularProgress /> : <p>Select chapter from heading menu</p>}
+          {phrasesArray.length ? '' : <p>Select chapter from heading menu</p>}
         </div>
       )}
     </div>
