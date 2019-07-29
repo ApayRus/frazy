@@ -25,7 +25,12 @@ function UnitPage(props) {
     <div>
       {mediaLink ? (
         <div>
-          <Waveform mediaLink={mediaLink} phrasesArray={phrasesArray} ref={waveformComponent} />
+          <Waveform
+            readOnly
+            mediaLink={mediaLink}
+            phrasesArray={phrasesArray}
+            ref={waveformComponent}
+          />
           <PlayerSlideShow phrasesArray={phrasesArray} />
           <PlayerControls play={play} pause={pause} playPhrase={playPhrase} />
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />

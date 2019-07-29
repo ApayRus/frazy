@@ -20,7 +20,16 @@ export class Waveform extends Component {
   }
 
   componentDidMount() {
-    const { phrasesArray, mediaLink, setPlayerState } = this.props
+    const { phrasesArray: phrasesArray0, mediaLink, setPlayerState, readOnly } = this.props
+
+    const readModeRegionOptions = { drag: false, resize: false } // should be added to each region
+    let phrasesArray = phrasesArray0
+    let dragSelection = true
+
+    if (readOnly) {
+      phrasesArray = phrasesArray0.map(elem => ({ ...elem, ...readModeRegionOptions }))
+      dragSelection = false
+    }
 
     this.wavesurfer = WaveSurfer.create({
       container: this.waveformElem,
@@ -29,7 +38,7 @@ export class Waveform extends Component {
       plugins: [
         RegionsPlugin.create({
           regions: phrasesArray,
-          dragSelection: true
+          dragSelection
         }),
         TimelinePlugin.create({
           container: this.timelineElem
