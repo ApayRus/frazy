@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 
 function UnitPage(props) {
-  const { phrasesArray, mediaLink } = props
+  const { phrasesArray, mediaLink, currentPhraseNum } = props
   const waveformComponent = useRef(null)
 
   const play = () => {
@@ -21,6 +21,19 @@ function UnitPage(props) {
     waveformComponent.current.wavesurfer.regions.list[id].play()
   }
 
+  const playNext = () => {
+    const { id: nextId } = phrasesArray[currentPhraseNum + 1]
+
+    playPhrase(nextId)(null)
+  }
+
+  const playPrev = () => {
+    const { id: prevId } = phrasesArray[currentPhraseNum - 1]
+    playPhrase(prevId)(null)
+  }
+
+  const playerMethods = { play, pause, playPhrase, playNext, playPrev }
+
   return (
     <div>
       {mediaLink ? (
@@ -32,7 +45,7 @@ function UnitPage(props) {
             ref={waveformComponent}
           />
           <PlayerSlideShow phrasesArray={phrasesArray} />
-          <PlayerControls play={play} pause={pause} playPhrase={playPhrase} />
+          <PlayerControls {...playerMethods} />
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
         </div>
       ) : (
@@ -47,7 +60,8 @@ function UnitPage(props) {
 const mapStateToProps = state => {
   return {
     phrasesArray: state.pageContent.phrasesArray,
-    mediaLink: state.pageContent.mediaLink
+    mediaLink: state.pageContent.mediaLink,
+    currentPhraseNum: state.playerState.currentPhraseNum
   }
 }
 
