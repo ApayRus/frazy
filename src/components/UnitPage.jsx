@@ -3,6 +3,7 @@ import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
 import Waveform from './Waveform'
 import { connect } from 'react-redux'
+import PlayerSlideShow from './PlayerSlideShow'
 
 function UnitPage(props) {
   const { phrasesArray, mediaLink } = props
@@ -25,6 +26,7 @@ function UnitPage(props) {
       {mediaLink ? (
         <div>
           <Waveform mediaLink={mediaLink} phrasesArray={phrasesArray} ref={waveformComponent} />
+          <PlayerSlideShow phrasesArray={phrasesArray} />
           <PlayerControls play={play} pause={pause} playPhrase={playPhrase} />
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
         </div>
