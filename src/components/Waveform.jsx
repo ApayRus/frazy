@@ -60,9 +60,7 @@ export class Waveform extends Component {
 
     this.wavesurfer.on('region-in', region => {
       const { id } = region
-      const num = phrasesArray.findIndex(elem => elem.id === id)
       setPlayerState(['currentPhraseId', id])
-      setPlayerState(['currentPhraseNum', num])
       //console.log('region in', region.id)
     })
     this.wavesurfer.on('region-out', region => {

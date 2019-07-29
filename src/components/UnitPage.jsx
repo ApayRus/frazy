@@ -6,8 +6,10 @@ import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 
 function UnitPage(props) {
-  const { phrasesArray, mediaLink, currentPhraseNum } = props
+  const { phrasesArray, mediaLink, currentPhraseId } = props
   const waveformComponent = useRef(null)
+
+  const currentPhraseNum = phrasesArray.findIndex(elem => elem.id === currentPhraseId)
 
   const play = () => {
     waveformComponent.current.wavesurfer.play()
@@ -57,7 +59,7 @@ const mapStateToProps = state => {
   return {
     phrasesArray: state.pageContent.phrasesArray,
     mediaLink: state.pageContent.mediaLink,
-    currentPhraseNum: state.playerState.currentPhraseNum
+    currentPhraseId: state.playerState.currentPhraseId
   }
 }
 
