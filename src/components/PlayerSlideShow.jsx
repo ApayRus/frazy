@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 const useStyles = makeStyles(theme => ({
   root: {
     height: 150,
-    width: '100%',
+    width: '85%',
     maxWidth: 350,
     display: 'inline-block',
     position: 'relative',
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
   number: {
     position: 'absolute',
-    right: 1,
+    right: 2,
     bottom: 1,
     fontSize: 10,
     color: '#088dc2'
