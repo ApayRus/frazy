@@ -23,7 +23,6 @@ function UnitPage(props) {
 
   const playNext = () => {
     const { id: nextId } = phrasesArray[currentPhraseNum + 1]
-
     playPhrase(nextId)(null)
   }
 
@@ -32,20 +31,17 @@ function UnitPage(props) {
     playPhrase(prevId)(null)
   }
 
-  const playerMethods = { play, pause, playPhrase, playNext, playPrev }
+  const playerControlsProps = { play, pause, playPhrase, playNext, playPrev }
+  const playerSlideShowProps = { currentPhraseNum, phrasesArray }
+  const waveformProps = { mediaLink, phrasesArray, readOnly: true }
 
   return (
     <div>
       {mediaLink ? (
         <div>
-          <Waveform
-            readOnly
-            mediaLink={mediaLink}
-            phrasesArray={phrasesArray}
-            ref={waveformComponent}
-          />
-          <PlayerSlideShow phrasesArray={phrasesArray} />
-          <PlayerControls {...playerMethods} />
+          <Waveform {...waveformProps} ref={waveformComponent} />
+          <PlayerSlideShow {...playerSlideShowProps} />
+          <PlayerControls {...playerControlsProps} />
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
         </div>
       ) : (

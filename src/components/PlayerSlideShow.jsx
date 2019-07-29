@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Typography } from '@material-ui/core'
-import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,8 +44,4 @@ function PlayerSlideShow(props) {
   )
 }
 
-const mapStateToProps = state => ({
-  currentPhraseNum: state.playerState.currentPhraseNum
-})
-
-export default connect(mapStateToProps)(PlayerSlideShow)
+export default PlayerSlideShow
