@@ -35,7 +35,7 @@ function PlayerSlideShow(props) {
           <Typography variant='body2' color='textSecondary'>
             {currentPhrase.translations.ru}
           </Typography>
-          <div className={classes.number}>{`${currentPhraseNum} / ${phrasesCount}`}</div>
+          <div className={classes.number}>{`${currentPhraseNum + 1} / ${phrasesCount}`}</div>
         </div>
       ) : (
         <div>...</div>
