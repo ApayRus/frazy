@@ -12,18 +12,32 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
     padding: 20
   },
-  number: {
+  currentPhrase: {
     position: 'absolute',
     right: 2,
     bottom: 1,
     fontSize: 10,
     color: '#088dc2'
+  },
+  dictationCurrentRepeat: {
+    position: 'absolute',
+    left: 2,
+    bottom: 1,
+    fontSize: 10,
+    color: 'red'
   }
 }))
 
 function PlayerSlideShow(props) {
   const classes = useStyles()
-  const { currentPhraseNum, phrasesArray } = props
+  const {
+    currentPhraseNum,
+    phrasesArray,
+    dictationCurrentRepeat,
+    dictationRepeats,
+    dictationTimerId,
+    dictationDelay
+  } = props
   const currentPhrase = phrasesArray[currentPhraseNum]
   const phrasesCount = phrasesArray.length
 
@@ -35,7 +49,14 @@ function PlayerSlideShow(props) {
           <Typography variant='body2' color='textSecondary'>
             {currentPhrase.translations.ru}
           </Typography>
-          <div className={classes.number}>{`${currentPhraseNum + 1} / ${phrasesCount}`}</div>
+          <div className={classes.currentPhrase}>{`${currentPhraseNum + 1} / ${phrasesCount}`}</div>
+          {dictationTimerId ? (
+            <div
+              className={classes.dictationCurrentRepeat}
+            >{`${dictationCurrentRepeat} / ${dictationRepeats} x${dictationDelay}`}</div>
+          ) : (
+            <div />
+          )}
         </div>
       ) : (
         <div>...</div>

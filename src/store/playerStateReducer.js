@@ -2,6 +2,8 @@ const initState = {
   currentPhraseNum: 0,
   currentPhraseId: '',
   currentTime: 0,
+  dictationTimerId: 0,
+  dictationCurrentRepeat: 0,
   play: false
 }
 

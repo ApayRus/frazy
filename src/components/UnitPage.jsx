@@ -5,36 +5,109 @@ import Waveform from './Waveform'
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 
+import { setPlayerState } from '../store/playerStateActions'
+
 function UnitPage(props) {
-  const { phrasesArray, mediaLink, currentPhraseId } = props
+  const {
+    phrasesArray,
+    mediaLink,
+    currentPhraseId,
+    dictationCurrentRepeat,
+    dictationTimerId,
+    dictationDelay,
+    dictationRepeats,
+    setPlayerState
+  } = props
   const waveformComponent = useRef(null)
 
   const currentPhraseNum = phrasesArray.findIndex(elem => elem.id === currentPhraseId)
 
   const play = () => {
     waveformComponent.current.wavesurfer.play()
+    stopDictation()
   }
 
   const pause = () => {
     waveformComponent.current.wavesurfer.pause()
+    stopDictation()
   }
 
   const playPhrase = id => event => {
+    waveformComponent.current.wavesurfer.regions.list[id].play()
+    stopDictation()
+  }
+
+  const playPhraseDictation = id => event => {
     waveformComponent.current.wavesurfer.regions.list[id].play()
   }
 
   const playNext = () => {
     const { id: nextId } = phrasesArray[currentPhraseNum + 1]
     playPhrase(nextId)(null)
+    stopDictation()
   }
 
   const playPrev = () => {
     const { id: prevId } = phrasesArray[currentPhraseNum - 1]
     playPhrase(prevId)(null)
+    stopDictation()
   }
 
-  const playerControlsProps = { play, pause, playPhrase, playNext, playPrev }
-  const playerSlideShowProps = { currentPhraseNum, phrasesArray }
+  /**
+   * repeats phrase N times with phraseLength X*delay
+   * @param {Number} phraseNum
+   * @param {Number} repeatCount
+   * @param {Number} delayX - delaySeconds = delayX * phraseLength
+   * @returns {array} repeats - array of setTimeout
+   */
+  const playPhraseNtimesWithXDelay = (currentRepeatNum, phraseNum, repeatCount, delayX) => {
+    if (phraseNum === phrasesArray.length) return
+    const phrase = phrasesArray[phraseNum]
+    const { id, start, end } = phrase
+    const phraseLength = end - start
+    const delaySeconds = phraseLength * delayX
+
+    playPhraseDictation(id)(null)
+
+    const timerId = setTimeout(() => {
+      if (currentRepeatNum < repeatCount) {
+        playPhraseNtimesWithXDelay(currentRepeatNum + 1, phraseNum, repeatCount, delayX)
+      } else {
+        playPhraseNtimesWithXDelay(1, phraseNum + 1, repeatCount, delayX)
+      }
+    }, delaySeconds * 1000)
+
+    setPlayerState(['dictationTimerId', timerId])
+    setPlayerState(['dictationCurrentRepeat', currentRepeatNum])
+  }
+
+  const playDictation = () => {
+    const beginFrom = currentPhraseNum < 0 ? 0 : currentPhraseNum
+    playPhraseNtimesWithXDelay(1, beginFrom, dictationRepeats, dictationDelay)
+  }
+
+  const stopDictation = () => {
+    clearTimeout(dictationTimerId)
+    setPlayerState(['dictationTimerId', 0])
+  }
+
+  const playerControlsProps = {
+    play,
+    pause,
+    playPhrase,
+    playNext,
+    playPrev,
+    playDictation,
+    dictationTimerId
+  }
+  const playerSlideShowProps = {
+    currentPhraseNum,
+    phrasesArray,
+    dictationCurrentRepeat,
+    dictationRepeats,
+    dictationTimerId,
+    dictationDelay
+  }
   const waveformProps = { mediaLink, phrasesArray, readOnly: true }
 
   return (
@@ -59,8 +132,21 @@ const mapStateToProps = state => {
   return {
     phrasesArray: state.pageContent.phrasesArray,
     mediaLink: state.pageContent.mediaLink,
-    currentPhraseId: state.playerState.currentPhraseId
+    currentPhraseId: state.playerState.currentPhraseId,
+    dictationCurrentRepeat: state.playerState.dictationCurrentRepeat,
+    dictationTimerId: state.playerState.dictationTimerId,
+    dictationRepeats: state.playerSettings.dictationRepeats,
+    dictationDelay: state.playerSettings.dictationDelay
   }
 }
 
-export default connect(mapStateToProps)(UnitPage)
+const mapDispatchToProps = dispatch => {
+  return {
+    setPlayerState: payload => dispatch(setPlayerState(payload))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UnitPage)

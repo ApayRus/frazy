@@ -12,7 +12,17 @@ import { connect } from 'react-redux'
 //import { audio } from '../howler'
 
 function PlayerControls(props) {
-  const { play, pause, playPhrase, playNext, playPrev, isPlay, currentPhraseId } = props
+  const {
+    play,
+    pause,
+    playPhrase,
+    playNext,
+    playPrev,
+    playDictation,
+    isPlay,
+    currentPhraseId,
+    dictationTimerId
+  } = props
 
   return (
     <div className='playerControls'>
@@ -28,8 +38,8 @@ function PlayerControls(props) {
           <PlayArrow />
         </IconButton>
       )}
-      <IconButton aria-label='Dictation'>
-        <Dictation />
+      <IconButton onClick={playDictation} aria-label='Dictation'>
+        <Dictation color={dictationTimerId ? 'error' : 'inherit'} />
       </IconButton>
       <IconButton onClick={playPhrase(currentPhraseId)} aria-label='Replay'>
         <Replay />
