@@ -13,7 +13,7 @@ function UnitPage(props) {
     mediaLink,
     currentPhraseId,
     dictationCurrentRepeat,
-    dictationTimerId,
+    dictationTimerId, // >0 then dictation is playing
     dictationDelay,
     dictationRepeats,
     setPlayerState
@@ -81,14 +81,18 @@ function UnitPage(props) {
     setPlayerState(['dictationCurrentRepeat', currentRepeatNum])
   }
 
-  const playDictation = () => {
-    const beginFrom = currentPhraseNum < 0 ? 0 : currentPhraseNum
-    playPhraseNtimesWithXDelay(1, beginFrom, dictationRepeats, dictationDelay)
-  }
-
   const stopDictation = () => {
     clearTimeout(dictationTimerId)
     setPlayerState(['dictationTimerId', 0])
+  }
+
+  const playDictation = () => {
+    const beginFrom = currentPhraseNum < 0 ? 0 : currentPhraseNum
+    if (!dictationTimerId) {
+      playPhraseNtimesWithXDelay(1, beginFrom, dictationRepeats, dictationDelay)
+    } else {
+      stopDictation()
+    }
   }
 
   const playerControlsProps = {
@@ -100,6 +104,7 @@ function UnitPage(props) {
     playDictation,
     dictationTimerId
   }
+
   const playerSlideShowProps = {
     currentPhraseNum,
     phrasesArray,
