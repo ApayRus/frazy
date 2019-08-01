@@ -5,7 +5,7 @@ import Waveform from './Waveform'
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 
-import wavesurferModule from './wavesurfer'
+import wavesurferModule from '../wavesurfer/wavesurfer'
 
 import { setPlayerState } from '../store/playerStateActions'
 

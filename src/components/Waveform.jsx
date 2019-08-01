@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Wavesurfer.css'
 import { CircularProgress } from '@material-ui/core'
-import wavesurferModule from './wavesurfer'
+import wavesurferModule from '../wavesurfer/wavesurfer'
 
 export class Waveform extends Component {
   constructor(props) {
