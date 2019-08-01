@@ -1,14 +1,14 @@
 const initState = {
   /*display*/
   showPlayer: true,
-  showOriginalText: false,
+  showOriginalText: true,
   showTranslation: true,
   /*playback*/
-  volume: 40,
-  playbackRate: 50,
+  volume: 100,
+  playbackRate: 1,
   /*dictation*/
-  dictationRepeats: 60,
-  dictationDelay: 70
+  dictationRepeats: 2,
+  dictationDelay: 2
 }
 
 const playerSettingsReducer = (state = initState, action) => {

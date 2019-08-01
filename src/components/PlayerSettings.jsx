@@ -53,6 +53,7 @@ function PlayerSettings(props) {
         <Checkbox checked={showTranslation} id='showTranslation' onChange={handleChange} />
       </div>
 
+      {/* 
       <Typography variant='subtitle1'>Playback:</Typography>
       <div className={classes.grid}>
         <Typography variant='body2'>Volume</Typography>
@@ -69,17 +70,27 @@ function PlayerSettings(props) {
           id='playbackRate'
           onChange={handleChange}
           style={{ width: '80%' }}
+          valueLabelDisplay='on'
+          step={0.25}
+          min={0.25}
+          max={2}
         />
       </div>
+ */}
 
       <Typography variant='subtitle1'>Dictation:</Typography>
       <div className={classes.grid}>
         <Typography variant='body2'>Repeat count</Typography>
+
         <Slider
           defaultValue={dictationRepeats}
           id='dictationRepeats'
           onChange={handleChange}
           style={{ width: '80%' }}
+          valueLabelDisplay='on'
+          step={1}
+          min={1}
+          max={10}
         />
 
         <Typography variant='body2'>Delay between repeats (x phrase length)</Typography>
@@ -88,6 +99,10 @@ function PlayerSettings(props) {
           id='dictationDelay'
           onChange={handleChange}
           style={{ width: '80%' }}
+          valueLabelDisplay='on'
+          step={1}
+          min={1}
+          max={10}
         />
       </div>
     </div>
