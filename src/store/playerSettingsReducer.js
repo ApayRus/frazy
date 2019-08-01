@@ -4,7 +4,7 @@ const initState = {
   showOriginalText: true,
   showTranslation: true,
   /*playback*/
-  volume: 100,
+  volume: 1,
   playbackRate: 1,
   /*dictation*/
   dictationRepeats: 2,

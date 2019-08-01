@@ -112,7 +112,10 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     })
   })
 
-  console.log('wavesurfer', wavesurfer)
+  const { playbackRate, volume } = store.getState().playerSettings
+
+  wavesurfer.setPlaybackRate(playbackRate)
+  wavesurfer.setVolume(volume)
 
   return wavesurfer
 }
