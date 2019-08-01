@@ -34,7 +34,7 @@ export class Waveform extends Component {
   render() {
     const { isReady } = this.state
     return (
-      <div style={{ border: '1px solid gold', marginTop: 75 }}>
+      <div>
         {isReady ? '' : <CircularProgress />}
         <div ref={el => (this.waveformElem = el)} />
         <div ref={el => (this.timelineElem = el)} />

@@ -10,7 +10,7 @@ function DrawerHeading(props) {
   return (
     <div>
       <SwipeableDrawer
-        anchor='bottom'
+        anchor='right'
         open={showSettingsDrawer}
         onOpen={() => {
           toggleSettingsDrawer({ showSettingsDrawer: true })
