@@ -47,14 +47,12 @@ function UnitPage(props) {
 
   const playNext = () => {
     const { id: nextId } = phrasesArray[currentPhraseNum + 1]
-    playPhrase(nextId)(null)
-    stopDictation()
+    playPhrase(nextId)()
   }
 
   const playPrev = () => {
     const { id: prevId } = phrasesArray[currentPhraseNum - 1]
-    playPhrase(prevId)(null)
-    stopDictation()
+    playPhrase(prevId)()
   }
 
   /**
@@ -71,7 +69,7 @@ function UnitPage(props) {
     const phraseLength = end - start
     const delaySeconds = phraseLength * delayX
 
-    playPhraseDictation(id)(null)
+    playPhraseDictation(id)()
 
     const timerId = setTimeout(() => {
       if (currentRepeatNum < repeatCount) {
