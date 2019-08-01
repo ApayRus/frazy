@@ -10,12 +10,13 @@ import './Wavesurfer.css'
 
 import { CircularProgress } from '@material-ui/core'
 
+import wavesurferModule from './wavesurfer'
+
 export class Waveform extends Component {
   constructor(props) {
     super(props)
     this.waveformElem = null
     this.timelineElem = null
-    this.wavesurfer = null
     this.state = { isReady: false }
   }
 
@@ -31,7 +32,7 @@ export class Waveform extends Component {
       dragSelection = false
     }
 
-    this.wavesurfer = WaveSurfer.create({
+    wavesurferModule.wavesurfer = WaveSurfer.create({
       container: this.waveformElem,
       scrollParent: true,
       //   minPxPerSec: 200,
@@ -46,42 +47,42 @@ export class Waveform extends Component {
       ]
     })
 
-    if (mediaLink) this.wavesurfer.load(mediaLink)
+    if (mediaLink) wavesurferModule.wavesurfer.load(mediaLink)
 
-    this.wavesurfer.on('ready', e => {
+    wavesurferModule.wavesurfer.on('ready', e => {
       this.setState({ isReady: true })
     })
 
-    this.wavesurfer.on('region-click', (region, e) => {
+    wavesurferModule.wavesurfer.on('region-click', (region, e) => {
       e.stopPropagation()
       // this.playRegion(region);
       region.play()
     })
 
-    this.wavesurfer.on('region-in', region => {
+    wavesurferModule.wavesurfer.on('region-in', region => {
       const { id } = region
       setPlayerState(['currentPhraseId', id])
       //console.log('region in', region.id)
     })
-    this.wavesurfer.on('region-out', region => {
+    wavesurferModule.wavesurfer.on('region-out', region => {
       //console.log('region out', region.id)
       //this.props.setPlayerState(['currentPhraseNum', 10])
     })
-    this.wavesurfer.on('play', () => {
+    wavesurferModule.wavesurfer.on('play', () => {
       setPlayerState(['play', true])
     })
-    this.wavesurfer.on('pause', () => {
+    wavesurferModule.wavesurfer.on('pause', () => {
       setPlayerState(['play', false])
     })
     /* 
-    this.wavesurfer.on('audioprocess', () => {
-      console.log('on play', this.wavesurfer.getCurrentTime())
+    wavesurfer.on('audioprocess', () => {
+      console.log('on play', wavesurfer.getCurrentTime())
     })
      */
   }
 
   componentWillUnmount() {
-    this.wavesurfer.destroy()
+    wavesurferModule.wavesurfer.destroy()
   }
 
   render() {
@@ -114,7 +115,5 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   /* mapStateToProps */
   null,
-  mapDispatchToProps,
-  null,
-  { forwardRef: true }
+  mapDispatchToProps
 )(Waveform)

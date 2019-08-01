@@ -1,11 +1,16 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
 import Waveform from './Waveform'
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 
+import wavesurferModule from './wavesurfer'
+
 import { setPlayerState } from '../store/playerStateActions'
+
+//const { wavesurfer } = wavesurferModule
+// console.log('wavesurfer', wavesurferModule.wavesurfer)
 
 function UnitPage(props) {
   const {
@@ -18,27 +23,26 @@ function UnitPage(props) {
     dictationRepeats,
     setPlayerState
   } = props
-  const waveformComponent = useRef(null)
 
   const currentPhraseNum = phrasesArray.findIndex(elem => elem.id === currentPhraseId)
 
   const play = () => {
-    waveformComponent.current.wavesurfer.play()
+    wavesurferModule.wavesurfer.play()
     stopDictation()
   }
 
   const pause = () => {
-    waveformComponent.current.wavesurfer.pause()
+    wavesurferModule.wavesurfer.pause()
     stopDictation()
   }
 
   const playPhrase = id => event => {
-    waveformComponent.current.wavesurfer.regions.list[id].play()
+    wavesurferModule.wavesurfer.regions.list[id].play()
     stopDictation()
   }
 
   const playPhraseDictation = id => event => {
-    waveformComponent.current.wavesurfer.regions.list[id].play()
+    wavesurferModule.wavesurfer.regions.list[id].play()
   }
 
   const playNext = () => {
@@ -119,7 +123,7 @@ function UnitPage(props) {
     <div>
       {mediaLink ? (
         <div>
-          <Waveform {...waveformProps} ref={waveformComponent} />
+          <Waveform {...waveformProps} />
           <PlayerSlideShow {...playerSlideShowProps} />
           <PlayerControls {...playerControlsProps} />
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
