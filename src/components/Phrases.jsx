@@ -7,7 +7,7 @@ import { ButtonBase, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
 
 function Phrases(props) {
-  const { phrasesArray, playPhrase, currentPhraseId } = props
+  const { phrasesArray, playPhrase, currentPhraseId, showOriginalText, showTranslation } = props
 
   return (
     <div className='phrases'>
@@ -22,12 +22,16 @@ function Phrases(props) {
               <div className={'id ' + (currentPhraseId === phrase.id ? 'current' : '')}>
                 {index + 1} <PlayArrow fontSize='inherit' />{' '}
               </div>
-              <div className='text'>
-                <Typography variant='body1'>{phrase.text}</Typography>
-              </div>
-              <div className='translation ru'>
-                <Typography variant='body2'>{phrase.translations.ru}</Typography>
-              </div>
+              {showOriginalText ? (
+                <div className='text'>
+                  <Typography variant='body1'>{phrase.text}</Typography>
+                </div>
+              ) : null}
+              {showTranslation ? (
+                <div className='translation ru'>
+                  <Typography variant='body2'>{phrase.translations.ru}</Typography>
+                </div>
+              ) : null}
             </div>
           </ButtonBase>
         )
@@ -38,7 +42,9 @@ function Phrases(props) {
 
 const mapStateToProps = state => {
   return {
-    currentPhraseId: state.playerState.currentPhraseId
+    currentPhraseId: state.playerState.currentPhraseId,
+    showTranslation: state.playerSettings.showTranslation,
+    showOriginalText: state.playerSettings.showOriginalText
   }
 }
 

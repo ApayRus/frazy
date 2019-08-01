@@ -4,15 +4,18 @@ import Phrases from './Phrases'
 import Waveform from './Waveform'
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
-
+import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 
 import { setPlayerState } from '../store/playerStateActions'
 
-//const { wavesurfer } = wavesurferModule
-// console.log('wavesurfer', wavesurferModule.wavesurfer)
+const useStyles = makeStyles(theme => ({
+  hidden: { display: 'none' }
+}))
 
 function UnitPage(props) {
+  const classes = useStyles()
+
   const {
     phrasesArray,
     mediaLink,
@@ -21,7 +24,9 @@ function UnitPage(props) {
     dictationTimerId, // >0 then dictation is playing
     dictationDelay,
     dictationRepeats,
-    setPlayerState
+    setPlayerState,
+    showSlideshow,
+    showWaveform
   } = props
 
   const currentPhraseNum = phrasesArray.findIndex(elem => elem.id === currentPhraseId)
@@ -121,9 +126,14 @@ function UnitPage(props) {
     <div>
       {mediaLink ? (
         <div>
-          <Waveform {...waveformProps} />
-          <PlayerSlideShow {...playerSlideShowProps} />
-          <PlayerControls {...playerControlsProps} />
+          <div className={showWaveform ? '' : classes.hidden}>
+            <Waveform {...waveformProps} />
+          </div>
+          <div className={showSlideshow ? '' : classes.hidden}>
+            <PlayerSlideShow {...playerSlideShowProps} />
+            <PlayerControls {...playerControlsProps} />
+          </div>
+
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
         </div>
       ) : (
@@ -143,7 +153,9 @@ const mapStateToProps = state => {
     dictationCurrentRepeat: state.playerState.dictationCurrentRepeat,
     dictationTimerId: state.playerState.dictationTimerId,
     dictationRepeats: state.playerSettings.dictationRepeats,
-    dictationDelay: state.playerSettings.dictationDelay
+    dictationDelay: state.playerSettings.dictationDelay,
+    showWaveform: state.playerSettings.showWaveform,
+    showSlideshow: state.playerSettings.showSlideshow
   }
 }
 

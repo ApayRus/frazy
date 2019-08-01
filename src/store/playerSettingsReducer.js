@@ -1,6 +1,7 @@
 const initState = {
   /*display*/
-  showPlayer: true,
+  showSlideshow: true,
+  showWaveform: true,
   showOriginalText: true,
   showTranslation: true,
   /*playback*/
@@ -14,7 +15,6 @@ const initState = {
 const playerSettingsReducer = (state = initState, action) => {
   switch (action.type) {
     case 'SET_PLAYER_SETTINGS': {
-      console.log('SET_PLAYER_SETTINGS', action.payload)
       const [key, value] = action.payload // ['volume', 55]
       return { ...state, [key]: value }
     }

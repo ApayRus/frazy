@@ -20,7 +20,8 @@ function PlayerSettings(props) {
   const classes = useStyles()
 
   const {
-    showPlayer,
+    showSlideshow,
+    showWaveform,
     showOriginalText,
     showTranslation,
     volume,
@@ -54,8 +55,11 @@ function PlayerSettings(props) {
 
       <Typography variant='subtitle1'>Display:</Typography>
       <div className={classes.grid}>
-        <Typography variant='body2'>Show player</Typography>
-        <Checkbox checked={showPlayer} id='showPlayer' onChange={handleChange} />
+        <Typography variant='body2'>Show player (slideshow)</Typography>
+        <Checkbox checked={showSlideshow} id='showSlideshow' onChange={handleChange} />
+
+        <Typography variant='body2'>Show waveform</Typography>
+        <Checkbox checked={showWaveform} id='showWaveform' onChange={handleChange} />
 
         <Typography variant='body2'>Show original text</Typography>
         <Checkbox checked={showOriginalText} id='showOriginalText' onChange={handleChange} />

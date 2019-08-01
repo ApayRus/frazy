@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Typography } from '@material-ui/core'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +37,9 @@ function PlayerSlideShow(props) {
     dictationCurrentRepeat,
     dictationRepeats,
     dictationTimerId,
-    dictationDelay
+    dictationDelay,
+    showOriginalText,
+    showTranslation
   } = props
   const currentPhrase = phrasesArray[currentPhraseNum]
   const phrasesCount = phrasesArray.length
@@ -45,10 +48,12 @@ function PlayerSlideShow(props) {
     <Paper className={classes.root}>
       {currentPhrase ? (
         <div>
-          <Typography variant='body1'>{currentPhrase.text}</Typography>
-          <Typography variant='body2' color='textSecondary'>
-            {currentPhrase.translations.ru}
-          </Typography>
+          {showOriginalText ? <Typography variant='body1'>{currentPhrase.text}</Typography> : null}
+          {showTranslation ? (
+            <Typography variant='body2' color='textSecondary'>
+              {currentPhrase.translations.ru}
+            </Typography>
+          ) : null}
           <div className={classes.currentPhrase}>{`${currentPhraseNum + 1} / ${phrasesCount}`}</div>
           {dictationTimerId ? (
             <div
@@ -65,4 +70,9 @@ function PlayerSlideShow(props) {
   )
 }
 
-export default PlayerSlideShow
+const mapStateToProps = state => ({
+  showTranslation: state.playerSettings.showTranslation,
+  showOriginalText: state.playerSettings.showOriginalText
+})
+
+export default connect(mapStateToProps)(PlayerSlideShow)
