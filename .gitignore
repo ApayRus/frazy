@@ -15,6 +15,10 @@ src/dumyData/hobbit.html
 src/content
 public/audio
 
+.firebaserc
+firebase.json
+/.firebase
+
 # misc
 .DS_Store
 .env.local
