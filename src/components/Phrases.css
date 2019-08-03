@@ -1,6 +1,8 @@
 .phrases {
   text-align: left;
   margin-bottom: 50px;
+  display: inline-block;
+  max-width: 400px;
 }
 
 .phrase {
