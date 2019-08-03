@@ -36,8 +36,10 @@ export class Waveform extends Component {
     return (
       <div>
         {isReady ? '' : <CircularProgress />}
-        <div ref={el => (this.waveformElem = el)} />
-        <div ref={el => (this.timelineElem = el)} />
+        <div style={isReady ? {} : { display: 'none' }}>
+          <div ref={el => (this.waveformElem = el)} />
+          <div ref={el => (this.timelineElem = el)} />
+        </div>
       </div>
     )
   }
