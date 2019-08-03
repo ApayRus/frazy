@@ -149,17 +149,20 @@ function UnitPage(props) {
 }
 
 const mapStateToProps = state => {
+  const { title, phrasesArray, mediaLink } = state.pageContent
+  const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
+  const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
   return {
-    title: state.pageContent.title,
-    phrasesArray: state.pageContent.phrasesArray,
-    mediaLink: state.pageContent.mediaLink,
-    currentPhraseId: state.playerState.currentPhraseId,
-    dictationCurrentRepeat: state.playerState.dictationCurrentRepeat,
-    dictationTimerId: state.playerState.dictationTimerId,
-    dictationRepeats: state.playerSettings.dictationRepeats,
-    dictationDelay: state.playerSettings.dictationDelay,
-    showWaveform: state.playerSettings.showWaveform,
-    showSlideshow: state.playerSettings.showSlideshow
+    title,
+    phrasesArray,
+    mediaLink,
+    currentPhraseId,
+    dictationCurrentRepeat,
+    dictationTimerId,
+    dictationRepeats,
+    dictationDelay,
+    showWaveform,
+    showSlideshow
   }
 }
 
