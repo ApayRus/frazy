@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { setPlayerSettings } from '../store/playerSettingsActions'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 
+import local from '../localization/en'
+
 const useStyles = makeStyles({
   grid: {
     display: 'grid',
@@ -50,28 +52,28 @@ function PlayerSettings(props) {
   return (
     <div style={{ margin: 10 }}>
       <Typography variant='h6'>
-        <SettingsIcon style={{ marginTop: 5, fontSize: 17 }} /> Player settings
+        <SettingsIcon style={{ marginTop: 5, fontSize: 17 }} /> {local.playerSettings}
       </Typography>
 
-      <Typography variant='subtitle1'>Display:</Typography>
+      <Typography variant='subtitle1'>{local.display}:</Typography>
       <div className={classes.grid}>
-        <Typography variant='body2'>Show player (slideshow)</Typography>
-        <Checkbox checked={showSlideshow} id='showSlideshow' onChange={handleChange} />
-
-        <Typography variant='body2'>Show waveform</Typography>
+        <Typography variant='body2'>{local.showWaveform}</Typography>
         <Checkbox checked={showWaveform} id='showWaveform' onChange={handleChange} />
 
-        <Typography variant='body2'>Show original text</Typography>
+        <Typography variant='body2'>{local.showSlideshow}</Typography>
+        <Checkbox checked={showSlideshow} id='showSlideshow' onChange={handleChange} />
+
+        <Typography variant='body2'>{local.showOriginalText}</Typography>
         <Checkbox checked={showOriginalText} id='showOriginalText' onChange={handleChange} />
 
-        <Typography variant='body2'>Show translation</Typography>
+        <Typography variant='body2'>{local.showTranslation}</Typography>
         <Checkbox checked={showTranslation} id='showTranslation' onChange={handleChange} />
       </div>
 
-      <Typography variant='subtitle1'>Playback:</Typography>
+      <Typography variant='subtitle1'>{local.playback}:</Typography>
 
       <div className={classes.grid}>
-        <Typography variant='body2'>Volume</Typography>
+        <Typography variant='body2'>{local.volume}</Typography>
         <Slider
           defaultValue={volume}
           id='volume'
@@ -83,7 +85,7 @@ function PlayerSettings(props) {
           step={0.1}
         />
 
-        <Typography variant='body2'>Playback rate</Typography>
+        <Typography variant='body2'>{local.playbackRate}</Typography>
         <Slider
           defaultValue={playbackRate}
           id='playbackRate'
@@ -96,9 +98,9 @@ function PlayerSettings(props) {
         />
       </div>
 
-      <Typography variant='subtitle1'>Dictation:</Typography>
+      <Typography variant='subtitle1'>{local.dictation}:</Typography>
       <div className={classes.grid}>
-        <Typography variant='body2'>Repeat count</Typography>
+        <Typography variant='body2'>{local.repeats}</Typography>
 
         <Slider
           defaultValue={dictationRepeats}
@@ -111,7 +113,7 @@ function PlayerSettings(props) {
           max={10}
         />
 
-        <Typography variant='body2'>Delay between repeats (x phrase length)</Typography>
+        <Typography variant='body2'>{local.delay}</Typography>
         <Slider
           defaultValue={dictationDelay}
           id='dictationDelay'
