@@ -5,7 +5,8 @@
 import React from 'react'
 
 function UnitPage(props) {
-  const unitId = 'hobbit_en'
+  //console.log('props', props)
+  const { unitId } = props.match.params
   return <div>This is Unit Page for {unitId}</div>
 }
 
