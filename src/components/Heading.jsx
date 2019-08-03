@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Heading(props) {
-  const { setPhrasesArray, setMediaLink, toggleHeadingDrawer } = props
+  const { setPhrasesArray, setMediaLink, setTitle, toggleHeadingDrawer } = props
   const classes = useStyles()
   const heading = bookInfo.heading
   const bookTitle = bookInfo.title.ru
@@ -34,7 +34,9 @@ function Heading(props) {
     const unit = units[unitId]
     const translation = translations[`${unitId}_ru`]
     const phrasesArray = joinPhrasesAndTranslations(unit, translation)
-    const { mediaLink, title } = unit
+    const { title: titleOriginal, mediaLink, lang: langOriginal } = unit
+    const { title: titleTranslation, lang: langTranslation } = translation
+    const title = { [langOriginal]: titleOriginal, [langTranslation]: titleTranslation }
 
     toggleHeadingDrawer({ showHeadingDrawer: false })
     setPhrasesArray(phrasesArray)

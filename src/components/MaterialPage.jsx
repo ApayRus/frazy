@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 
 import { setPlayerState } from '../store/playerStateActions'
+import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' }
@@ -17,6 +18,7 @@ function UnitPage(props) {
   const classes = useStyles()
 
   const {
+    title,
     phrasesArray,
     mediaLink,
     currentPhraseId,
@@ -133,7 +135,8 @@ function UnitPage(props) {
             <PlayerSlideShow {...playerSlideShowProps} />
             <PlayerControls {...playerControlsProps} />
           </div>
-
+          <Typography variant='h5'>{title.en}</Typography>
+          <Typography variant='subtitle1'>{title.ru}</Typography>
           <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
         </div>
       ) : (
@@ -147,6 +150,7 @@ function UnitPage(props) {
 
 const mapStateToProps = state => {
   return {
+    title: state.pageContent.title,
     phrasesArray: state.pageContent.phrasesArray,
     mediaLink: state.pageContent.mediaLink,
     currentPhraseId: state.playerState.currentPhraseId,
