@@ -1,10 +1,10 @@
 import React from 'react'
-import { bookInfo } from '../content/GENERATEDheading.js'
-import { units } from '../content/GENERATEDunits.js'
-import { translations } from '../content/GENERATEDtranslations.js'
+import bookInfo from '../content/GENERATEDheading.js'
+import units from '../content/GENERATEDunits.js'
+import translations from '../content/GENERATEDtranslations.js'
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { setPhrasesArray, setMediaLink } from '../store/pageContentActions'
+import { setPhrasesArray, setMediaLink, setTitle } from '../store/pageContentActions'
 import { connect } from 'react-redux'
 import { joinPhrasesAndTranslations } from '../utils/joinPhrasesAndTranslations'
 import { toggleHeadingDrawer } from '../store/appStateActions'
@@ -31,12 +31,14 @@ function Heading(props) {
   const bookAuthor = bookInfo.author.ru
 
   const handleClick = unitId => event => {
-    const unit = units[`hobbit${unitId}_en`]
-    const translation = translations[`hobbit${unitId}_ru`]
+    const unit = units[unitId]
+    const translation = translations[`${unitId}_ru`]
     const phrasesArray = joinPhrasesAndTranslations(unit, translation)
-    const mediaLink = unit.mediaLink
+    const { mediaLink, title } = unit
+
     toggleHeadingDrawer({ showHeadingDrawer: false })
     setPhrasesArray(phrasesArray)
+    setTitle(title)
     setMediaLink('') //for unmount old Waveform, and mount new one
     setTimeout(() => {
       setMediaLink(mediaLink)
@@ -61,7 +63,7 @@ function Heading(props) {
               onClick={handleClick(elem.id)}
               key={`heading-${elem.id}`}
             >
-              <ListItemText>{elem.title.ru}</ListItemText>
+              <ListItemText primary={elem.title.en} secondary={elem.title.ru} />
             </ListItem>
           )
         })}
@@ -74,6 +76,7 @@ const mapDispatchToProps = dispatch => {
   return {
     setPhrasesArray: payload => dispatch(setPhrasesArray(payload)),
     setMediaLink: payload => dispatch(setMediaLink(payload)),
+    setTitle: payload => dispatch(setTitle(payload)),
     toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload))
   }
 }

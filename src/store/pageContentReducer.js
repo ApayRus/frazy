@@ -19,6 +19,9 @@ const pageContentReducer = (state = initState, action) => {
     case 'SET_MEDIA_LINK': {
       return { ...state, mediaLink: action.payload }
     }
+    case 'SET_TITLE': {
+      return { ...state, title: action.payload }
+    }
     default:
       return state
   }

@@ -28,29 +28,38 @@ import fs from 'fs'
 function generatePhrasesAndTranscription(filePathFrom, folderPathTo) {
   const $ = cheerio.load(fs.readFileSync(filePathFrom))
 
-  const headingText = $('.chapters.translation.main').text()
+  const headingTextOriginal = $('.chapters.en').text()
+  const headingTextTranslation = $('.chapters.ru').text()
 
-  const unitIds = headingToIds(headingText)
+  const unitIds = headingToIds(headingTextOriginal)
 
   const units = {}
   const translations = {}
-  const heading = generateHeading(headingText)
+  const heading = generateHeading(headingTextOriginal, headingTextTranslation)
 
-  unitIds.forEach(unitId => {
+  const headingOriginalArray = headingTextOriginal.trim().split('\n')
+  const headingTranslationArray = headingTextTranslation.trim().split('\n')
+
+  unitIds.forEach((unitId, index) => {
     const timingText = $(`#ti-${unitId}`).text()
     const originalText = $(`#or-${unitId}`).text()
     const translationText = $(`#tr-${unitId}`).text()
 
+    const title = headingOriginalArray[index]
+    const titleTranslation = headingTranslationArray[index]
+
     const unitInfo = {
-      id: `hobbit${unitId}_en`,
+      id: `hobbit${unitId}`,
+      title,
       mediaLink: `../audio/hobbit${unitId}.mp3`,
       lang: 'en'
     }
 
     const translationInfo = {
       id: `hobbit${unitId}_ru`,
+      for: `hobbit${unitId}`,
       lang: 'ru',
-      for: `hobbit${unitId}_en`
+      title: titleTranslation
     }
 
     let phrases = assSubtitlesToPhrases(timingText) //just timing, empty text
@@ -58,20 +67,28 @@ function generatePhrasesAndTranscription(filePathFrom, folderPathTo) {
     phrases = writePhrasesWithText(phrases, originalText, 'original')
 
     const unit = { ...unitInfo, phrases }
-    units[`hobbit${unitId}_en`] = unit
+    units[`hobbit${unitId}`] = unit
 
     const translation = { ...translationInfo, phrases: translationPhrases }
     translations[`hobbit${unitId}_ru`] = translation
   })
 
-  fs.writeFileSync(`${folderPathTo}/GENERATEDunits.js`, JSON.stringify(units), 'utf-8')
+  fs.writeFileSync(
+    `${folderPathTo}/GENERATEDunits.js`,
+    'export default ' + JSON.stringify(units),
+    'utf-8'
+  )
   fs.writeFileSync(
     `${folderPathTo}/GENERATEDtranslations.js`,
-    JSON.stringify(translations),
+    'export default ' + JSON.stringify(translations),
     'utf-8'
   )
 
-  fs.writeFileSync(`${folderPathTo}/GENERATEDheading.js`, JSON.stringify(heading), 'utf-8')
+  fs.writeFileSync(
+    `${folderPathTo}/GENERATEDheading.js`,
+    'export default ' + JSON.stringify(heading),
+    'utf-8'
+  )
 }
 
 /**
@@ -88,17 +105,24 @@ function headingToIds(heading) {
   return unitIds
 }
 
-function generateHeading(headingText) {
-  const headingArray = headingText.trim().split('\n')
-  const heading = headingArray.map(elem => {
+function generateHeading(headingOriginalText, headingTranslationText) {
+  const bookInfo = {
+    author: { en: 'J.R.R. Tolkien', ru: 'Дж.Р.Р. Толкиен' },
+    title: { en: '', ru: '' }
+  }
+  const headingOriginalArray = headingOriginalText.trim().split('\n')
+  const headingTranslationArray = headingTranslationText.trim().split('\n')
+  const heading = headingOriginalArray.map((elem, index) => {
     const [chapterId, subchapterId] = elem.split('.')
-    const id = `hobbit${chapterId}_${subchapterId}_en`
-    const ru = elem
-    return { id, title: { ru } }
+    const id = `hobbit${chapterId}_${subchapterId}`
+    const en = elem
+    const ru = headingTranslationArray[index]
+
+    return { id, title: { en, ru } }
   })
-  return heading
+  return { ...bookInfo, heading }
 }
 
-generatePhrasesAndTranscription('../dumyData/hobbit.html', '../dumyData')
+generatePhrasesAndTranscription('../dumyData/hobbit.html', '../content')
 
 console.log('finished')

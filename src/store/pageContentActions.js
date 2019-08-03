@@ -102,3 +102,10 @@ export const setMediaLink = payload => {
     payload
   }
 }
+
+export const setTitle = payload => {
+  return {
+    type: 'SET_TITLE',
+    payload
+  }
+}
