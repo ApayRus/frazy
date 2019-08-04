@@ -1,6 +1,6 @@
 import React from 'react'
 import bookInfo from '../content/GENERATEDheading.js'
-import units from '../content/GENERATEDunits.js'
+import units from '../content/GENERATEDmaterials.js'
 import translations from '../content/GENERATEDtranslations.js'
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
