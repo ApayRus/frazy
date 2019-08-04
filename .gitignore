@@ -13,11 +13,13 @@
 
 src/dumyData/hobbit.html
 src/content
+/src/config
 public/audio
 
 .firebaserc
 firebase.json
 /.firebase
+
 
 # misc
 .DS_Store

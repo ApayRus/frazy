@@ -22,7 +22,7 @@ import fs from 'fs'
 /**
  * gets file of book, with 3 text block types: timing, originalText, translationText
  * makes from each 3 block by ids ti-1_1 + or-1_1 + tr-1_1, 2 objects
- * and writes 2 json files: units and translations
+ * and writes 2 json files: materials and translations
  */
 
 function generatePhrasesAndTranscription(filePathFrom, folderPathTo) {
@@ -31,33 +31,33 @@ function generatePhrasesAndTranscription(filePathFrom, folderPathTo) {
   const headingTextOriginal = $('.chapters.en').text()
   const headingTextTranslation = $('.chapters.ru').text()
 
-  const unitIds = headingToIds(headingTextOriginal)
+  const materialIds = headingToIds(headingTextOriginal)
 
-  const units = {}
+  const materials = {}
   const translations = {}
   const heading = generateHeading(headingTextOriginal, headingTextTranslation)
 
   const headingOriginalArray = headingTextOriginal.trim().split('\n')
   const headingTranslationArray = headingTextTranslation.trim().split('\n')
 
-  unitIds.forEach((unitId, index) => {
-    const timingText = $(`#ti-${unitId}`).text()
-    const originalText = $(`#or-${unitId}`).text()
-    const translationText = $(`#tr-${unitId}`).text()
+  materialIds.forEach((materialId, index) => {
+    const timingText = $(`#ti-${materialId}`).text()
+    const originalText = $(`#or-${materialId}`).text()
+    const translationText = $(`#tr-${materialId}`).text()
 
     const title = headingOriginalArray[index]
     const titleTranslation = headingTranslationArray[index]
 
-    const unitInfo = {
-      id: `hobbit${unitId}`,
+    const materialInfo = {
       title,
-      mediaLink: `../audio/hobbit${unitId}.mp3`,
+      unit: 'hobbit',
+      mediaLink: `gs://frazy-7d371.appspot.com/hobbit/hobbit${materialId}.mp3`,
       lang: 'en'
     }
 
     const translationInfo = {
-      id: `hobbit${unitId}_ru`,
-      for: `hobbit${unitId}`,
+      id: `hobbit${materialId}_ru`,
+      for: `hobbit${materialId}`,
       lang: 'ru',
       title: titleTranslation
     }
@@ -66,16 +66,16 @@ function generatePhrasesAndTranscription(filePathFrom, folderPathTo) {
     const translationPhrases = writePhrasesWithText(phrases, translationText, 'translation')
     phrases = writePhrasesWithText(phrases, originalText, 'original')
 
-    const unit = { ...unitInfo, phrases }
-    units[`hobbit${unitId}`] = unit
+    const material = { ...materialInfo, phrases }
+    materials[`hobbit${materialId}`] = material
 
     const translation = { ...translationInfo, phrases: translationPhrases }
-    translations[`hobbit${unitId}_ru`] = translation
+    translations[`hobbit${materialId}_ru`] = translation
   })
 
   fs.writeFileSync(
-    `${folderPathTo}/GENERATEDunits.js`,
-    'export default ' + JSON.stringify(units),
+    `${folderPathTo}/GENERATEDmaterials.js`,
+    'export default ' + JSON.stringify(materials),
     'utf-8'
   )
   fs.writeFileSync(
@@ -97,12 +97,12 @@ function generatePhrasesAndTranscription(filePathFrom, folderPathTo) {
  */
 function headingToIds(heading) {
   const headingArray = heading.trim().split('\n')
-  const unitIds = headingArray.map(elem => {
+  const materialIds = headingArray.map(elem => {
     const [chapterId, subchapterId] = elem.split('.')
     return `${chapterId}_${subchapterId}`
   })
 
-  return unitIds
+  return materialIds
 }
 
 function generateHeading(headingOriginalText, headingTranslationText) {
@@ -123,6 +123,6 @@ function generateHeading(headingOriginalText, headingTranslationText) {
   return { ...bookInfo, heading }
 }
 
-generatePhrasesAndTranscription('../dumyData/hobbit.html', '../content')
+generatePhrasesAndTranscription('../dumyData/hobbit.html', '../dumyData')
 
 console.log('finished')
