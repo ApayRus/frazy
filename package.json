@@ -6,12 +6,15 @@
   "dependencies": {
     "@material-ui/core": "^4.2.1",
     "@material-ui/icons": "^4.2.1",
+    "firebase": "^6.3.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
+    "react-redux-firebase": "^3.0.0-alpha.14",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux": "^4.0.4",
+    "redux-firestore": "^0.8.0",
     "wavesurfer.js": "^3.0.0"
   },
   "scripts": {
