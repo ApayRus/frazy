@@ -6,21 +6,18 @@ import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../wavesurfer/wavesurfer'
-
 import { setPlayerState } from '../store/playerStateActions'
-import { Typography } from '@material-ui/core'
+import { Typography, CircularProgress } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' }
 }))
 
-function UnitPage(props) {
+function MaterialPage(props) {
   const classes = useStyles()
 
   const {
-    title,
-    phrasesArray,
-    mediaLink,
+    //from Redux
     currentPhraseId,
     dictationCurrentRepeat,
     dictationTimerId, // >0 then dictation is playing
@@ -28,7 +25,11 @@ function UnitPage(props) {
     dictationRepeats,
     setPlayerState,
     showSlideshow,
-    showWaveform
+    showWaveform,
+    //from HOC
+    phrasesArray,
+    mediaLink,
+    title
   } = props
 
   const currentPhraseNum = phrasesArray.findIndex(elem => elem.id === currentPhraseId)
@@ -122,47 +123,44 @@ function UnitPage(props) {
     dictationTimerId,
     dictationDelay
   }
+
   const waveformProps = { mediaLink, phrasesArray, readOnly: true }
 
   return (
     <div>
+      <div style={{ margin: 20 }}>
+        <Typography variant='h5'>{title.en}</Typography>
+        <Typography variant='subtitle1'>{title.ru}</Typography>
+      </div>
       {mediaLink ? (
-        <div>
-          <div className={showWaveform ? '' : classes.hidden}>
-            <Waveform {...waveformProps} />
-          </div>
-          <div className={showSlideshow ? '' : classes.hidden}>
-            <PlayerSlideShow {...playerSlideShowProps} />
-            <PlayerControls {...playerControlsProps} />
-          </div>
-          <Typography variant='h5'>{title.en}</Typography>
-          <Typography variant='subtitle1'>{title.ru}</Typography>
-          <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
+        <div className={showWaveform ? '' : classes.hidden}>
+          <Waveform {...waveformProps} />
         </div>
       ) : (
-        <div style={{ marginTop: 200 }}>
-          {phrasesArray.length ? '' : <p>Select chapter from heading menu</p>}
-        </div>
+        <CircularProgress />
       )}
+      <div className={showSlideshow ? '' : classes.hidden}>
+        <PlayerSlideShow {...playerSlideShowProps} />
+        <PlayerControls {...playerControlsProps} />
+      </div>
+      <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
     </div>
   )
 }
 
 const mapStateToProps = state => {
-  const { title, phrasesArray, mediaLink } = state.pageContent
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
+  const { mediaLink } = state.pageContent
   return {
-    title,
-    phrasesArray,
-    mediaLink,
     currentPhraseId,
     dictationCurrentRepeat,
     dictationTimerId,
     dictationRepeats,
     dictationDelay,
     showWaveform,
-    showSlideshow
+    showSlideshow,
+    mediaLink
   }
 }
 
@@ -175,4 +173,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UnitPage)
+)(MaterialPage)
