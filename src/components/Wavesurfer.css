@@ -6,6 +6,10 @@ region.wavesurfer-region:before {
   left: 1px;
   color: rgb(71, 71, 71);
 }
+
+.waveform {
+  margin-bottom: 10px;
+}
 /* for translation 
 region.wavesurfer-region:after {
   content: attr(data-region-label);

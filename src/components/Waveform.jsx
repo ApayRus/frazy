@@ -34,7 +34,7 @@ export class Waveform extends Component {
   render() {
     const { isReady } = this.state
     return (
-      <div>
+      <div className='waveform'>
         {isReady ? '' : <CircularProgress />}
         <div style={isReady ? {} : { visibility: 'hidden' }}>
           <div ref={el => (this.waveformElem = el)} />
