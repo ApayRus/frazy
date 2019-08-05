@@ -14,6 +14,8 @@ export class Waveform extends Component {
   componentDidMount() {
     const { phrasesArray, mediaLink, readOnly } = this.props
 
+    // console.log('mediaLink3', mediaLink)
+
     wavesurferModule.wavesurfer = wavesurferModule.init(
       this.waveformElem,
       this.timelineElem,
@@ -29,6 +31,7 @@ export class Waveform extends Component {
 
   componentWillUnmount() {
     wavesurferModule.wavesurfer.destroy()
+    // console.log('Waveform unmounted')
   }
 
   render() {

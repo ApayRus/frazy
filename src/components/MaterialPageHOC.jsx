@@ -20,14 +20,19 @@ function MaterialPageHOC(props) {
     const { title: titleTranslation, lang: langTranslation } = translation
     const title = { [langOriginal]: titleOriginal, [langTranslation]: titleTranslation }
 
-    setMediaLink('')
+    // console.log('mediaLink1', mediaLink)
 
     firebase
       .storage()
       .refFromURL(mediaLink)
       .getDownloadURL()
       .then(url => {
-        setMediaLink(url)
+        setMediaLink('')
+
+        setTimeout(() => {
+          setMediaLink(url)
+        }, 1)
+        // console.log('mediaLink2', mediaLink)
       })
 
     const propsMP = {
