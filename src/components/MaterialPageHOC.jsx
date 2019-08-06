@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import { joinPhrasesAndTranslations } from '../utils/joinPhrasesAndTranslations'
+import { joinTitle } from '../utils/joinTitle'
 import MaterialPage from './MaterialPage'
 import firebase from '../firebase/firebase'
 import { setMediaLink } from '../store/pageContentActions'
@@ -12,19 +13,20 @@ import { setMediaLink } from '../store/pageContentActions'
  * @param {} props
  */
 function MaterialPageHOC(props) {
-  const { material, translation, setMediaLink } = props
+  const { setMediaLink, materialInfo, materialPhrases, translationInfo, translationPhrases } = props
 
-  if (isLoaded(material, translation)) {
-    const phrasesArray = joinPhrasesAndTranslations(material, translation)
-    const { title: titleOriginal, mediaLink, lang: langOriginal } = material
-    const { title: titleTranslation, lang: langTranslation } = translation
-    const title = { [langOriginal]: titleOriginal, [langTranslation]: titleTranslation }
+  if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
+    const { mediaLink } = materialInfo
+    const { lang: trLang } = translationInfo
+
+    const phrasesArray = joinPhrasesAndTranslations(materialPhrases, translationPhrases, trLang)
+    const title = joinTitle(materialInfo, translationInfo)
 
     // console.log('mediaLink1', mediaLink)
 
     firebase
       .storage()
-      .refFromURL(mediaLink)
+      .ref(mediaLink)
       .getDownloadURL()
       .then(url => {
         setMediaLink('')
@@ -47,9 +49,19 @@ function MaterialPageHOC(props) {
 }
 
 const mapStateToProps = state => {
-  const { material, translation } = state.firestore.data
+  const {
+    materialInfo,
+    materialPhrases,
+    translationInfo,
+    translationPhrases
+  } = state.firestore.data
 
-  return { material, translation }
+  return {
+    materialInfo,
+    materialPhrases,
+    translationInfo,
+    translationPhrases
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -66,8 +78,10 @@ export default compose(
   firestoreConnect(props => {
     const { materialId } = props.match.params
     return [
-      { collection: 'materials', doc: materialId, storeAs: 'material' },
-      { collection: 'translations', doc: `${materialId}_ru`, storeAs: 'translation' }
+      { collection: 'materialInfo', doc: materialId, storeAs: 'materialInfo' },
+      { collection: 'materialPhrases', doc: materialId, storeAs: 'materialPhrases' },
+      { collection: 'translationInfo', doc: `${materialId}_ru`, storeAs: 'translationInfo' },
+      { collection: 'translationPhrases', doc: `${materialId}_ru`, storeAs: 'translationPhrases' }
       // { collection: "applications", where: [["tournamentId", "==", tournamentId]] }
     ]
   })
