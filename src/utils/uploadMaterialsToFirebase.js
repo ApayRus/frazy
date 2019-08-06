@@ -5,27 +5,10 @@
 import admin from 'firebase-admin'
 import firebaseConfig from '../config/firebaseConfig.js'
 import serviceAccount from '../config/firebaseAdminKey.json'
-/**
-firebaseAdminKey.json is given by Firebase, on the project console: Project Overview --> Permissions --> Service accounts
-and  it should be replaced to .json. 
-{
-  "type": "***",
-  "project_id": "***",
-  "private_key_id": "****",
-  "private_key": "***",
-  "client_email": "****",
-  "client_id": "***",
-  "auth_uri": "***",
-  "token_uri": "***",
-  "auth_provider_x509_cert_url": "***",
-  "client_x509_cert_url": "***"
-}
-*/
 
-/* import materials from '../dumyData/GENERATEDmaterials.js'
-const collection = 'materials' */
-import materials from '../dumyData/GENERATEDtranslations.js'
-const collection = 'translations'
+// import materials from '../content/GENERATEDmaterials.js'
+
+import materials from '../content/GENERATEDtranslations.js'
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -34,12 +17,34 @@ admin.initializeApp({
 
 const db = admin.firestore()
 
+// const collection1 = 'materialInfo'
+// const collection2 = 'materialPhrases'
+
+const collection1 = 'translationInfo'
+const collection2 = 'translationPhrases'
+
 for (let key in materials) {
   console.log('key', key)
+
   const materialId = key
   const material = materials[materialId]
-  db.doc(`${collection}/${materialId}`)
-    .set(material)
+
+  // const { title, unit, mediaLink, lang } = material
+  const { title, lang } = material //and "for"
+
+  const { phrases } = material
+
+  const materialInfo = { title, lang, for: material['for'] }
+
+  const materialPhrases = phrases
+
+  db.doc(`${collection1}/${materialId}`)
+    .set(materialInfo)
+    .then(snapshot => console.log(snapshot))
+    .catch(error => console.log('error', error))
+
+  db.doc(`${collection2}/${materialId}`)
+    .set(materialPhrases)
     .then(snapshot => console.log(snapshot))
     .catch(error => console.log('error', error))
 }
