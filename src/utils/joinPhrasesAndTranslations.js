@@ -16,9 +16,7 @@ import { map, orderBy } from 'lodash'
   }
  */
 
-export function joinPhrasesAndTranslations(unit, translation) {
-  const { phrases: orPhrases } = unit //original phrases
-  const { phrases: trPhrases, lang: trLang } = translation
+export function joinPhrasesAndTranslations(orPhrases, trPhrases, trLang) {
   //convert phrases object to array of objects, and external keys put inside to "id"
   let phrasesArray = map(orPhrases, (elem, key) => {
     const tr = trPhrases[key]
