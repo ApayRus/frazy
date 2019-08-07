@@ -1,26 +1,13 @@
 const initState = {
-  unit: {},
-  unitTranslations: {}, //{ ru: {}, es: {}, ch: {} }
-  phrasesArray: []
+  title: {}, //{ en: {}, es: {}, ch: {} }
+  phrases: []
 }
 
 const pageContentReducer = (state = initState, action) => {
   switch (action.type) {
-    case 'SET_UNIT_CONTENT': {
-      return { ...state, unit: action.payload }
-    }
-    case 'SET_UNIT_TRANSLATION': {
-      const newTranslation = { ...state.unitTranslations, [action.payload.lang]: action.payload }
-      return { ...state, unitTranslations: newTranslation }
-    }
-    case 'SET_PHRASES_ARRAY': {
-      return { ...state, phrasesArray: action.payload }
-    }
-    case 'SET_MEDIA_LINK': {
-      return { ...state, mediaLink: action.payload }
-    }
-    case 'SET_TITLE': {
-      return { ...state, title: action.payload }
+    case 'SET_PAGE_PARAMETER': {
+      const [key, value] = action.payload // ['mediaLink', "hobbit/hobbit1_1.mp3"]
+      return { ...state, [key]: value }
     }
     default:
       return state
