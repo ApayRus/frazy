@@ -4,7 +4,7 @@ import Heading from './Heading'
 import { connect } from 'react-redux'
 import { toggleHeadingDrawer } from '../store/appStateActions'
 
-function DrawerHeading(props) {
+function HeadingDrawerHOC(props) {
   const { showHeadingDrawer, toggleHeadingDrawer } = props
 
   return (
@@ -38,4 +38,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DrawerHeading)
+)(HeadingDrawerHOC)
