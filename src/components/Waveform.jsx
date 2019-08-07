@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './Wavesurfer.css'
 import { CircularProgress } from '@material-ui/core'
 import wavesurferModule from '../wavesurfer/wavesurfer'
@@ -12,7 +13,7 @@ export class Waveform extends Component {
   }
 
   componentDidMount() {
-    const { phrasesArray, mediaLink, readOnly } = this.props
+    const { phrases, mediaLink, readOnly } = this.props
 
     // console.log('mediaLink3', mediaLink)
 
@@ -20,7 +21,7 @@ export class Waveform extends Component {
       this.waveformElem,
       this.timelineElem,
       mediaLink,
-      phrasesArray,
+      phrases,
       readOnly
     )
 
@@ -48,4 +49,9 @@ export class Waveform extends Component {
   }
 }
 
-export default Waveform
+const mapStateToProps = state => {
+  const { mediaLink, phrases } = state.pageContent
+  return { mediaLink, phrases }
+}
+
+export default connect(mapStateToProps)(Waveform)

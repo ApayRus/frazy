@@ -6,7 +6,7 @@ import { joinPhrasesAndTranslations } from '../utils/joinPhrasesAndTranslations'
 import { joinTitle } from '../utils/joinTitle'
 import MaterialPage from './MaterialPage'
 import firebase from '../firebase/firebase'
-import { setMediaLink } from '../store/pageContentActions'
+import { setPageParameter } from '../store/pageContentActions'
 import { setMenuParameter } from '../store/menuActions'
 
 /**
@@ -15,42 +15,38 @@ import { setMenuParameter } from '../store/menuActions'
  */
 function MaterialPageHOC(props) {
   const {
-    setMediaLink,
     materialInfo,
     materialPhrases,
     translationInfo,
     translationPhrases,
-    setMenuParameter
+    setMenuParameter,
+    setPageParameter
   } = props
 
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     const { mediaLink, unit } = materialInfo
     const { lang: trLang } = translationInfo
 
-    const phrasesArray = joinPhrasesAndTranslations(materialPhrases, translationPhrases, trLang)
+    const phrases = joinPhrasesAndTranslations(materialPhrases, translationPhrases, trLang)
     const title = joinTitle(materialInfo, translationInfo)
     setMenuParameter(['unit', unit])
-    // console.log('mediaLink1', mediaLink)
+    setPageParameter(['title', title])
+    setPageParameter(['phrases', phrases])
 
     firebase
       .storage()
       .ref(mediaLink)
       .getDownloadURL()
       .then(url => {
-        setMediaLink('')
+        setPageParameter(['mediaLink', ''])
 
         setTimeout(() => {
-          setMediaLink(url)
+          setPageParameter(['mediaLink', url])
         }, 1)
         // console.log('mediaLink2', mediaLink)
       })
 
-    const propsMP = {
-      phrasesArray,
-      title
-    }
-
-    return <MaterialPage {...propsMP} />
+    return <MaterialPage />
   } else {
     return <div>loading</div>
   }
@@ -74,7 +70,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setMediaLink: payload => dispatch(setMediaLink(payload)),
+    setPageParameter: payload => dispatch(setPageParameter(payload)),
     setMenuParameter: payload => dispatch(setMenuParameter(payload))
   }
 }

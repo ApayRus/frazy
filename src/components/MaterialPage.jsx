@@ -19,22 +19,19 @@ function MaterialPage(props) {
   const classes = useStyles()
 
   const {
-    //from Redux
     currentPhraseId,
-    dictationCurrentRepeat,
     dictationTimerId, // >0 then dictation is playing
     dictationDelay,
     dictationRepeats,
     setPlayerState,
     showSlideshow,
     showWaveform,
-    //from HOC
-    phrasesArray,
+    phrases,
     mediaLink,
     title
   } = props
 
-  const currentPhraseNum = phrasesArray.findIndex(elem => elem.id === currentPhraseId)
+  const currentPhraseNum = phrases.findIndex(elem => elem.id === currentPhraseId)
 
   const play = () => {
     wavesurferModule.wavesurfer.play()
@@ -56,12 +53,12 @@ function MaterialPage(props) {
   }
 
   const playNext = () => {
-    const { id: nextId } = phrasesArray[currentPhraseNum + 1]
+    const { id: nextId } = phrases[currentPhraseNum + 1]
     playPhrase(nextId)()
   }
 
   const playPrev = () => {
-    const { id: prevId } = phrasesArray[currentPhraseNum - 1]
+    const { id: prevId } = phrases[currentPhraseNum - 1]
     playPhrase(prevId)()
   }
 
@@ -73,8 +70,8 @@ function MaterialPage(props) {
    * @returns {array} repeats - array of setTimeout
    */
   const playPhraseNtimesWithXDelay = (currentRepeatNum, phraseNum, repeatCount, delayX) => {
-    if (phraseNum === phrasesArray.length) return
-    const phrase = phrasesArray[phraseNum]
+    if (phraseNum === phrases.length) return
+    const phrase = phrases[phraseNum]
     const { id, start, end } = phrase
     const phraseLength = end - start
     const delaySeconds = phraseLength * delayX
@@ -113,20 +110,8 @@ function MaterialPage(props) {
     playPhrase,
     playNext,
     playPrev,
-    playDictation,
-    dictationTimerId
+    playDictation
   }
-
-  const playerSlideShowProps = {
-    currentPhraseNum,
-    phrasesArray,
-    dictationCurrentRepeat,
-    dictationRepeats,
-    dictationTimerId,
-    dictationDelay
-  }
-
-  const waveformProps = { mediaLink, phrasesArray, readOnly: true }
 
   return (
     <div>
@@ -136,16 +121,16 @@ function MaterialPage(props) {
       </div>
       {mediaLink ? (
         <div className={showWaveform ? '' : classes.hidden}>
-          <Waveform {...waveformProps} />
+          <Waveform readOnly />
         </div>
       ) : (
         <CircularProgress />
       )}
       <div className={showSlideshow ? '' : classes.hidden}>
-        <PlayerSlideShow {...playerSlideShowProps} />
+        <PlayerSlideShow currentPhraseNum={currentPhraseNum} />
         <PlayerControls {...playerControlsProps} />
       </div>
-      <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
+      <Phrases playPhrase={playPhrase} />
       <HeadingFirebaseHOC />
     </div>
   )
@@ -154,7 +139,7 @@ function MaterialPage(props) {
 const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
-  const { mediaLink } = state.pageContent
+  const { mediaLink, phrases, title } = state.pageContent
   return {
     currentPhraseId,
     dictationCurrentRepeat,
@@ -163,15 +148,15 @@ const mapStateToProps = state => {
     dictationDelay,
     showWaveform,
     showSlideshow,
-    mediaLink
+    mediaLink,
+    phrases,
+    title
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setPlayerState: payload => dispatch(setPlayerState(payload))
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  setPlayerState: payload => dispatch(setPlayerState(payload))
+})
 
 export default connect(
   mapStateToProps,

@@ -52,10 +52,9 @@ function PlayerControls(props) {
 }
 
 const mapStateToProps = state => {
-  return {
-    isPlay: state.playerState.play,
-    currentPhraseId: state.playerState.currentPhraseId
-  }
+  const { play: isPlay, currentPhraseId, dictationTimerId } = state.playerState
+
+  return { isPlay, currentPhraseId, dictationTimerId }
 }
 
 export default connect(mapStateToProps)(PlayerControls)

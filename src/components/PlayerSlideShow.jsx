@@ -33,7 +33,7 @@ function PlayerSlideShow(props) {
   const classes = useStyles()
   const {
     currentPhraseNum,
-    phrasesArray,
+    phrases,
     dictationCurrentRepeat,
     dictationRepeats,
     dictationTimerId,
@@ -41,8 +41,8 @@ function PlayerSlideShow(props) {
     showOriginalText,
     showTranslation
   } = props
-  const currentPhrase = phrasesArray[currentPhraseNum]
-  const phrasesCount = phrasesArray.length
+  const currentPhrase = phrases[currentPhraseNum]
+  const phrasesCount = phrases.length
 
   return (
     <Paper className={classes.root}>
@@ -70,9 +70,27 @@ function PlayerSlideShow(props) {
   )
 }
 
-const mapStateToProps = state => ({
-  showTranslation: state.playerSettings.showTranslation,
-  showOriginalText: state.playerSettings.showOriginalText
-})
+const mapStateToProps = state => {
+  const {
+    showTranslation,
+    showOriginalText,
+    dictationDelay,
+    dictationRepeats
+  } = state.playerSettings
+
+  const { dictationTimerId, dictationCurrentRepeat } = state.playerState
+
+  const { phrases } = state.pageContent
+
+  return {
+    showTranslation,
+    showOriginalText,
+    phrases,
+    dictationDelay,
+    dictationRepeats,
+    dictationTimerId,
+    dictationCurrentRepeat
+  }
+}
 
 export default connect(mapStateToProps)(PlayerSlideShow)

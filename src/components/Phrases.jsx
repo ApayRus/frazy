@@ -7,11 +7,11 @@ import { ButtonBase, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
 
 function Phrases(props) {
-  const { phrasesArray, playPhrase, currentPhraseId, showOriginalText, showTranslation } = props
+  const { phrases, playPhrase, currentPhraseId, showOriginalText, showTranslation } = props
 
   return (
     <div className='phrases'>
-      {phrasesArray.map((phrase, index) => {
+      {phrases.map((phrase, index) => {
         return (
           <ButtonBase
             style={{ display: 'block', width: '100%' }}
@@ -44,7 +44,8 @@ const mapStateToProps = state => {
   return {
     currentPhraseId: state.playerState.currentPhraseId,
     showTranslation: state.playerSettings.showTranslation,
-    showOriginalText: state.playerSettings.showOriginalText
+    showOriginalText: state.playerSettings.showOriginalText,
+    phrases: state.pageContent.phrases
   }
 }
 
