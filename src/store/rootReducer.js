@@ -3,6 +3,7 @@ import appStateReducer from './appStateReducer'
 import playerSettingsReducer from './playerSettingsReducer'
 import playerStateReducer from './playerStateReducer'
 import pageContentReducer from './pageContentReducer'
+import menuReducer from './menuReducer'
 import { firebaseReducer } from 'react-redux-firebase'
 import { firestoreReducer } from 'redux-firestore'
 
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   appState: appStateReducer,
   playerSettings: playerSettingsReducer,
   playerState: playerStateReducer,
-  pageContent: pageContentReducer
+  pageContent: pageContentReducer,
+  menu: menuReducer
 })
 
 const initialState = {}
