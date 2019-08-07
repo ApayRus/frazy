@@ -8,8 +8,6 @@ import store from './store/rootReducer'
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase'
 import { rrfProps } from './firebase/reactReduxFirebase'
 
-console.log('rrfProps', rrfProps)
-
 ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
