@@ -7,21 +7,29 @@ import { joinTitle } from '../utils/joinTitle'
 import MaterialPage from './MaterialPage'
 import firebase from '../firebase/firebase'
 import { setMediaLink } from '../store/pageContentActions'
+import { setMenuParameter } from '../store/menuActions'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
  * @param {} props
  */
 function MaterialPageHOC(props) {
-  const { setMediaLink, materialInfo, materialPhrases, translationInfo, translationPhrases } = props
+  const {
+    setMediaLink,
+    materialInfo,
+    materialPhrases,
+    translationInfo,
+    translationPhrases,
+    setMenuParameter
+  } = props
 
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
-    const { mediaLink } = materialInfo
+    const { mediaLink, unit } = materialInfo
     const { lang: trLang } = translationInfo
 
     const phrasesArray = joinPhrasesAndTranslations(materialPhrases, translationPhrases, trLang)
     const title = joinTitle(materialInfo, translationInfo)
-
+    setMenuParameter(['unit', unit])
     // console.log('mediaLink1', mediaLink)
 
     firebase
@@ -66,7 +74,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setMediaLink: payload => dispatch(setMediaLink(payload))
+    setMediaLink: payload => dispatch(setMediaLink(payload)),
+    setMenuParameter: payload => dispatch(setMenuParameter(payload))
   }
 }
 

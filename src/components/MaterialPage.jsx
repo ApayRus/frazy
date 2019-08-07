@@ -2,6 +2,8 @@ import React from 'react'
 import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
 import Waveform from './Waveform'
+import HeadingFirebaseHOC from './HeadingFirebaseHOC'
+
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
@@ -144,6 +146,7 @@ function MaterialPage(props) {
         <PlayerControls {...playerControlsProps} />
       </div>
       <Phrases phrasesArray={phrasesArray} playPhrase={playPhrase} />
+      <HeadingFirebaseHOC />
     </div>
   )
 }

@@ -12,12 +12,8 @@ function HeadingDrawerHOC(props) {
       <SwipeableDrawer
         anchor='left'
         open={showHeadingDrawer}
-        onOpen={() => {
-          toggleHeadingDrawer({ showHeadingDrawer: true })
-        }}
-        onClose={() => {
-          toggleHeadingDrawer({ showHeadingDrawer: false })
-        }}
+        onOpen={() => toggleHeadingDrawer({ showHeadingDrawer: true })}
+        onClose={() => toggleHeadingDrawer({ showHeadingDrawer: false })}
       >
         <Heading />
       </SwipeableDrawer>

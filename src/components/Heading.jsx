@@ -1,31 +1,31 @@
 import React from 'react'
-import bookInfo from '../content/GENERATEDheading.js'
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { toggleHeadingDrawer } from '../store/appStateActions'
 import { Link } from 'react-router-dom'
-
-const useStyles = makeStyles(theme => ({
-  header: {
-    textAlign: 'center',
-    padding: 20,
-    background: 'url("../img/menu-background.jpg")'
-  },
-  listItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    fontSize: '12px',
-    lineHeight: 1
-  }
-}))
+import orderBy from 'lodash/orderBy'
 
 function Heading(props) {
   const { toggleHeadingDrawer } = props
+  const { title, author, heading, logo, background } = props
+  const headingOrdered = orderBy(heading, ['order'], ['asc'])
+
+  const useStyles = makeStyles(theme => ({
+    header: {
+      textAlign: 'center',
+      padding: 20,
+      background: `url(${background})`
+    },
+    listItem: {
+      paddingTop: 0,
+      paddingBottom: 0,
+      fontSize: '12px',
+      lineHeight: 1
+    }
+  }))
+
   const classes = useStyles()
-  const heading = bookInfo.heading
-  const bookTitle = bookInfo.title.ru
-  const bookAuthor = bookInfo.author.ru
 
   const handleClick = () => {
     toggleHeadingDrawer({ showHeadingDrawer: false })
@@ -34,13 +34,12 @@ function Heading(props) {
   return (
     <div>
       <div className={classes.header}>
-        <Typography variant='h6'>{bookTitle}</Typography>
-        <Typography variant='subtitle1'>{bookAuthor}</Typography>
-        <img alt={bookTitle} src='../img/logo.png' />
+        <Typography variant='h6'>{title}</Typography>
+        <Typography variant='subtitle1'>{author}</Typography>
+        <img alt={title} src={logo} />
       </div>
-
       <List>
-        {heading.map(elem => {
+        {headingOrdered.map(elem => {
           return (
             <ListItem
               component={Link}
@@ -51,7 +50,7 @@ function Heading(props) {
               onClick={handleClick}
               key={`heading-${elem.id}`}
             >
-              <ListItemText primary={elem.title.en} secondary={elem.title.ru} />
+              <ListItemText primary={elem.title} /* secondary={elem.title.ru} */ />
             </ListItem>
           )
         })}
@@ -60,13 +59,16 @@ function Heading(props) {
   )
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload))
-  }
+const mapStateToProps = state => {
+  const { title, author, heading, logo, background } = state.menu
+  return { title, author, heading, logo, background }
 }
 
+const mapDispatchToProps = dispatch => ({
+  toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload))
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Heading)
