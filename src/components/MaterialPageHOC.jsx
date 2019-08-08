@@ -24,7 +24,7 @@ function MaterialPageHOC(props) {
   } = props
 
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
-    const { mediaLink, unit } = materialInfo
+    const { mediaLink, unit, lang } = materialInfo
     let phrases = materialPhrases
     let title = { text: materialInfo.title }
 
@@ -34,6 +34,7 @@ function MaterialPageHOC(props) {
 
     setMenuParameter(['unit', unit])
     setPageParameter(['title', title])
+    setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
 
     firebase
