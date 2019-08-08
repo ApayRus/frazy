@@ -49,7 +49,7 @@ function PlayerSlideShow(props) {
       {currentPhrase ? (
         <div>
           {showOriginalText ? <Typography variant='body1'>{currentPhrase.text}</Typography> : null}
-          {showTranslation ? (
+          {showTranslation && currentPhrase.translations ? (
             <Typography variant='body2' color='textSecondary'>
               {currentPhrase.translations.ru}
             </Typography>

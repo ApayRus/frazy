@@ -25,10 +25,13 @@ function MaterialPageHOC(props) {
 
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     const { mediaLink, unit } = materialInfo
-    const { lang: trLang } = translationInfo
+    let phrases = materialPhrases
+    let title = { text: materialInfo.title }
 
-    const phrases = joinPhrasesAndTranslations(materialPhrases, translationPhrases, trLang)
-    const title = joinTitle(materialInfo, translationInfo)
+    phrases = joinPhrasesAndTranslations(materialPhrases, translationPhrases, translationInfo)
+
+    title = joinTitle(materialInfo, translationInfo)
+
     setMenuParameter(['unit', unit])
     setPageParameter(['title', title])
     setPageParameter(['phrases', phrases])

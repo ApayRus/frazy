@@ -16,19 +16,33 @@ import { map, orderBy } from 'lodash'
   }
  */
 
-export function joinPhrasesAndTranslations(orPhrases, trPhrases, trLang) {
+export function joinPhrasesAndTranslations(orPhrases, trPhrases, translationInfo) {
   //convert phrases object to array of objects, and external keys put inside to "id"
-  let phrasesArray = map(orPhrases, (elem, key) => {
-    const tr = trPhrases[key]
-    const transl = tr ? tr.text : ''
-    return {
-      ...elem,
-      id: key,
-      attributes: { label: elem.text },
-      color: randomColor(0.5),
-      translations: { [trLang]: transl }
-    }
-  })
+  let phrasesArray = []
+
+  if (translationInfo) {
+    const { lang: trLang } = translationInfo
+    phrasesArray = map(orPhrases, (elem, key) => {
+      const tr = trPhrases[key]
+      const transl = tr ? tr.text : ''
+      return {
+        ...elem,
+        id: key,
+        attributes: { label: elem.text },
+        color: randomColor(0.5),
+        translations: { [trLang]: transl }
+      }
+    })
+  } else {
+    phrasesArray = map(orPhrases, (elem, key) => {
+      return {
+        ...elem,
+        id: key,
+        attributes: { label: elem.text },
+        color: randomColor(0.5)
+      }
+    })
+  }
 
   phrasesArray = orderBy(phrasesArray, 'start')
 

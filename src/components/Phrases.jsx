@@ -27,7 +27,7 @@ function Phrases(props) {
                   <Typography variant='body1'>{phrase.text}</Typography>
                 </div>
               ) : null}
-              {showTranslation ? (
+              {showTranslation && phrase.translations ? (
                 <div className='translation ru'>
                   <Typography variant='body2'>{phrase.translations.ru}</Typography>
                 </div>

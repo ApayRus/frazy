@@ -117,7 +117,9 @@ function MaterialPage(props) {
     <div>
       <div style={{ margin: 20 }}>
         <Typography variant='h5'>{title.text}</Typography>
-        <Typography variant='subtitle1'>{title.translations.ru}</Typography>
+        {title.translations ? (
+          <Typography variant='subtitle1'>{title.translations.ru}</Typography>
+        ) : null}
       </div>
       {mediaLink ? (
         <div className={showWaveform ? '' : classes.hidden}>

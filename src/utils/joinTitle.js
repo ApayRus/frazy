@@ -1,7 +1,12 @@
 export function joinTitle(materialInfo, translationInfo) {
+  let title = {}
   const { title: titleOriginal } = materialInfo
-  const { title: titleTranslation, lang: langTranslation } = translationInfo
-  const title = { text: titleOriginal, translations: { [langTranslation]: titleTranslation } }
+  if (translationInfo) {
+    const { title: titleTranslation, lang: langTranslation } = translationInfo
+    title = { text: titleOriginal, translations: { [langTranslation]: titleTranslation } }
+  } else {
+    title = { text: titleOriginal }
+  }
 
   return title
 }
