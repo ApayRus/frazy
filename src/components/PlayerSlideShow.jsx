@@ -48,7 +48,9 @@ function PlayerSlideShow(props) {
     <Paper className={classes.root}>
       {currentPhrase ? (
         <div>
-          {showOriginalText ? <Typography variant='body1'>{currentPhrase.text}</Typography> : null}
+          {showOriginalText ? (
+            <Typography variant='subtitle1'>{currentPhrase.text}</Typography>
+          ) : null}
           {showTranslation && currentPhrase.translations ? (
             <Typography variant='body2' color='textSecondary'>
               {currentPhrase.translations.ru}

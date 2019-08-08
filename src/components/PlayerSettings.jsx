@@ -51,11 +51,11 @@ function PlayerSettings(props) {
 
   return (
     <div style={{ margin: 10 }}>
-      <Typography variant='h6'>
+      <Typography variant='h4'>
         <SettingsIcon style={{ marginTop: 5, fontSize: 17 }} /> {local.playerSettings}
       </Typography>
 
-      <Typography variant='subtitle1'>{local.display}:</Typography>
+      <Typography variant='subtitle2'>{local.display}:</Typography>
       <div className={classes.grid}>
         <Typography variant='body2'>{local.showWaveform}</Typography>
         <Checkbox checked={showWaveform} id='showWaveform' onChange={handleChange} />
@@ -70,7 +70,7 @@ function PlayerSettings(props) {
         <Checkbox checked={showTranslation} id='showTranslation' onChange={handleChange} />
       </div>
 
-      <Typography variant='subtitle1'>{local.playback}:</Typography>
+      <Typography variant='subtitle2'>{local.playback}:</Typography>
 
       <div className={classes.grid}>
         <Typography variant='body2'>{local.volume}</Typography>
@@ -98,7 +98,7 @@ function PlayerSettings(props) {
         />
       </div>
 
-      <Typography variant='subtitle1'>{local.dictation}:</Typography>
+      <Typography variant='subtitle2'>{local.dictation}:</Typography>
       <div className={classes.grid}>
         <Typography variant='body2'>{local.repeats}</Typography>
 

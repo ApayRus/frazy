@@ -118,7 +118,7 @@ function MaterialPage(props) {
       <div style={{ margin: 20 }}>
         <Typography variant='h5'>{title.text}</Typography>
         {title.translations ? (
-          <Typography variant='subtitle1'>{title.translations.ru}</Typography>
+          <Typography variant='subtitle2'>{title.translations.ru}</Typography>
         ) : null}
       </div>
       {mediaLink ? (
