@@ -5,6 +5,7 @@ import './App.css'
 import AppBar from './components/AppBar'
 import UnitPage from './components/UnitPage'
 import MaterialPageHOC from './components/MaterialPageHOC'
+import MaterialAdd from './components/MaterialAdd'
 import DrawerSettings from './components/DrawerSettings'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -51,6 +52,7 @@ function App(props) {
       <MuiThemeProvider theme={theme}>
         <div className='App'>
           <AppBar />
+          <Route path='/materials/add/' component={MaterialAdd} />
           <Route path='/unit/:unitId' component={UnitPage} />
           <Route path='/material/:materialId' component={MaterialPageHOC} />
           <DrawerSettings />
