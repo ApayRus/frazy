@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './Wavesurfer.css'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, Typography } from '@material-ui/core'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 
 export class Waveform extends Component {
@@ -37,9 +37,19 @@ export class Waveform extends Component {
 
   render() {
     const { isReady } = this.state
+    const { waveformRenderProgress } = this.props
     return (
       <div className='waveform'>
-        {isReady ? '' : <CircularProgress />}
+        {isReady ? (
+          ''
+        ) : (
+          <div>
+            <Typography variant='body2' color='textSecondary'>
+              Waveform rendering...
+            </Typography>
+            <CircularProgress value={waveformRenderProgress} variant='static' color='secondary' />
+          </div>
+        )}
         <div style={isReady ? {} : { visibility: 'hidden' }}>
           <div ref={el => (this.waveformElem = el)} />
           <div ref={el => (this.timelineElem = el)} />
@@ -50,8 +60,8 @@ export class Waveform extends Component {
 }
 
 const mapStateToProps = state => {
-  const { mediaLink, phrases } = state.pageContent
-  return { mediaLink, phrases }
+  const { mediaLink, phrases, waveformRenderProgress } = state.pageContent
+  return { mediaLink, phrases, waveformRenderProgress }
 }
 
 export default connect(mapStateToProps)(Waveform)

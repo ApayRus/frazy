@@ -4,6 +4,7 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min'
 
 import store from '../store/rootReducer'
 import { setPlayerState } from '../store/playerStateActions'
+import { setPageParameter } from '../store/pageContentActions'
 
 import soundtouch from './soundtouchFilter'
 
@@ -55,6 +56,9 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   })
   wavesurfer.on('pause', () => {
     store.dispatch(setPlayerState(['play', false]))
+  })
+  wavesurfer.on('loading', progress => {
+    store.dispatch(setPageParameter(['waveformRenderProgress', progress]))
   })
 
   // Time stretcher
