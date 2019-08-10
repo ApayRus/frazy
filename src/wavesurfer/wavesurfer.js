@@ -1,10 +1,11 @@
 import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min'
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min'
-
+import { randomColor } from '../utils/joinPhrasesAndTranslations'
 import store from '../store/rootReducer'
 import { setPlayerState } from '../store/playerStateActions'
 import { setPageParameter } from '../store/pageContentActions'
+import { map, orderBy } from 'lodash'
 
 import soundtouch from './soundtouchFilter'
 
@@ -37,6 +38,8 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
 
   wavesurfer.load(mediaLink)
 
+  console.log('wavesurfer', wavesurfer)
+
   wavesurfer.on('region-click', (region, e) => {
     e.stopPropagation()
     region.play()
@@ -59,6 +62,35 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   })
   wavesurfer.on('loading', progress => {
     store.dispatch(setPageParameter(['waveformRenderProgress', progress]))
+  })
+
+  // edit mode
+  wavesurfer.on('region-update-end', region => {
+    //region.update({ color: randomColor(0.5) })
+    let phrases = map(wavesurfer.regions.list, (elem, key) => {
+      const { start, end, color } = elem
+      const id = key
+      return { id, start, end, color }
+    })
+    phrases = orderBy(phrases, 'start')
+
+    store.dispatch(setPageParameter(['phrases', phrases]))
+  })
+  wavesurfer.on('region-created', region => {
+    region.update({ color: randomColor(0.5) })
+  })
+
+  wavesurfer.on('region-dblclick', region => {
+    region.remove()
+  })
+  wavesurfer.on('region-removed', region => {
+    //region.update({ color: randomColor(0.5) })
+    const phrases = map(wavesurfer.regions.list, (elem, key) => {
+      const { start, end, color } = elem
+      const id = key
+      return { id, start, end, color }
+    })
+    store.dispatch(setPageParameter(['phrases', phrases]))
   })
 
   // Time stretcher
