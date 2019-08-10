@@ -1,6 +1,7 @@
 const initState = {
   title: {}, //{ en: {}, es: {}, ch: {} }
-  phrases: []
+  phrases: [],
+  text: []
 }
 
 const pageContentReducer = (state = initState, action) => {
