@@ -3,7 +3,10 @@ import { Button, CircularProgress, Typography } from '@material-ui/core'
 import Waveform from './Waveform'
 import { connect } from 'react-redux'
 import { setPageParameter } from '../store/pageContentActions'
+import wavesurferModule from '../wavesurfer/wavesurfer'
+
 import firebase from '../firebase/firebase'
+import PhrasesForTextArea from './PhrasesForTextArea'
 
 const Uploader = props => {
   const { mediaLink, uploadProgress, setPageParameter } = props
@@ -32,6 +35,10 @@ const Uploader = props => {
     // console.log('event', event.target.files)
   }
 
+  const playPause = () => {
+    wavesurferModule.wavesurfer.playPause()
+  }
+
   return (
     <div>
       <br />
@@ -58,7 +65,15 @@ const Uploader = props => {
           <CircularProgress value={uploadProgress} variant='static' />
         </div>
       ) : null}
-      {mediaLink ? <Waveform /> : null}
+      {mediaLink ? (
+        <div>
+          <Waveform />
+          <Button onClick={playPause}>Play/Pause </Button>
+        </div>
+      ) : null}
+      <div style={{ textAlign: 'left' }}>
+        <PhrasesForTextArea />
+      </div>
     </div>
   )
 }
