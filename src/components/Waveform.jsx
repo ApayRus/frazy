@@ -13,14 +13,14 @@ export class Waveform extends Component {
   }
 
   componentDidMount() {
-    const { phrases, mediaLink, readOnly } = this.props
+    const { phrases, mediaLinkDownloadUrl, readOnly } = this.props
 
-    // console.log('mediaLink3', mediaLink)
+    // console.log('mediaLinkDownloadUrl3', mediaLinkDownloadUrl)
 
     wavesurferModule.wavesurfer = wavesurferModule.init(
       this.waveformElem,
       this.timelineElem,
-      mediaLink,
+      mediaLinkDownloadUrl,
       phrases,
       readOnly
     )
@@ -60,8 +60,8 @@ export class Waveform extends Component {
 }
 
 const mapStateToProps = state => {
-  const { mediaLink, phrases, waveformRenderProgress } = state.pageContent
-  return { mediaLink, phrases, waveformRenderProgress }
+  const { mediaLinkDownloadUrl, phrases, waveformRenderProgress } = state.pageContent
+  return { mediaLinkDownloadUrl, phrases, waveformRenderProgress }
 }
 
 export default connect(mapStateToProps)(Waveform)

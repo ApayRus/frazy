@@ -36,18 +36,13 @@ function MaterialPageHOC(props) {
     setPageParameter(['title', title])
     setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
-
+    setPageParameter(['mediaLinkDownloadUrl', ''])
     firebase
       .storage()
       .ref(mediaLink)
       .getDownloadURL()
       .then(url => {
-        setPageParameter(['mediaLink', ''])
-
-        setTimeout(() => {
-          setPageParameter(['mediaLink', url])
-        }, 1)
-        // console.log('mediaLink2', mediaLink)
+        setPageParameter(['mediaLinkDownloadUrl', url])
       })
 
     return <MaterialPage />
