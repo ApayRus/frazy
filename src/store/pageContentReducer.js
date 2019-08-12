@@ -1,7 +1,12 @@
 const initState = {
   title: {}, //{ en: {}, es: {}, ch: {} }
   phrases: [],
-  text: []
+  text: [],
+  mediaLink: '', // saved in db, folder/filename.mp3
+  mediaLinkDownloadUrl: '', // current active link, long,  with tokens
+  uploadProgress: -1,
+  downloadProgress: -1,
+  waveformRenderProgress: -1
 }
 
 const pageContentReducer = (state = initState, action) => {
