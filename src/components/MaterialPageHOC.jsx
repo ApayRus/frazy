@@ -22,7 +22,6 @@ function MaterialPageHOC(props) {
     setMenuParameter,
     setPageParameter
   } = props
-  setPageParameter(['mediaLinkDownloadUrl', ''])
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     // const { materialId } = props.match.params
     // console.log('materialId', materialId)
@@ -38,15 +37,13 @@ function MaterialPageHOC(props) {
     setPageParameter(['title', title])
     setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
-
+    setPageParameter(['mediaLinkDownloadUrl', ''])
     firebase
       .storage()
       .ref(mediaLink)
       .getDownloadURL()
       .then(url => {
-        setTimeout(() => {
-          setPageParameter(['mediaLinkDownloadUrl', url])
-        }, 1)
+        setPageParameter(['mediaLinkDownloadUrl', url])
       })
 
     // const MP = React.memo(props => <MaterialPage />)
