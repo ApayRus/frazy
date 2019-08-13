@@ -31,6 +31,8 @@ function MaterialPage(props) {
     title
   } = props
 
+  console.log(mediaLinkDownloadUrl)
+
   const currentPhraseNum = phrases.findIndex(elem => elem.id === currentPhraseId)
 
   const play = () => {

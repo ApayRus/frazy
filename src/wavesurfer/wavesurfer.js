@@ -38,7 +38,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
 
   wavesurfer.load(mediaLink)
 
-  console.log('wavesurfer', wavesurfer)
+  // console.log('wavesurfer', wavesurfer)
 
   wavesurfer.on('region-click', (region, e) => {
     e.stopPropagation()

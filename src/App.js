@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 function App(props) {
   const { lang } = props
   let theme = createMuiTheme()
-  console.log('theme.typography', theme.typography)
+  // console.log('theme.typography', theme.typography)
   const { h5, h6, subtitle1, body1 } = theme.typography
 
   const remChange = (remSize, delta) => {
