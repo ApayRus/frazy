@@ -10,17 +10,16 @@ import wavesurferModule from '../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialInfo'
 import firebase from '../firebase/firebase'
 
-
 import PhrasesForTextArea from './MaterialPhrases'
 
-const Uploader = props => {
+const MaterialForm = props => {
   const { mediaLinkDownloadUrl, uploadProgress } = props
 
   const playPause = () => {
     wavesurferModule.wavesurfer.playPause()
   }
 
-  const wavesurferRegionsToFirestorePhrases = (regions) => {
+  const wavesurferRegionsToFirestorePhrases = regions => {
     // console.log('regions', wavesurferModule.wavesurfer.regions.list)
     // console.log('wavesurfer', wavesurferModule.wavesurfer)
     const phrasesRaw = regions
@@ -45,39 +44,40 @@ const Uploader = props => {
   }
 
   const handleSave = () => {
-    //data for submit 
-    const materialPhrases = wavesurferRegionsToFirestorePhrases(wavesurferModule.wavesurfer.regions.list)
-    const {title, mediaLink, lang, unit, order} = props
-    const materialInfo = {title, mediaLink, lang, unit, order}
+    //data for submit
+    const materialPhrases = wavesurferRegionsToFirestorePhrases(
+      wavesurferModule.wavesurfer.regions.list
+    )
+    const { title, mediaLink, lang, unit, order } = props
+    const materialInfo = { title, mediaLink, lang, unit, order }
 
     const db = firebase.firestore()
 
-    // refs to 2 documents in 2 collections: 
+    // refs to 2 documents in 2 collections:
     const materialInfoDocRef = db.collection(`materialInfo`).doc()
     const materialId = materialInfoDocRef.id
     console.log('materialId', materialId)
     const materialPhrasesDocRef = db.doc(`materialPhrases/${materialId}`)
 
-    //upload promices 
+    //upload promices
     const uploadMaterialInfoTask = materialInfoDocRef.set(materialInfo)
     const uploadMaterialPhrasesTask = materialPhrasesDocRef.set(materialPhrases)
 
-    // responses after upload 
+    // responses after upload
     uploadMaterialInfoTask
-    .then(snapshot => console.log('materialInfo uploaded', snapshot))
-    .catch(error => console.log('error', error))
+      .then(snapshot => console.log('materialInfo uploaded', snapshot))
+      .catch(error => console.log('error', error))
 
     uploadMaterialPhrasesTask
-    .then(snapshot => console.log('materialPhrases uploaded', snapshot))
-    .catch(error => console.log('error', error))
-
+      .then(snapshot => console.log('materialPhrases uploaded', snapshot))
+      .catch(error => console.log('error', error))
   }
 
   return (
     <div style={{ textAlign: 'left', padding: 10, paddingBottom: 50 }}>
       <MaterialInfo />
       {uploadProgress > 0 && uploadProgress < 100 ? (
-        <div style={{textAlign:"center"}}>
+        <div style={{ textAlign: 'center' }}>
           <Typography variant='body2' color='textSecondary'>
             File uploading ...
           </Typography>
@@ -93,17 +93,25 @@ const Uploader = props => {
       <div>
         <PhrasesForTextArea />
       </div>
-      <div style={{textAlign: "right"}}>
-      <Button style={{ margin: 10 }} onClick={handleSave} variant='outlined'>
-        Save <SaveIcon style={{marginLeft: 10}} /> 
-      </Button>
+      <div style={{ textAlign: 'right' }}>
+        <Button style={{ margin: 10 }} onClick={handleSave} variant='outlined'>
+          Save <SaveIcon style={{ marginLeft: 10 }} />
+        </Button>
       </div>
     </div>
   )
 }
 
 const mapStateToProps = state => {
-  const { mediaLinkDownloadUrl, uploadProgress, title, mediaLink, lang, unit, order } = state.pageContent
+  const {
+    mediaLinkDownloadUrl,
+    uploadProgress,
+    title,
+    mediaLink,
+    lang,
+    unit,
+    order
+  } = state.pageContent
   return { mediaLinkDownloadUrl, uploadProgress, title, mediaLink, lang, unit, order }
 }
 
@@ -115,4 +123,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps)(Uploader)
+  mapDispatchToProps
+)(MaterialForm)
