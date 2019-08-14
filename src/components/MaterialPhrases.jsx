@@ -23,11 +23,13 @@ const useStyles = makeStyles(theme => ({
   },
   textarea: {
     resize: 'none',
-    width: '94%',
+    width: '85%',
     whiteSpace: 'nowrap',
     verticalAlign: 'top',
     display: 'inline-block',
-    overflowX: 'scroll'
+    overflowX: 'scroll', 
+    fontSize: 13, 
+    lineHeight: "15px",
   },
   phrases: {
     verticalAlign: 'top',
@@ -47,12 +49,9 @@ function Phrases(props) {
     setPageParameter(['text', newText])
     phrases.forEach((elem, index) => {
       const { id } = elem
-      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label: newText[index] } })
+      const label = newText[index] || ''
+      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label } })
     })
-  }
-
-  const handleJoin = () => {
-    console.log(text)
   }
 
   const playPhrase = id => event => {
@@ -82,11 +81,6 @@ function Phrases(props) {
         })}
       </div>
       <textarea onChange={handleTextChanged} rows={phrases.length} className={classes.textarea} />
-
-      <br />
-      <Button style={{ margin: '10px 40px' }} onClick={handleJoin} variant='outlined'>
-        Join timing and text
-      </Button>
     </div>
   )
 }
