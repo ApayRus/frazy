@@ -1,5 +1,8 @@
 const initState = {
   title: {}, //{ en: {}, es: {}, ch: {} }
+  lang: "", 
+  unit: "", 
+  order: "",
   phrases: [],
   text: [],
   mediaLink: '', // saved in db, folder/filename.mp3
