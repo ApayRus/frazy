@@ -9,29 +9,39 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginRight: 10,
     marginBottom: 20
-  },
-  materialInfo: {
-    marginLeft: 40
   }
 }))
 
 function MaterialInfo(props) {
   const classes = useStyles()
+  const { setPageParameter } = props
+
+  const handleChange = event => {
+    const { id, value } = event.target
+    setPageParameter([id, value])
+  }
+
   return (
-    <div className={classes.materialInfo}>
+    <div>
       <div>
-        <TextField className={classes.textField} fullWidth id='title' label='Title'>
+        <TextField
+          onChange={handleChange}
+          className={classes.textField}
+          fullWidth
+          id='title'
+          label='Title'
+        >
           Title
         </TextField>
       </div>
       <MediaAddDeleteButton />
-      <TextField className={classes.textField} id='lang' label='Lang'>
+      <TextField onChange={handleChange} className={classes.textField} id='lang' label='Lang'>
         Lang
       </TextField>
-      <TextField className={classes.textField} id='unit' label='Unit'>
+      <TextField onChange={handleChange} className={classes.textField} id='unit' label='Unit'>
         Unit
       </TextField>
-      <TextField className={classes.textField} id='order' label='Order'>
+      <TextField onChange={handleChange} className={classes.textField} id='order' label='Order'>
         Order
       </TextField>
     </div>
