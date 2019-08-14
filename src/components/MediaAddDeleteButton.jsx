@@ -3,7 +3,7 @@
  * displays Upload button , or link + Delete
  */
 import React from 'react'
-import { Button, Typography, TextField, IconButton, CircularProgress } from '@material-ui/core'
+import { Button, TextField, IconButton, CircularProgress } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { setPageParameter } from '../store/pageContentActions'
 import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
@@ -92,10 +92,10 @@ const MediaAddDeleteButton = props => {
 
   const MediaExists = () => (
     <div style={{ marginRight: 10 }}>
+      <TextField label='media' disabled defaultValue={mediaLink} color='textSecondary' />
       <IconButton onClick={handleFileDelete}>
         <DeleteIcon />
       </IconButton>
-      <TextField label='media' disabled defaultValue={mediaLink} color='textSecondary' />
     </div>
   )
 

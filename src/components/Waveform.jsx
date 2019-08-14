@@ -43,7 +43,7 @@ export class Waveform extends Component {
         {isReady ? (
           ''
         ) : (
-          <div>
+          <div style={{textAlign:"center"}}>
             <Typography variant='body2' color='textSecondary'>
               Waveform rendering...
             </Typography>
