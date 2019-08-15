@@ -12,32 +12,37 @@ import HeadingDrawerHOC from './HeadingDrawerHOC'
  * @param {} props
  */
 function HeadingFirebaseHOC(props) {
-  const { unitInfo, heading, setMenuParameter } = props
+  const { unitInfo, heading, setMenuParameter, unit } = props
 
   if (isLoaded(unitInfo, heading)) {
-    const { title, author, logo, background } = unitInfo
+    if (unitInfo) {
+      //may be unitInfo not exists
+      const { title, author, logo, background } = unitInfo
+      setMenuParameter(['title', title])
+      setMenuParameter(['author', author])
+      setMenuParameter(['heading', heading])
+      setMenuParameter(['background', background])
 
-    setMenuParameter(['title', title])
-    setMenuParameter(['author', author])
-    setMenuParameter(['heading', heading])
+      firebase
+        .storage()
+        .ref(logo)
+        .getDownloadURL()
+        .then(url => {
+          setMenuParameter(['logo', url])
+        })
 
-    setMenuParameter(['background', background])
-
-    firebase
-      .storage()
-      .ref(logo)
-      .getDownloadURL()
-      .then(url => {
-        setMenuParameter(['logo', url])
-      })
-
-    firebase
-      .storage()
-      .ref(background)
-      .getDownloadURL()
-      .then(url => {
-        setMenuParameter(['background', url])
-      })
+      firebase
+        .storage()
+        .ref(background)
+        .getDownloadURL()
+        .then(url => {
+          setMenuParameter(['background', url])
+        })
+    } else {
+      //default heading when unit data not exists
+      setMenuParameter(['title', unit])
+      setMenuParameter(['author', 'There is no info for this unit. Please add it'])
+    }
 
     return <HeadingDrawerHOC />
   } else {
