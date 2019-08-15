@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, CircularProgress, Typography } from '@material-ui/core'
 import { Save as SaveIcon } from '@material-ui/icons'
+import { Redirect } from 'react-router-dom'
 import Waveform from './Waveform'
 /* import {compose} from 'redux'
 import {firestoreConnect} from 'react-redux-firebase' */
@@ -13,7 +14,9 @@ import firebase from '../firebase/firebase'
 import PhrasesForTextArea from './MaterialPhrases'
 
 const MaterialForm = props => {
-  const { mediaLinkDownloadUrl, uploadProgress } = props
+  const { mediaLinkDownloadUrl, uploadProgress, redirectTo, setPageParameter } = props
+
+  setPageParameter(['redirectTo', ''])
 
   const playPause = () => {
     wavesurferModule.wavesurfer.playPause()
@@ -65,12 +68,16 @@ const MaterialForm = props => {
 
     // responses after upload
     uploadMaterialInfoTask
-      .then(snapshot => console.log('materialInfo uploaded', snapshot))
+      .then(snapshot => console.log('materialInfo uploaded'))
       .catch(error => console.log('error', error))
 
     uploadMaterialPhrasesTask
-      .then(snapshot => console.log('materialPhrases uploaded', snapshot))
+      .then(snapshot => console.log('materialPhrases uploaded'))
       .catch(error => console.log('error', error))
+
+    Promise.all([uploadMaterialInfoTask, uploadMaterialPhrasesTask]).then(values =>
+      setPageParameter(['redirectTo', materialId])
+    )
   }
 
   return (
@@ -98,6 +105,7 @@ const MaterialForm = props => {
           Save <SaveIcon style={{ marginLeft: 10 }} />
         </Button>
       </div>
+      {redirectTo ? <Redirect to={`/material/${redirectTo}`} /> : null}
     </div>
   )
 }
@@ -110,9 +118,10 @@ const mapStateToProps = state => {
     mediaLink,
     lang,
     unit,
-    order
+    order,
+    redirectTo
   } = state.pageContent
-  return { mediaLinkDownloadUrl, uploadProgress, title, mediaLink, lang, unit, order }
+  return { mediaLinkDownloadUrl, uploadProgress, title, mediaLink, lang, unit, order, redirectTo }
 }
 
 const mapDispatchToProps = dispatch => {
