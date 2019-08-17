@@ -40,10 +40,10 @@ function timeStringToSeconds(timeString) {
 export function tsvRowToPhraseObject(tsvRow) {
   if (tsvRow) {
     let [startString, endString, text] = tsvRow.split('\t')
-    startString = startString.replace(',', '.')
-    endString = endString.replace(',', '.')
-    const start = (+startString).toFixed(2)
-    const end = (+endString).toFixed(2)
+    startString = +startString.replace(',', '.')
+    endString = +endString.replace(',', '.')
+    const start = +startString.toFixed(2)
+    const end = +endString.toFixed(2)
     return { start, end, text }
   } else {
     //we need empty phrases, for empty rows in multiline timing-text
