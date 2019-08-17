@@ -69,6 +69,13 @@ export function tsvToPhrases(subsTiming) {
   return phrases
 }
 
+export function subtitlesToLocalPhrases(text) {
+  //know format of text, now is tsv, then ass, srt and others
+  const dbPhrases = tsvToPhrases(text)
+  const localPhrases = makePhrasesArray(dbPhrases)
+  return localPhrases
+}
+
 export function randomColor(alpha) {
   return (
     'rgba(' +

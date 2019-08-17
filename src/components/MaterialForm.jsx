@@ -10,16 +10,36 @@ import { setPageParameter } from '../store/pageContentActions'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialInfo'
 import firebase from '../firebase/firebase'
+import { map } from 'lodash'
+
+import { subtitlesToLocalPhrases } from '../utils/phrases'
 
 import PhrasesForTextArea from './MaterialPhrases'
 
 const MaterialForm = props => {
-  const { mediaLinkDownloadUrl, uploadProgress, redirectTo, setPageParameter } = props
+  const { mediaLinkDownloadUrl, uploadProgress, redirectTo, setPageParameter, text } = props
 
   setPageParameter(['redirectTo', ''])
 
   const playPause = () => {
     wavesurferModule.wavesurfer.playPause()
+  }
+
+  const readSubtitles = () => {
+    const phrases = subtitlesToLocalPhrases(text.join('\n'))
+    // console.log('phrases', phrases)
+    setPageParameter(['phrases', phrases])
+
+    if (wavesurferModule.wavesurfer) {
+      phrases.forEach(phrase => {
+        wavesurferModule.wavesurfer.addRegion(phrase)
+      })
+    }
+    setPageParameter(['text', map(phrases, 'text')])
+  }
+
+  const clearRegions = () => {
+    wavesurferModule.wavesurfer.clearRegions()
   }
 
   const wavesurferRegionsToFirestorePhrases = regions => {
@@ -59,7 +79,6 @@ const MaterialForm = props => {
     // refs to 2 documents in 2 collections:
     const materialInfoDocRef = db.collection(`materialInfo`).doc()
     const materialId = materialInfoDocRef.id
-    console.log('materialId', materialId)
     const materialPhrasesDocRef = db.doc(`materialPhrases/${materialId}`)
 
     //upload promices
@@ -101,8 +120,14 @@ const MaterialForm = props => {
         <PhrasesForTextArea />
       </div>
       <div style={{ textAlign: 'right' }}>
-        <Button style={{ margin: 10 }} onClick={handleSave} variant='outlined'>
+        <Button style={{ margin: 10 }} onClick={handleSave} variant='contained' color='primary'>
           Save <SaveIcon style={{ marginLeft: 10 }} />
+        </Button>
+        <Button style={{ margin: 10 }} onClick={readSubtitles} variant='outlined'>
+          Import subtitles
+        </Button>
+        <Button style={{ margin: 10 }} onClick={clearRegions} variant='outlined'>
+          Remove Regions
         </Button>
       </div>
       {redirectTo ? <Redirect to={`/material/${redirectTo}`} /> : null}
@@ -119,9 +144,20 @@ const mapStateToProps = state => {
     lang,
     unit,
     order,
-    redirectTo
+    redirectTo,
+    text
   } = state.pageContent
-  return { mediaLinkDownloadUrl, uploadProgress, title, mediaLink, lang, unit, order, redirectTo }
+  return {
+    mediaLinkDownloadUrl,
+    uploadProgress,
+    title,
+    mediaLink,
+    lang,
+    unit,
+    order,
+    redirectTo,
+    text
+  }
 }
 
 const mapDispatchToProps = dispatch => {
