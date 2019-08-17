@@ -1,7 +1,7 @@
 import React from 'react'
 import { PlayArrow } from '@material-ui/icons'
 // import { audio } from '../howler'
-import { ButtonBase } from '@material-ui/core'
+import { ButtonBase, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../store/pageContentActions'
 import wavesurferModule from '../wavesurfer/wavesurfer'
@@ -23,13 +23,18 @@ const useStyles = makeStyles(theme => ({
   },
   textarea: {
     resize: 'none',
-    width: '85%',
     whiteSpace: 'nowrap',
     verticalAlign: 'top',
     display: 'inline-block',
     overflowX: 'scroll',
     fontSize: 13,
     lineHeight: '15px'
+  },
+  textareaOriginal: {
+    width: 'calc(100% - 46px)'
+  },
+  textareaTranslation: {
+    width: '100%'
   },
   phrases: {
     verticalAlign: 'top',
@@ -58,35 +63,45 @@ function Phrases(props) {
     wavesurferModule.wavesurfer.regions.list[id].play()
   }
 
-  return (
-    <div style={{ textAlign: 'left' }}>
-      <div className={classes.phrases}>
-        {phrases.map((phrase, index) => {
-          return (
-            <ButtonBase
-              className={classes.playButton}
-              onClick={playPhrase(phrase.id)}
-              key={`phrase-${phrase.id}`}
-              style={{ backgroundColor: phrase.color }}
+  const PhrasesColumn = () => (
+    <div className={classes.phrases}>
+      {phrases.map((phrase, index) => {
+        return (
+          <ButtonBase
+            className={classes.playButton}
+            onClick={playPhrase(phrase.id)}
+            key={`phrase-${phrase.id}`}
+            style={{ backgroundColor: phrase.color }}
+          >
+            <div
+              className={classes.id + ' ' + (currentPhraseId === phrase.id ? classes.current : '')}
             >
-              <div
-                className={
-                  classes.id + ' ' + (currentPhraseId === phrase.id ? classes.current : '')
-                }
-              >
-                {index + 1} <PlayArrow fontSize='inherit' />{' '}
-              </div>
-            </ButtonBase>
-          )
-        })}
-      </div>
-      <textarea
-        value={text.join('\n')}
-        onChange={handleTextChanged}
-        rows={phrases.length}
-        className={classes.textarea}
-      />
+              {index + 1} <PlayArrow fontSize='inherit' />{' '}
+            </div>
+          </ButtonBase>
+        )
+      })}
     </div>
+  )
+
+  return (
+    <Grid container>
+      <Grid item sm={7} xs={12}>
+        <PhrasesColumn />
+        <textarea
+          value={text.join('\n')}
+          onChange={handleTextChanged}
+          rows={phrases.length}
+          className={`${classes.textarea} ${classes.textareaOriginal}`}
+        />
+      </Grid>
+      <Grid item sm={5} xs={12}>
+        <textarea
+          rows={phrases.length}
+          className={`${classes.textarea} ${classes.textareaTranslation}`}
+        />
+      </Grid>
+    </Grid>
   )
 }
 
