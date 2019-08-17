@@ -35,13 +35,26 @@ function MaterialInfo(props) {
         </TextField>
       </div>
       <MediaAddDeleteButton />
-      <TextField onChange={handleChange} className={classes.textField} id='lang' label='Lang'>
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 50 }}
+        id='lang'
+        label='Lang'
+      >
         Lang
       </TextField>
       <TextField onChange={handleChange} className={classes.textField} id='unit' label='Unit'>
         Unit
       </TextField>
-      <TextField onChange={handleChange} className={classes.textField} id='order' label='Order'>
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 60 }}
+        id='order'
+        type='number'
+        label='Order'
+      >
         Order
       </TextField>
     </div>
