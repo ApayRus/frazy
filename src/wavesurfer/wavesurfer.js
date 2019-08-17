@@ -65,17 +65,28 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   })
 
   // edit mode
-  wavesurfer.on('region-update-end', region => {
-    //region.update({ color: randomColor(0.5) })
+
+  const regionsToPhrasesArray = () => {
     let phrases = map(wavesurfer.regions.list, (elem, key) => {
-      const { start, end, color } = elem
+      const {
+        start,
+        end,
+        color,
+        attributes: { label: text }
+      } = elem
       const id = key
-      return { id, start, end, color }
+      return { id, start, end, color, text }
     })
     phrases = orderBy(phrases, 'start')
-
     store.dispatch(setPageParameter(['phrases', phrases]))
+    const text = map(phrases, 'text') //textarea content
+    store.dispatch(setPageParameter(['text', text]))
+  }
+
+  wavesurfer.on('region-update-end', region => {
+    regionsToPhrasesArray()
   })
+
   wavesurfer.on('region-created', region => {
     region.update({ color: randomColor(0.5) })
   })
@@ -83,14 +94,9 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   wavesurfer.on('region-dblclick', region => {
     region.remove()
   })
+
   wavesurfer.on('region-removed', region => {
-    //region.update({ color: randomColor(0.5) })
-    const phrases = map(wavesurfer.regions.list, (elem, key) => {
-      const { start, end, color } = elem
-      const id = key
-      return { id, start, end, color }
-    })
-    store.dispatch(setPageParameter(['phrases', phrases]))
+    regionsToPhrasesArray()
   })
 
   // Time stretcher

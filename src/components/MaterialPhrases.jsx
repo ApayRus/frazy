@@ -1,7 +1,7 @@
 import React from 'react'
 import { PlayArrow } from '@material-ui/icons'
 // import { audio } from '../howler'
-import { ButtonBase, Button } from '@material-ui/core'
+import { ButtonBase } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../store/pageContentActions'
 import wavesurferModule from '../wavesurfer/wavesurfer'
@@ -27,9 +27,9 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     verticalAlign: 'top',
     display: 'inline-block',
-    overflowX: 'scroll', 
-    fontSize: 13, 
-    lineHeight: "15px",
+    overflowX: 'scroll',
+    fontSize: 13,
+    lineHeight: '15px'
   },
   phrases: {
     verticalAlign: 'top',
@@ -80,7 +80,12 @@ function Phrases(props) {
           )
         })}
       </div>
-      <textarea onChange={handleTextChanged} rows={phrases.length} className={classes.textarea} />
+      <textarea
+        value={text.join('\n')}
+        onChange={handleTextChanged}
+        rows={phrases.length}
+        className={classes.textarea}
+      />
     </div>
   )
 }
