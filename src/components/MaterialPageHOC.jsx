@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
-import { joinPhrasesAndTranslations } from '../utils/joinPhrasesAndTranslations'
+import { makePhrasesArray, addTranslation } from '../utils/phrases'
 import { joinTitle } from '../utils/joinTitle'
 import MaterialPage from './MaterialPage'
 import firebase from '../firebase/firebase'
@@ -29,7 +29,8 @@ function MaterialPageHOC(props) {
     const { mediaLink, unit, lang } = materialInfo
     let phrases = materialPhrases
     let title = { text: materialInfo.title }
-    phrases = joinPhrasesAndTranslations(materialPhrases, translationPhrases, translationInfo)
+    phrases = makePhrasesArray(materialPhrases)
+    if (translationInfo) phrases = addTranslation(phrases, translationPhrases, translationInfo.lang)
 
     title = joinTitle(materialInfo, translationInfo)
 

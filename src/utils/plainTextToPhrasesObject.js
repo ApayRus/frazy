@@ -1,21 +1,5 @@
-import { assRowToPhraseObject } from './subtitlesFunctions.js'
 import _ from 'lodash'
 // import getId from 'wavesurfer.js/src/util/get-id.js'
-
-/**
- *
- * @param {string} subsTiming - multi string text
- * @returns {Object} phrases= { id: {start: 0.1, end: 2.2, text: "blabla"} }
- *
- */
-export function assSubtitlesToPhrases(subsTiming) {
-  const assRows = subsTiming.trim().split('\n')
-  const phrases = {}
-  assRows.forEach(row => {
-    phrases[getId('')] = assRowToPhraseObject(row)
-  })
-  return phrases
-}
 
 /**
  * get multirow text, phrases object and rewrites each phrase.text with row-text
@@ -44,16 +28,4 @@ export function writePhrasesWithText(phrases, text, mode) {
   })
 
   return phrasesObject
-}
-
-function getId(prefix) {
-  if (prefix === undefined) {
-    prefix = 'wavesurfer_'
-  }
-  return (
-    prefix +
-    Math.random()
-      .toString(32)
-      .substring(2)
-  )
 }

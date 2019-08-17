@@ -1,5 +1,5 @@
-import { assSubtitlesToPhrases, writePhrasesWithText } from './plainTextToPhrasesObject'
-
+import { writePhrasesWithText } from './plainTextToPhrasesObject'
+import { assToPhrases, tsvToPhrases } from './phrases'
 //doesnt work because of random values
 it.skip('assSubtitlesToPhrases', () => {
   const phrases = {
@@ -62,7 +62,7 @@ Dialogue: 0,0:00:28.05,0:00:29.56,Default,,0,0,0,,8th phrase
 Dialogue: 0,0:00:29.56,0:00:31.73,Default,,0,0,0,,9th phrase
 `
   }
-  expect(assSubtitlesToPhrases(subtitles)).toEqual(phrases)
+  expect(assToPhrases(subtitles)).toEqual(phrases)
 })
 
 it('writePhrasesWithText (original text) ', () => {
@@ -221,4 +221,18 @@ it('writePhrasesWithText translations', () => {
   expect(writePhrasesWithText(phrases, translationText, 'translation')).toEqual(
     writedTranslationObject
   )
+})
+
+it.skip('tsv to phrases', () => {
+  const tsvText = `0,029705	1,616553	1
+2,005215	3,153061	2
+3,910884	5,028798	3
+  `
+  const phrases = {
+    '1': { start: 0.3, end: 1.62, text: '1' },
+    '2': { start: 2.01, end: 3.15, text: '2' },
+    '3': { start: 3.91, end: 5.03, text: '3' }
+  }
+
+  expect(tsvToPhrases(tsvText)).toEqual(phrases)
 })

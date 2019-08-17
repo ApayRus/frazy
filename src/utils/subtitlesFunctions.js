@@ -30,3 +30,23 @@ function timeStringToSeconds(timeString) {
   const [hours, minutes, seconds] = timeString.split(':')
   return +hours * 3600 + +minutes * 60 + +seconds
 }
+
+/**
+ *
+ * @param {String} tsvRow - tab separated values
+ * @example
+ * const tsvRow = "0,029705	1,616553	Le avventure di Pinocchio"
+ */
+export function tsvRowToPhraseObject(tsvRow) {
+  if (tsvRow) {
+    let [startString, endString, text] = tsvRow.split('\t')
+    startString = startString.replace(',', '.')
+    endString = endString.replace(',', '.')
+    const start = (+startString).toFixed(2)
+    const end = (+endString).toFixed(2)
+    return { start, end, text }
+  } else {
+    //we need empty phrases, for empty rows in multiline timing-text
+    return { start: '', end: '', text: '' }
+  }
+}

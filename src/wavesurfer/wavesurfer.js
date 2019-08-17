@@ -1,7 +1,7 @@
 import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min'
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min'
-import { randomColor } from '../utils/joinPhrasesAndTranslations'
+import { randomColor } from '../utils/phrases'
 import store from '../store/rootReducer'
 import { setPlayerState } from '../store/playerStateActions'
 import { setPageParameter } from '../store/pageContentActions'
