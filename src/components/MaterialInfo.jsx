@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField } from '@material-ui/core'
+import { TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { setPageParameter } from '../store/pageContentActions'
@@ -56,6 +56,26 @@ function MaterialInfo(props) {
         label='Order'
       >
         Order
+      </TextField>
+      <br />
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 50 }}
+        id='trLang'
+        label='TrLang'
+      >
+        Lang
+      </TextField>
+
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 'calc(100% - 80px)' }}
+        id='trTitle'
+        label='Title (Translation)'
+      >
+        Title
       </TextField>
     </div>
   )
