@@ -45,18 +45,42 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Phrases(props) {
-  const { phrases, currentPhraseId, setPageParameter, text } = props
+  const { phrases, currentPhraseId, setPageParameter, text, trText, trLang } = props
 
   const classes = useStyles()
 
   const handleTextChanged = event => {
     const newText = event.target.value.split('\n')
     setPageParameter(['text', newText])
+
+    let newPhrases = phrases
+
     phrases.forEach((elem, index) => {
       const { id } = elem
       const label = newText[index] || ''
       wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label } })
+      newPhrases[index]['text'] = label
     })
+
+    setPageParameter(['phrases', newPhrases])
+  }
+
+  const handleTrTextChanged = event => {
+    const newText = event.target.value.split('\n')
+    setPageParameter(['trText', newText])
+
+    let newPhrases = phrases
+
+    phrases.forEach((elem, index) => {
+      // const { id } = elem
+      const trText = newText[index] || ''
+      // translations: {ru: Хоббит, es: El Hobboto, ua: Хиббит}
+      const oldTranslations = elem.translations || {}
+      const newTranslations = { ...oldTranslations, [trLang]: trText }
+      newPhrases[index]['translations'] = newTranslations
+    })
+
+    setPageParameter(['phrases', newPhrases])
   }
 
   const playPhrase = id => event => {
@@ -97,6 +121,8 @@ function Phrases(props) {
       </Grid>
       <Grid item sm={5} xs={12}>
         <textarea
+          value={trText.join('\n')}
+          onChange={handleTrTextChanged}
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaTranslation}`}
         />
@@ -109,7 +135,9 @@ const mapStateToProps = state => {
   return {
     currentPhraseId: state.playerState.currentPhraseId,
     phrases: state.pageContent.phrases,
-    text: state.pageContent.text
+    text: state.pageContent.text,
+    trText: state.pageContent.trText,
+    trLang: state.pageContent.trLang
   }
 }
 
