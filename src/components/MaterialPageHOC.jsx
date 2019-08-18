@@ -62,12 +62,14 @@ const mapStateToProps = state => {
     translationInfo,
     translationPhrases
   } = state.firestore.data
+  const { trLang } = state.pageContent
 
   return {
     materialInfo,
     materialPhrases,
     translationInfo,
-    translationPhrases
+    translationPhrases,
+    trLang
   }
 }
 
@@ -85,11 +87,16 @@ export default compose(
   ),
   firestoreConnect(props => {
     const { materialId } = props.match.params
+    const { trLang } = props
     return [
       { collection: 'materialInfo', doc: materialId, storeAs: 'materialInfo' },
       { collection: 'materialPhrases', doc: materialId, storeAs: 'materialPhrases' },
-      { collection: 'translationInfo', doc: `${materialId}_ru`, storeAs: 'translationInfo' },
-      { collection: 'translationPhrases', doc: `${materialId}_ru`, storeAs: 'translationPhrases' }
+      { collection: 'translationInfo', doc: `${materialId}_${trLang}`, storeAs: 'translationInfo' },
+      {
+        collection: 'translationPhrases',
+        doc: `${materialId}_${trLang}`,
+        storeAs: 'translationPhrases'
+      }
       // { collection: "applications", where: [["tournamentId", "==", tournamentId]] }
     ]
   })

@@ -6,6 +6,7 @@ const initState = {
   phrases: [],
   text: [],
   trText: [],
+  trLang: 'ru',
   mediaLink: '', // saved in db, folder/filename.mp3
   mediaLinkDownloadUrl: '', // current active link, long,  with tokens
   uploadProgress: -1,

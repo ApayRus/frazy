@@ -73,9 +73,8 @@ const MaterialForm = props => {
     const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
 
     // refs to 2 documents in 2 collections:
-    const translationInfoDocRef = db.collection(`translationInfo`).doc()
-    const translationId = translationInfoDocRef.id
-    const translationPhrasesDocRef = db.doc(`translationPhrases/${translationId}`)
+    const translationInfoDocRef = db.doc(`translationInfo/${materialId}_${trLang}`)
+    const translationPhrasesDocRef = db.doc(`translationPhrases/${materialId}_${trLang}`)
 
     //upload promices
     //  material
