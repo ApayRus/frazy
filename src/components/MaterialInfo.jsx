@@ -23,30 +23,38 @@ function MaterialInfo(props) {
 
   return (
     <div style={{ padding: 10 }}>
-      <div>
-        <TextField
-          onChange={handleChange}
-          className={classes.textField}
-          fullWidth
-          id='title'
-          label='Title'
-        >
-          Title
-        </TextField>
-      </div>
-      <MediaAddDeleteButton />
       <TextField
         onChange={handleChange}
         className={classes.textField}
         style={{ width: 50 }}
         id='lang'
         label='Lang'
-      >
-        Lang
-      </TextField>
-      <TextField onChange={handleChange} className={classes.textField} id='unit' label='Unit'>
-        Unit
-      </TextField>
+      />
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 'calc(100% - 80px)' }}
+        id='title'
+        label='Title'
+      />
+
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 50 }}
+        id='trLang'
+        label='TrLang'
+      />
+      <TextField
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 'calc(100% - 80px)' }}
+        id='trTitle'
+        label='Title (Translation)'
+      />
+
+      <MediaAddDeleteButton />
+      <TextField onChange={handleChange} className={classes.textField} id='unit' label='Unit' />
       <TextField
         onChange={handleChange}
         className={classes.textField}
@@ -54,29 +62,7 @@ function MaterialInfo(props) {
         id='order'
         type='number'
         label='Order'
-      >
-        Order
-      </TextField>
-      <br />
-      <TextField
-        onChange={handleChange}
-        className={classes.textField}
-        style={{ width: 50 }}
-        id='trLang'
-        label='TrLang'
-      >
-        Lang
-      </TextField>
-
-      <TextField
-        onChange={handleChange}
-        className={classes.textField}
-        style={{ width: 'calc(100% - 80px)' }}
-        id='trTitle'
-        label='Title (Translation)'
-      >
-        Title
-      </TextField>
+      />
     </div>
   )
 }
