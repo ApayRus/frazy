@@ -76,6 +76,36 @@ export function subtitlesToLocalPhrases(text) {
   return localPhrases
 }
 
+// array to object, format for DB
+export function localPhrasesToDBphrases(phrases) {
+  return phrases.reduce((obj, item) => {
+    let { id, start, end, text } = item
+
+    id = id.replace('wavesurfer_', '')
+    start = +start.toFixed(2)
+    end = +end.toFixed(2)
+    text = text || ''
+
+    obj[id] = { start, end, text }
+    return obj
+  }, {})
+}
+
+/**
+ *
+ * recieves [{id,  color, text, start, end, translations: {ru:"frasa  1", en:"phrase 1", }}]
+ * returns [{id, text}]
+ */
+export function localPhrasesToDBtranslations(phrases, trLang) {
+  return phrases.reduce((obj, item) => {
+    let { id, translations } = item
+    const text = translations[trLang] || ''
+    id = id.replace('wavesurfer_', '')
+    obj[id] = { text }
+    return obj
+  }, {})
+}
+
 export function randomColor(alpha) {
   return (
     'rgba(' +

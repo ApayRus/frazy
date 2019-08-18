@@ -12,12 +12,23 @@ import MaterialInfo from './MaterialInfo'
 import firebase from '../firebase/firebase'
 import { map } from 'lodash'
 
-import { subtitlesToLocalPhrases } from '../utils/phrases'
+import {
+  subtitlesToLocalPhrases,
+  localPhrasesToDBphrases,
+  localPhrasesToDBtranslations
+} from '../utils/phrases'
 
 import PhrasesForTextArea from './MaterialPhrases'
 
 const MaterialForm = props => {
-  const { mediaLinkDownloadUrl, uploadProgress, redirectTo, setPageParameter, text } = props
+  const {
+    mediaLinkDownloadUrl,
+    uploadProgress,
+    redirectTo,
+    setPageParameter,
+    text,
+    phrases
+  } = props
 
   setPageParameter(['redirectTo', ''])
 
@@ -42,37 +53,12 @@ const MaterialForm = props => {
     wavesurferModule.wavesurfer.clearRegions()
   }
 
-  const wavesurferRegionsToFirestorePhrases = regions => {
-    // console.log('regions', wavesurferModule.wavesurfer.regions.list)
-    // console.log('wavesurfer', wavesurferModule.wavesurfer)
-    const phrasesRaw = regions
-    const phrases = {}
-
-    for (let id in phrasesRaw) {
-      let {
-        start,
-        end,
-        attributes: { label: text }
-      } = phrasesRaw[id]
-
-      id = id.replace('wavesurfer_', '')
-      start = +start.toFixed(2)
-      end = +end.toFixed(2)
-      text = text || ''
-
-      phrases[id] = { start, end, text }
-    }
-
-    return phrases
-  }
-
-  const handleSave = () => {
-    //data for submit
-    const materialPhrases = wavesurferRegionsToFirestorePhrases(
-      wavesurferModule.wavesurfer.regions.list
-    )
+  const handleSubmit = () => {
+    // MATERIAL data for submit
     const { title, mediaLink, lang, unit, order } = props
+
     const materialInfo = { title, mediaLink, lang, unit, order }
+    const materialPhrases = localPhrasesToDBphrases(phrases)
 
     const db = firebase.firestore()
 
@@ -81,22 +67,45 @@ const MaterialForm = props => {
     const materialId = materialInfoDocRef.id
     const materialPhrasesDocRef = db.doc(`materialPhrases/${materialId}`)
 
+    // TRANSLATION
+    const { trLang, trTitle } = props
+    const translationInfo = { title: trTitle, lang: trLang, for: materialId }
+    const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
+
+    // refs to 2 documents in 2 collections:
+    const translationInfoDocRef = db.collection(`translationInfo`).doc()
+    const translationId = translationInfoDocRef.id
+    const translationPhrasesDocRef = db.doc(`translationPhrases/${translationId}`)
+
     //upload promices
+    //  material
     const uploadMaterialInfoTask = materialInfoDocRef.set(materialInfo)
     const uploadMaterialPhrasesTask = materialPhrasesDocRef.set(materialPhrases)
+    //  translation
+    const uploadTranslationInfoTask = translationInfoDocRef.set(translationInfo)
+    const uploadTranslationPhrasesTask = translationPhrasesDocRef.set(translationPhrases)
 
     // responses after upload
     uploadMaterialInfoTask
       .then(snapshot => console.log('materialInfo uploaded'))
       .catch(error => console.log('error', error))
-
     uploadMaterialPhrasesTask
       .then(snapshot => console.log('materialPhrases uploaded'))
       .catch(error => console.log('error', error))
 
-    Promise.all([uploadMaterialInfoTask, uploadMaterialPhrasesTask]).then(values =>
-      setPageParameter(['redirectTo', materialId])
-    )
+    uploadTranslationInfoTask
+      .then(snapshot => console.log('translationInfo uploaded'))
+      .catch(error => console.log('error', error))
+    uploadTranslationPhrasesTask
+      .then(snapshot => console.log('translationPhrases uploaded'))
+      .catch(error => console.log('error', error))
+
+    Promise.all([
+      uploadMaterialInfoTask,
+      uploadMaterialPhrasesTask,
+      uploadTranslationInfoTask,
+      uploadTranslationPhrasesTask
+    ]).then(values => setPageParameter(['redirectTo', materialId]))
   }
 
   return (
@@ -120,14 +129,14 @@ const MaterialForm = props => {
         <PhrasesForTextArea />
       </div>
       <div style={{ textAlign: 'right' }}>
-        <Button style={{ margin: 10 }} onClick={handleSave} variant='contained' color='primary'>
-          Save <SaveIcon style={{ marginLeft: 10 }} />
-        </Button>
         <Button style={{ margin: 10 }} onClick={readSubtitles} variant='outlined'>
           Import subtitles
         </Button>
         <Button style={{ margin: 10 }} onClick={clearRegions} variant='outlined'>
           Remove Regions
+        </Button>
+        <Button style={{ margin: 10 }} onClick={handleSubmit} variant='contained' color='primary'>
+          Save <SaveIcon style={{ marginLeft: 10 }} />
         </Button>
       </div>
       {redirectTo ? <Redirect to={`/material/${redirectTo}`} /> : null}
@@ -145,7 +154,10 @@ const mapStateToProps = state => {
     unit,
     order,
     redirectTo,
-    text
+    text,
+    phrases,
+    trLang,
+    trTitle
   } = state.pageContent
   return {
     mediaLinkDownloadUrl,
@@ -156,7 +168,10 @@ const mapStateToProps = state => {
     unit,
     order,
     redirectTo,
-    text
+    text,
+    phrases,
+    trLang,
+    trTitle
   }
 }
 
