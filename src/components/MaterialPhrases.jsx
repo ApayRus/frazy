@@ -85,7 +85,7 @@ function Phrases(props) {
   )
 
   return (
-    <Grid container>
+    <Grid style={{ padding: 10 }} container>
       <Grid item sm={7} xs={12}>
         <PhrasesColumn />
         <textarea

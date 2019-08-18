@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField, Grid } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { setPageParameter } from '../store/pageContentActions'
@@ -22,7 +22,7 @@ function MaterialInfo(props) {
   }
 
   return (
-    <div>
+    <div style={{ padding: 10 }}>
       <div>
         <TextField
           onChange={handleChange}

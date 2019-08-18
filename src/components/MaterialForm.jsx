@@ -100,7 +100,7 @@ const MaterialForm = props => {
   }
 
   return (
-    <div style={{ textAlign: 'left', padding: 10, paddingBottom: 50 }}>
+    <div style={{ textAlign: 'left', paddingBottom: 50 }}>
       <MaterialInfo />
       {uploadProgress > 0 && uploadProgress < 100 ? (
         <div style={{ textAlign: 'center' }}>
