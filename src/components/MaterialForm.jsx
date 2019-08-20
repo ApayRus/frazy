@@ -144,33 +144,20 @@ const MaterialForm = props => {
 }
 
 const mapStateToProps = state => {
-  const {
-    mediaLinkDownloadUrl,
-    uploadProgress,
-    title,
-    mediaLink,
-    lang,
-    unit,
-    order,
-    redirectTo,
-    text,
-    phrases,
-    trLang,
-    trTitle
-  } = state.pageContent
+  const pc = state.pageContent
   return {
-    mediaLinkDownloadUrl,
-    uploadProgress,
-    title,
-    mediaLink,
-    lang,
-    unit,
-    order,
-    redirectTo,
-    text,
-    phrases,
-    trLang,
-    trTitle
+    mediaLinkDownloadUrl: pc.mediaLinkDownloadUrl,
+    uploadProgress: pc.uploadProgress,
+    title: pc.title,
+    mediaLink: pc.mediaLink,
+    lang: pc.lang,
+    unit: pc.unit,
+    order: pc.order,
+    redirectTo: pc.redirectTo,
+    text: pc.text,
+    phrases: pc.phrases,
+    trLang: pc.trLang,
+    trTitle: pc.trTitle
   }
 }
 
