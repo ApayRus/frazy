@@ -3,7 +3,7 @@
  * displays Upload button , or link + Delete
  */
 import React from 'react'
-import { Button, TextField, IconButton, CircularProgress } from '@material-ui/core'
+import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { setPageParameter } from '../store/pageContentActions'
 import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
@@ -13,24 +13,40 @@ const MediaAddDeleteButton = props => {
   const { mediaLinkDownloadUrl, mediaLink, uploadProgress, setPageParameter } = props
 
   const handleFileDelete = () => {
-    console.log('mediaLink', mediaLink)
-    const fileRef = firebase.storage().ref(mediaLink)
+    // console.log('mediaLink', mediaLink)
+    const resetMediaSettings = () => {
+      setPageParameter(['mediaLinkDownloadUrl', ''])
+      setPageParameter(['mediaLink', ''])
+      setPageParameter(['uploadProgress', -1])
+      setPageParameter(['waveformRenderProgress', -1])
+    }
 
-    const deleteTask = fileRef.delete()
+    //file on our hosting
+    if (mediaLink !== mediaLinkDownloadUrl) {
+      const fileRef = firebase.storage().ref(mediaLink)
 
-    deleteTask
-      .then(() => {
-        // File deleted successfully
-        console.log('File deleted successfully')
-        setPageParameter(['mediaLinkDownloadUrl', ''])
-        setPageParameter(['mediaLink', ''])
-        setPageParameter(['uploadProgress', -1])
-        setPageParameter(['waveformRenderProgress', -1])
-      })
-      .catch(function(error) {
-        // Uh-oh, an error occurred!
-        console.log(error)
-      })
+      const deleteTask = fileRef.delete()
+
+      deleteTask
+        .then(() => {
+          // File deleted successfully
+          console.log('File deleted successfully')
+          resetMediaSettings()
+        })
+        .catch(function(error) {
+          // Uh-oh, an error occurred!
+          console.log(error)
+        })
+    } else {
+      //file is external link
+      resetMediaSettings()
+    }
+  }
+
+  const handleExternalMedialink = event => {
+    const link = event.target.value
+    setPageParameter(['mediaLink', link])
+    setPageParameter(['mediaLinkDownloadUrl', link])
   }
 
   const handleFileSelect = event => {
@@ -73,7 +89,7 @@ const MediaAddDeleteButton = props => {
   // console.log('mediaState', mediaState)
 
   const MediaNotExists = () => (
-    <div style={{ marginTop: 13, marginRight: 10, position: 'relative' }}>
+    <div style={{ marginTop: 0, marginRight: 10, position: 'relative' }}>
       <input
         style={{ display: 'none' }}
         onChange={handleFileSelect}
@@ -83,9 +99,19 @@ const MediaAddDeleteButton = props => {
       />
       <label htmlFor='contained-button-file'>
         <Button variant='contained' component='span'>
-          Media <AudioIcon />
+          Upload <AudioIcon />
           {mediaState === 'loading' ? <CircularProgress size={20} /> : null}
         </Button>
+        <Typography type='body1' style={{ display: 'inline-block', margin: 20 }}>
+          or type{' '}
+        </Typography>
+        <TextField
+          label='external link'
+          onBlur={handleExternalMedialink}
+          defaultValue={mediaLink}
+          style={{ width: 250 }}
+          color='textSecondary'
+        />
       </label>
     </div>
   )

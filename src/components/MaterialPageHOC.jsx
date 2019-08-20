@@ -39,13 +39,20 @@ function MaterialPageHOC(props) {
     setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
     setPageParameter(['mediaLinkDownloadUrl', ''])
-    firebase
-      .storage()
-      .ref(mediaLink)
-      .getDownloadURL()
-      .then(url => {
-        setPageParameter(['mediaLinkDownloadUrl', url])
-      })
+
+    if (mediaLink.match('http')) {
+      //is external link, with full path to file
+      setPageParameter(['mediaLinkDownloadUrl', mediaLink])
+    } else {
+      //mediaLink is just id to the file on our hosting, we'll get downloadURL
+      firebase
+        .storage()
+        .ref(mediaLink)
+        .getDownloadURL()
+        .then(url => {
+          setPageParameter(['mediaLinkDownloadUrl', url])
+        })
+    }
 
     // const MP = React.memo(props => <MaterialPage />)
 
