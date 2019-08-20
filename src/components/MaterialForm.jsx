@@ -67,37 +67,46 @@ const MaterialForm = props => {
     const materialId = materialInfoDocRef.id
     const materialPhrasesDocRef = db.doc(`materialPhrases/${materialId}`)
 
-    // TRANSLATION
-    const { trLang, trTitle } = props
-    const translationInfo = { title: trTitle, lang: trLang, for: materialId }
-    const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
-
-    // refs to 2 documents in 2 collections:
-    const translationInfoDocRef = db.doc(`translationInfo/${materialId}_${trLang}`)
-    const translationPhrasesDocRef = db.doc(`translationPhrases/${materialId}_${trLang}`)
-
     //upload promices
     //  material
-    const uploadMaterialInfoTask = materialInfoDocRef.set(materialInfo)
-    const uploadMaterialPhrasesTask = materialPhrasesDocRef.set(materialPhrases)
-    //  translation
-    const uploadTranslationInfoTask = translationInfoDocRef.set(translationInfo)
-    const uploadTranslationPhrasesTask = translationPhrasesDocRef.set(translationPhrases)
-
-    // responses after upload
-    uploadMaterialInfoTask
+    const uploadMaterialInfoTask = materialInfoDocRef
+      .set(materialInfo)
       .then(snapshot => console.log('materialInfo uploaded'))
       .catch(error => console.log('error', error))
-    uploadMaterialPhrasesTask
+
+    const uploadMaterialPhrasesTask = materialPhrasesDocRef
+      .set(materialPhrases)
       .then(snapshot => console.log('materialPhrases uploaded'))
       .catch(error => console.log('error', error))
 
-    uploadTranslationInfoTask
-      .then(snapshot => console.log('translationInfo uploaded'))
-      .catch(error => console.log('error', error))
-    uploadTranslationPhrasesTask
-      .then(snapshot => console.log('translationPhrases uploaded'))
-      .catch(error => console.log('error', error))
+    //  translation
+
+    // TRANSLATION
+    const { trLang, trTitle, trText } = props
+    const translationInfo = { title: trTitle, lang: trLang, for: materialId }
+
+    // 2 documents in 2 collections:
+
+    //INFO
+    let uploadTranslationInfoTask
+    if (trLang && trTitle) {
+      const translationInfoDocRef = db.doc(`translationInfo/${materialId}_${trLang}`)
+      uploadTranslationInfoTask = translationInfoDocRef
+        .set(translationInfo)
+        .then(snapshot => console.log('translationInfo uploaded'))
+        .catch(error => console.log('error', error))
+    }
+
+    //PHRASES
+    let uploadTranslationPhrasesTask
+    if (trText.length > 0) {
+      const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
+      const translationPhrasesDocRef = db.doc(`translationPhrases/${materialId}_${trLang}`)
+      uploadTranslationPhrasesTask = translationPhrasesDocRef
+        .set(translationPhrases)
+        .then(snapshot => console.log('translationPhrases uploaded'))
+        .catch(error => console.log('error', error))
+    }
 
     Promise.all([
       uploadMaterialInfoTask,
@@ -157,7 +166,8 @@ const mapStateToProps = state => {
     text: pc.text,
     phrases: pc.phrases,
     trLang: pc.trLang,
-    trTitle: pc.trTitle
+    trTitle: pc.trTitle,
+    trText: pc.trText
   }
 }
 
