@@ -5,6 +5,7 @@ import { ButtonBase, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../store/pageContentActions'
 import wavesurferModule from '../wavesurfer/wavesurfer'
+import MaterialFormTitle from './MaterialFormTitle'
 
 import { connect } from 'react-redux'
 
@@ -111,6 +112,9 @@ function Phrases(props) {
   return (
     <Grid style={{ padding: 10 }} container>
       <Grid item sm={7} xs={12}>
+        <div style={{ marginLeft: 40 }}>
+          <MaterialFormTitle langId='lang' langLabel='Lang' titleId='title' titleLabel='Title' />
+        </div>
         <PhrasesColumn />
         <textarea
           value={text.join('\n')}
@@ -120,6 +124,12 @@ function Phrases(props) {
         />
       </Grid>
       <Grid item sm={5} xs={12}>
+        <MaterialFormTitle
+          langId='trLang'
+          langLabel='TrLang'
+          titleId='trTitle'
+          titleLabel='Title of translation'
+        />
         <textarea
           value={trText.join('\n')}
           onChange={handleTrTextChanged}
@@ -132,12 +142,13 @@ function Phrases(props) {
 }
 
 const mapStateToProps = state => {
+  const pc = state.pageContent
   return {
     currentPhraseId: state.playerState.currentPhraseId,
-    phrases: state.pageContent.phrases,
-    text: state.pageContent.text,
-    trText: state.pageContent.trText,
-    trLang: state.pageContent.trLang
+    phrases: pc.phrases,
+    text: pc.text,
+    trText: pc.trText,
+    trLang: pc.trLang
   }
 }
 

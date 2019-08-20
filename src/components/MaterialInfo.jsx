@@ -23,36 +23,6 @@ function MaterialInfo(props) {
 
   return (
     <div style={{ padding: 10 }}>
-      <TextField
-        onChange={handleChange}
-        className={classes.textField}
-        style={{ width: 50 }}
-        id='lang'
-        label='Lang'
-      />
-      <TextField
-        onChange={handleChange}
-        className={classes.textField}
-        style={{ width: 'calc(100% - 80px)' }}
-        id='title'
-        label='Title'
-      />
-
-      <TextField
-        onChange={handleChange}
-        className={classes.textField}
-        style={{ width: 50 }}
-        id='trLang'
-        label='TrLang'
-      />
-      <TextField
-        onChange={handleChange}
-        className={classes.textField}
-        style={{ width: 'calc(100% - 80px)' }}
-        id='trTitle'
-        label='Title (Translation)'
-      />
-
       <MediaAddDeleteButton />
       <TextField onChange={handleChange} className={classes.textField} id='unit' label='Unit' />
       <TextField
