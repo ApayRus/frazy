@@ -1,11 +1,12 @@
 const initState = {
-  title: {}, //{ en: {}, es: {}, ch: {} }
+  title: '',
   lang: '',
   unit: '',
   order: '',
   phrases: [],
   text: [],
   trText: [],
+  trTitle: '',
   trLang: 'ru',
   mediaLink: '', // saved in db, folder/filename.mp3
   mediaLinkDownloadUrl: '', // current active link, long,  with tokens
