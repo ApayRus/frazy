@@ -106,6 +106,19 @@ export function localPhrasesToDBtranslations(phrases, trLang) {
   }, {})
 }
 
+/**
+ *
+ *makes text array from phrases
+ */
+export function localPhrasesToText(phrases) {
+  return map(phrases, 'text')
+}
+
+export function localPhrasesToTrText(phrases, trLang) {
+  const pathToValue = `translations.${trLang}`
+  return map(phrases, pathToValue)
+}
+
 export function randomColor(alpha) {
   return (
     'rgba(' +

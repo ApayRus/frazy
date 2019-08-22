@@ -1,4 +1,9 @@
-import { makePhrasesArray, addTranslation } from './phrases'
+import {
+  makePhrasesArray,
+  addTranslation,
+  localPhrasesToText,
+  localPhrasesToTrText
+} from './phrases'
 
 const originalPhrases = {
   '1ode4easgv': {
@@ -106,4 +111,16 @@ it.skip('phrases object -> array with labels and colors -> add first lang -> add
   phrasesArray = addTranslation(phrasesArray, translationPhrasesIt, 'it')
 
   expect(phrasesArray).toEqual(phrasesArrayWithTrRuIt)
+})
+
+it('local phrases to text array', () => {
+  const generatedText = localPhrasesToText(phrasesArrayWithTrRu)
+  const expectedText = ['The Hobbit', 'Chapter 1. ']
+  expect(generatedText).toEqual(expectedText)
+})
+
+it('local phrases to translation text array', () => {
+  const generatedText = localPhrasesToTrText(phrasesArrayWithTrRu, 'ru')
+  const expectedText = ['Хоббит', 'Глава 1.']
+  expect(generatedText).toEqual(expectedText)
 })
