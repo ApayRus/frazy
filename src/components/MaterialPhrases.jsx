@@ -46,7 +46,17 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Phrases(props) {
-  const { phrases, currentPhraseId, setPageParameter, text, trText, trLang } = props
+  const {
+    phrases,
+    currentPhraseId,
+    setPageParameter,
+    text,
+    trText,
+    lang,
+    trLang,
+    title,
+    trTitle
+  } = props
 
   const classes = useStyles()
 
@@ -113,7 +123,14 @@ function Phrases(props) {
     <Grid style={{ padding: 10 }} container>
       <Grid item sm={7} xs={12}>
         <div style={{ marginLeft: 40 }}>
-          <MaterialFormTitle langId='lang' langLabel='Lang' titleId='title' titleLabel='Title' />
+          <MaterialFormTitle
+            title={title}
+            lang={lang}
+            langId='lang'
+            langLabel='Lang'
+            titleId='title'
+            titleLabel='Title'
+          />
         </div>
         <PhrasesColumn />
         <textarea
@@ -125,6 +142,8 @@ function Phrases(props) {
       </Grid>
       <Grid item sm={5} xs={12}>
         <MaterialFormTitle
+          title={trTitle}
+          lang={trLang}
           langId='trLang'
           langLabel='TrLang'
           titleId='trTitle'
@@ -144,11 +163,14 @@ function Phrases(props) {
 const mapStateToProps = state => {
   const pc = state.pageContent
   return {
-    currentPhraseId: state.playerState.currentPhraseId,
     phrases: pc.phrases,
     text: pc.text,
     trText: pc.trText,
-    trLang: pc.trLang
+    lang: pc.lang,
+    trLang: pc.trLang,
+    title: pc.title,
+    trTitle: pc.trTitle,
+    currentPhraseId: state.playerState.currentPhraseId
   }
 }
 

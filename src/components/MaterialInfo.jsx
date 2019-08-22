@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 function MaterialInfo(props) {
   const classes = useStyles()
-  const { setPageParameter } = props
+  const { setPageParameter, unit, order } = props
 
   const handleChange = event => {
     const { id, value } = event.target
@@ -24,8 +24,15 @@ function MaterialInfo(props) {
   return (
     <div style={{ padding: 10 }}>
       <MediaAddDeleteButton />
-      <TextField onChange={handleChange} className={classes.textField} id='unit' label='Unit' />
       <TextField
+        defaultValue={unit}
+        onChange={handleChange}
+        className={classes.textField}
+        id='unit'
+        label='Unit'
+      />
+      <TextField
+        defaultValue={order}
         onChange={handleChange}
         className={classes.textField}
         style={{ width: 60 }}
@@ -37,10 +44,13 @@ function MaterialInfo(props) {
   )
 }
 
-/* const mapStateToProps = state => {
-  const { mediaLink } = state.pageContent
-  return { mediaLink }
-} */
+const mapStateToProps = state => {
+  const pc = state.pageContent
+  return {
+    unit: pc.unit,
+    order: pc.order
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -49,6 +59,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(MaterialInfo)

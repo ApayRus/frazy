@@ -6,8 +6,9 @@ import AppBar from './components/AppBar'
 import UnitPage from './components/UnitPage'
 import MaterialPageHOC from './components/MaterialPageHOC'
 import MaterialForm from './components/MaterialForm'
+import MaterialFormHOC from './components/MaterialFormHOC'
 import DrawerSettings from './components/DrawerSettings'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 function App(props) {
@@ -52,9 +53,12 @@ function App(props) {
       <MuiThemeProvider theme={theme}>
         <div className='App'>
           <AppBar />
-          <Route path='/materials/add/' component={MaterialForm} />
-          <Route path='/unit/:unitId' component={UnitPage} />
-          <Route path='/material/:materialId' component={MaterialPageHOC} />
+          <Switch>
+            <Route path='/material/edit/:materialId' component={MaterialFormHOC} />
+            <Route path='/material/edit' component={MaterialForm} />
+            <Route path='/unit/:unitId' component={UnitPage} />
+            <Route path='/material/:materialId' component={MaterialPageHOC} />
+          </Switch>
           <DrawerSettings />
         </div>
         {lang === 'ar' ? (
