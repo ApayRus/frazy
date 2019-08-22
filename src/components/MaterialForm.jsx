@@ -138,7 +138,7 @@ const MaterialForm = props => {
         </div>
       ) : null}
       {mediaLinkDownloadUrl ? (
-        <div>
+        <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
           <Waveform />
           <Button onClick={playPause}>Play/Pause </Button>
         </div>
