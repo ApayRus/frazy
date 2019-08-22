@@ -30,6 +30,8 @@ const MaterialForm = props => {
     phrases
   } = props
 
+  let { materialId } = props
+
   setPageParameter(['redirectTo', ''])
 
   const playPause = () => {
@@ -63,8 +65,16 @@ const MaterialForm = props => {
     const db = firebase.firestore()
 
     // refs to 2 documents in 2 collections:
-    const materialInfoDocRef = db.collection(`materialInfo`).doc()
-    const materialId = materialInfoDocRef.id
+    let materialInfoDocRef
+    //exist materialId => it is update material
+    if (materialId) {
+      materialInfoDocRef = db.doc(`materialInfo/${materialId}`)
+    }
+    //not exist materialId => it is create material
+    else {
+      materialInfoDocRef = db.collection(`materialInfo`).doc()
+      materialId = materialInfoDocRef.id
+    }
     const materialPhrasesDocRef = db.doc(`materialPhrases/${materialId}`)
 
     //upload promices
@@ -167,7 +177,8 @@ const mapStateToProps = state => {
     phrases: pc.phrases,
     trLang: pc.trLang,
     trTitle: pc.trTitle,
-    trText: pc.trText
+    trText: pc.trText,
+    materialId: pc.materialId
   }
 }
 

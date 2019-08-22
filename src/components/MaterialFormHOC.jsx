@@ -25,12 +25,14 @@ function MaterialFormHOC(props) {
     translationPhrases,
     setPageParameter
   } = props
+  const { materialId } = props.match.params
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     const { mediaLink, lang, title, unit, order } = materialInfo
     let phrases = materialPhrases
     console.log('lang', lang)
     phrases = makePhrasesArray(materialPhrases)
     // console.log('phrases', phrases)
+    setPageParameter(['materialId', materialId])
     setPageParameter(['unit', unit])
     setPageParameter(['order', order])
     setPageParameter(['lang', lang])
