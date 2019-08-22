@@ -131,23 +131,9 @@ const MediaAddDeleteButton = props => {
     </div>
   )
 
-  const MediaButton = props => {
-    switch (props.mediaState) {
-      case 'notExists':
-        return <MediaNotExists />
-      case 'loading':
-        return <MediaNotExists />
-      case 'exists':
-        return <MediaExists />
-
-      default:
-        return null
-    }
-  }
-
   return (
     <div style={{ display: 'inline-block' }}>
-      <MediaButton mediaState={mediaState} />
+      {mediaState === 'exists' ? <MediaExists /> : <MediaNotExists />}
     </div>
   )
 }
