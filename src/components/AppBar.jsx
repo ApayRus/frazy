@@ -1,7 +1,13 @@
 import React from 'react'
 import { Fab } from '@material-ui/core'
-import { Menu as MenuIcon, Settings as SettingsIcon, Help as HelpIcon } from '@material-ui/icons'
+import {
+  Menu as MenuIcon,
+  Settings as SettingsIcon,
+  Help as HelpIcon,
+  Edit as EditIcon
+} from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../store/appStateActions'
 
@@ -19,12 +25,17 @@ const useStyles = makeStyles(theme => ({
   },
   help: {
     right: 55
+  },
+  edit: {
+    right: 110
   }
 }))
 
 function Appbar(props) {
-  const { toggleHeadingDrawer, toggleSettingsDrawer } = props
+  const { toggleHeadingDrawer, toggleSettingsDrawer, materialId } = props
   const classes = useStyles()
+
+  const materialEditLink = materialId ? `/material/edit/${materialId}` : `/material/edit/`
 
   return (
     <div>
@@ -42,6 +53,15 @@ function Appbar(props) {
         <HelpIcon />
       </Fab>
       <Fab
+        component={Link}
+        to={materialEditLink}
+        className={`${classes.bottom} ${classes.edit}`}
+        color='primary'
+        size='medium'
+      >
+        <EditIcon />
+      </Fab>
+      <Fab
         className={`${classes.bottom} ${classes.settings}`}
         onClick={() => {
           toggleSettingsDrawer({ showSettingsDrawer: true })
@@ -55,6 +75,12 @@ function Appbar(props) {
   )
 }
 
+const mapStateToProps = state => {
+  return {
+    materialId: state.pageContent.materialId
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload)),
@@ -63,6 +89,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Appbar)

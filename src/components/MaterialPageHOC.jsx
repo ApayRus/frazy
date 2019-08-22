@@ -33,8 +33,9 @@ function MaterialPageHOC(props) {
     if (translationInfo) phrases = addTranslation(phrases, translationPhrases, translationInfo.lang)
 
     title = joinTitle(materialInfo, translationInfo)
-
+    const { materialId } = props.match.params
     setMenuParameter(['unit', unit])
+    setPageParameter(['materialId', materialId])
     setPageParameter(['title', title])
     setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
