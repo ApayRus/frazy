@@ -56,8 +56,8 @@ function App(props) {
           <Switch>
             <Route path='/material/edit/:materialId' component={MaterialFormHOC} />
             <Route path='/material/edit' component={MaterialForm} />
-            <Route path='/unit/:unitId' component={UnitPage} />
             <Route path='/material/:materialId' component={MaterialPageHOC} />
+            <Route path='/unit/:unitId' component={UnitPage} />
           </Switch>
           <DrawerSettings />
         </div>
