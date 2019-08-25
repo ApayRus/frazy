@@ -8,6 +8,7 @@ import MaterialPage from './MaterialPage'
 import firebase from '../firebase/firebase'
 import { setPageParameter } from '../store/pageContentActions'
 import { setMenuParameter } from '../store/menuActions'
+import { CircularProgress } from '@material-ui/core'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -59,7 +60,7 @@ function MaterialPageHOC(props) {
 
     return <MaterialPage />
   } else {
-    return <div>loading</div>
+    return <CircularProgress size={100} />
   }
 }
 
