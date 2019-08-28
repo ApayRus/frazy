@@ -7,7 +7,7 @@ import { ButtonBase, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
 
 function Phrases(props) {
-  const { phrases, playPhrase, currentPhraseId, showOriginalText, showTranslation } = props
+  const { phrases, playPhrase, currentPhraseId, showOriginalText, showTranslation, trLang } = props
 
   return (
     <div className='phrases'>
@@ -28,8 +28,8 @@ function Phrases(props) {
                 </div>
               ) : null}
               {showTranslation && phrase.translations ? (
-                <div className='translation ru'>
-                  <Typography variant='body2'>{phrase.translations.ru}</Typography>
+                <div className='translation'>
+                  <Typography variant='body2'>{phrase.translations[trLang]}</Typography>
                 </div>
               ) : null}
             </div>
@@ -45,7 +45,8 @@ const mapStateToProps = state => {
     currentPhraseId: state.playerState.currentPhraseId,
     showTranslation: state.playerSettings.showTranslation,
     showOriginalText: state.playerSettings.showOriginalText,
-    phrases: state.pageContent.phrases
+    phrases: state.pageContent.phrases,
+    trLang: state.pageContent.trLang
   }
 }
 

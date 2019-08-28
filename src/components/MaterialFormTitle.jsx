@@ -35,7 +35,7 @@ function MaterialFormTitle(props) {
       <TextField
         onChange={handleChange}
         className={classes.textField}
-        defaultValue={lang}
+        value={lang}
         style={{ width: 50 }}
         id={langId}
         label={langLabel}
@@ -43,7 +43,7 @@ function MaterialFormTitle(props) {
       <TextField
         onChange={handleChange}
         className={classes.textField}
-        defaultValue={title}
+        value={title}
         style={{ width: 'calc(100% - 80px)' }}
         id={titleId}
         label={titleLabel}

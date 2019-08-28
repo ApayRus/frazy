@@ -29,13 +29,19 @@ function MaterialPageHOC(props) {
     // const { materialId } = props.match.params
     // console.log('materialId', materialId)
 
-    const { mediaLink, unit, lang } = materialInfo
+    const { mediaLink, unit, lang, title } = materialInfo
     let phrases = materialPhrases
-    let title = { text: materialInfo.title }
     phrases = makePhrasesArray(materialPhrases)
-    if (translationInfo) phrases = addTranslation(phrases, translationPhrases, translationInfo.lang)
 
-    title = joinTitle(materialInfo, translationInfo)
+    if (translationInfo) {
+      const { lang, title } = translationInfo
+      setPageParameter(['trLang', lang])
+      setPageParameter(['trTitle', title])
+      if (translationPhrases) {
+        phrases = addTranslation(phrases, translationPhrases, translationInfo.lang)
+      }
+    }
+
     const { materialId } = props.match.params
     setMenuParameter(['unit', unit])
     setPageParameter(['materialId', materialId])

@@ -39,7 +39,8 @@ function PlayerSlideShow(props) {
     dictationTimerId,
     dictationDelay,
     showOriginalText,
-    showTranslation
+    showTranslation,
+    trLang
   } = props
   const currentPhrase = phrases[currentPhraseNum]
   const phrasesCount = phrases.length
@@ -53,7 +54,7 @@ function PlayerSlideShow(props) {
           ) : null}
           {showTranslation && currentPhrase.translations ? (
             <Typography variant='body2' color='textSecondary'>
-              {currentPhrase.translations.ru}
+              {currentPhrase.translations[trLang]}
             </Typography>
           ) : null}
           <div className={classes.currentPhrase}>{`${currentPhraseNum + 1} / ${phrasesCount}`}</div>
@@ -82,7 +83,7 @@ const mapStateToProps = state => {
 
   const { dictationTimerId, dictationCurrentRepeat } = state.playerState
 
-  const { phrases } = state.pageContent
+  const { phrases, trLang } = state.pageContent
 
   return {
     showTranslation,
@@ -91,7 +92,8 @@ const mapStateToProps = state => {
     dictationDelay,
     dictationRepeats,
     dictationTimerId,
-    dictationCurrentRepeat
+    dictationCurrentRepeat,
+    trLang
   }
 }
 

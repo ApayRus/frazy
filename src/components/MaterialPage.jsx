@@ -28,6 +28,7 @@ function MaterialPage(props) {
     phrases,
     mediaLinkDownloadUrl,
     title,
+    trTitle,
     unit
   } = props
 
@@ -118,10 +119,8 @@ function MaterialPage(props) {
   return (
     <div>
       <div style={{ margin: 20 }}>
-        <Typography variant='h5'>{title.text}</Typography>
-        {title.translations ? (
-          <Typography variant='subtitle2'>{title.translations.ru}</Typography>
-        ) : null}
+        <Typography variant='h5'>{title}</Typography>
+        {trTitle ? <Typography variant='subtitle2'>{trTitle}</Typography> : null}
       </div>
       {mediaLinkDownloadUrl ? (
         <div className={showWaveform ? '' : classes.hidden}>
@@ -143,7 +142,7 @@ function MaterialPage(props) {
 const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
-  const { phrases, title, mediaLinkDownloadUrl } = state.pageContent
+  const { phrases, title, trTitle, mediaLinkDownloadUrl } = state.pageContent
   const { unit } = state.menu
   return {
     currentPhraseId,
@@ -156,6 +155,7 @@ const mapStateToProps = state => {
     mediaLinkDownloadUrl,
     phrases,
     title,
+    trTitle,
     unit
   }
 }
