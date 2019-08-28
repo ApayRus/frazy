@@ -26,7 +26,7 @@ function MaterialFormHOC(props) {
     translationPhrases,
     setPageParameter
   } = props
-  const { materialId } = props.match.params
+  const { materialId, trLang } = props.match.params
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     const { mediaLink, lang, title, unit, order } = materialInfo
     let phrases = materialPhrases
@@ -37,6 +37,7 @@ function MaterialFormHOC(props) {
     setPageParameter(['unit', unit])
     setPageParameter(['order', order])
     setPageParameter(['lang', lang])
+    setPageParameter(['trLang', trLang])
     setPageParameter(['title', title])
     setPageParameter(['mediaLink', mediaLink])
     setPageParameter(['phrases', phrases])
@@ -79,14 +80,11 @@ function MaterialFormHOC(props) {
 
 const mapStateToProps = state => {
   const fs = state.firestore.data
-  const pc = state.pageContent
   return {
     materialInfo: fs.materialInfo,
     materialPhrases: fs.materialPhrases,
     translationInfo: fs.translationInfo,
-    translationPhrases: fs.translationPhrases,
-    trLang: pc.trLang,
-    lang: pc.lang
+    translationPhrases: fs.translationPhrases
   }
 }
 
@@ -103,8 +101,7 @@ export default compose(
     mapDispatchToProps
   ),
   firestoreConnect(props => {
-    const { materialId } = props.match.params
-    const { trLang } = props
+    const { materialId, trLang } = props.match.params
 
     return [
       { collection: 'materialInfo', doc: materialId, storeAs: 'materialInfo' },
