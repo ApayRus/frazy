@@ -9,6 +9,8 @@ import firebase from '../firebase/firebase'
 import { setPageParameter } from '../store/pageContentActions'
 import { setMenuParameter } from '../store/menuActions'
 import { CircularProgress } from '@material-ui/core'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import { langTheme, LangFonts } from '../theme/functions'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -56,9 +58,14 @@ function MaterialPageHOC(props) {
         })
     }
 
-    // const MP = React.memo(props => <MaterialPage />)
+    const theme = langTheme(lang)
 
-    return <MaterialPage />
+    return (
+      <MuiThemeProvider theme={theme}>
+        <MaterialPage />
+        <LangFonts lang={lang} />
+      </MuiThemeProvider>
+    )
   } else {
     return <CircularProgress size={100} />
   }
@@ -71,14 +78,12 @@ const mapStateToProps = state => {
     translationInfo,
     translationPhrases
   } = state.firestore.data
-  const { trLang } = state.pageContent
 
   return {
     materialInfo,
     materialPhrases,
     translationInfo,
-    translationPhrases,
-    trLang
+    translationPhrases
   }
 }
 
@@ -95,8 +100,7 @@ export default compose(
     mapDispatchToProps
   ),
   firestoreConnect(props => {
-    const { materialId } = props.match.params
-    const { trLang } = props
+    const { materialId, trLang } = props.match.params
     return [
       { collection: 'materialInfo', doc: materialId, storeAs: 'materialInfo' },
       { collection: 'materialPhrases', doc: materialId, storeAs: 'materialPhrases' },
