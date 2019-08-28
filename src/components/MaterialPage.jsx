@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
 
 function MaterialPage(props) {
   const classes = useStyles()
-
   const {
     currentPhraseId,
     dictationTimerId, // >0 then dictation is playing
@@ -28,7 +27,8 @@ function MaterialPage(props) {
     showWaveform,
     phrases,
     mediaLinkDownloadUrl,
-    title,  unit
+    title,
+    unit
   } = props
 
   console.log(mediaLinkDownloadUrl)
@@ -135,8 +135,7 @@ function MaterialPage(props) {
         <PlayerControls {...playerControlsProps} />
       </div>
       <Phrases playPhrase={playPhrase} />
-      {unit ? <HeadingFirebaseHOC /> :null}
-      
+      {unit ? <HeadingFirebaseHOC /> : null}
     </div>
   )
 }
@@ -145,7 +144,7 @@ const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
   const { phrases, title, mediaLinkDownloadUrl } = state.pageContent
-  const {unit} = state.menu
+  const { unit } = state.menu
   return {
     currentPhraseId,
     dictationCurrentRepeat,
@@ -156,7 +155,8 @@ const mapStateToProps = state => {
     showSlideshow,
     mediaLinkDownloadUrl,
     phrases,
-    title, unit
+    title,
+    unit
   }
 }
 
