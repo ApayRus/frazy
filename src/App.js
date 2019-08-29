@@ -1,7 +1,6 @@
 import React from 'react'
 
 import './App.css'
-import AppBar from './components/AppBar'
 import UnitPage from './components/UnitPage'
 import MaterialPageHOC from './components/MaterialPageHOC'
 import MaterialForm from './components/MaterialForm'
@@ -13,7 +12,6 @@ function App(props) {
   return (
     <BrowserRouter>
       <div className='App'>
-        <AppBar />
         <Switch>
           <Route path='/material/add' component={MaterialForm} />
           <Route path='/material/edit/:materialId/:trLang' component={MaterialFormHOC} />

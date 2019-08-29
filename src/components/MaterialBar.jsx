@@ -32,10 +32,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Appbar(props) {
-  const { toggleHeadingDrawer, toggleSettingsDrawer, materialId } = props
+  const { toggleHeadingDrawer, toggleSettingsDrawer, materialId, trLang } = props
   const classes = useStyles()
 
-  const materialEditLink = materialId ? `/material/edit/${materialId}` : `/material/edit/`
+  const materialEditLink = materialId ? `/material/edit/${materialId}/${trLang}` : `/material/edit/`
 
   return (
     <div>
@@ -77,7 +77,8 @@ function Appbar(props) {
 
 const mapStateToProps = state => {
   return {
-    materialId: state.pageContent.materialId
+    materialId: state.pageContent.materialId,
+    trLang: state.pageContent.trLang
   }
 }
 

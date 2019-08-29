@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import { makePhrasesArray, addTranslation } from '../utils/phrases'
-import { joinTitle } from '../utils/joinTitle'
 import MaterialPage from './MaterialPage'
+import MaterialBar from './MaterialBar'
 import firebase from '../firebase/firebase'
 import { setPageParameter } from '../store/pageContentActions'
 import { setMenuParameter } from '../store/menuActions'
@@ -69,6 +69,7 @@ function MaterialPageHOC(props) {
     return (
       <MuiThemeProvider theme={theme}>
         <MaterialPage />
+        <MaterialBar />
         <LangFonts lang={lang} />
       </MuiThemeProvider>
     )
