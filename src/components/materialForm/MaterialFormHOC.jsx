@@ -7,11 +7,11 @@ import {
   addTranslation,
   localPhrasesToText,
   localPhrasesToTrText
-} from '../utils/phrases'
+} from '../../utils/phrases'
 import MaterialForm from './MaterialForm'
-import firebase from '../firebase/firebase'
-import { setPageParameter } from '../store/pageContentActions'
-import { setMenuParameter } from '../store/menuActions'
+import firebase from '../../firebase/firebase'
+import { setPageParameter } from '../../store/pageContentActions'
+import { setMenuParameter } from '../../store/menuActions'
 import { CircularProgress } from '@material-ui/core'
 
 /**

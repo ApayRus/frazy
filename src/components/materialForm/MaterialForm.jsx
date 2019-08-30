@@ -2,23 +2,23 @@ import React from 'react'
 import { Button, CircularProgress, Typography } from '@material-ui/core'
 import { Save as SaveIcon } from '@material-ui/icons'
 import { Redirect } from 'react-router-dom'
-import Waveform from './Waveform'
+import Waveform from '../Waveform'
 /* import {compose} from 'redux'
 import {firestoreConnect} from 'react-redux-firebase' */
 import { connect } from 'react-redux'
-import { setPageParameter } from '../store/pageContentActions'
-import wavesurferModule from '../wavesurfer/wavesurfer'
-import MaterialInfo from './MaterialInfo'
-import firebase from '../firebase/firebase'
+import { setPageParameter } from '../../store/pageContentActions'
+import wavesurferModule from '../../wavesurfer/wavesurfer'
+import MaterialInfo from './MaterialFormInfo'
+import firebase from '../../firebase/firebase'
 import { map } from 'lodash'
 
 import {
   subtitlesToLocalPhrases,
   localPhrasesToDBphrases,
   localPhrasesToDBtranslations
-} from '../utils/phrases'
+} from '../../utils/phrases'
 
-import PhrasesForTextArea from './MaterialPhrases'
+import PhrasesForTextArea from './MaterialFormPhrases'
 
 const MaterialForm = props => {
   const {
@@ -123,7 +123,7 @@ const MaterialForm = props => {
       uploadMaterialPhrasesTask,
       uploadTranslationInfoTask,
       uploadTranslationPhrasesTask
-    ]).then(values => setPageParameter(['redirectTo', materialId]))
+    ]).then(values => setPageParameter(['redirectTo', `${materialId}/${trLang}`]))
   }
 
   return (

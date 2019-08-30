@@ -1,14 +1,14 @@
 import React from 'react'
 import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
-import Waveform from './Waveform'
-import HeadingFirebaseHOC from './HeadingFirebaseHOC'
+import Waveform from '../Waveform'
+import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseHOC'
 
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
-import wavesurferModule from '../wavesurfer/wavesurfer'
-import { setPlayerState } from '../store/playerStateActions'
+import wavesurferModule from '../../wavesurfer/wavesurfer'
+import { setPlayerState } from '../../store/playerStateActions'
 import { Typography, CircularProgress } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({

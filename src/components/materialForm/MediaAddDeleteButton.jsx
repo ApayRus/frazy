@@ -5,9 +5,9 @@
 import React from 'react'
 import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { setPageParameter } from '../store/pageContentActions'
+import { setPageParameter } from '../../store/pageContentActions'
 import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
-import firebase from '../firebase/firebase'
+import firebase from '../../firebase/firebase'
 
 const MediaAddDeleteButton = props => {
   const { mediaLinkDownloadUrl, mediaLink, uploadProgress, setPageParameter } = props

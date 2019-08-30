@@ -2,9 +2,9 @@ import React from 'react'
 
 import './App.css'
 import UnitPage from './components/UnitPage'
-import MaterialPageHOC from './components/MaterialPageHOC'
-import MaterialForm from './components/MaterialForm'
-import MaterialFormHOC from './components/MaterialFormHOC'
+import MaterialPageHOC from './components/materialView/MaterialPageHOC'
+import MaterialForm from './components/materialForm/MaterialForm'
+import MaterialFormHOC from './components/materialForm/MaterialFormHOC'
 import DrawerSettings from './components/DrawerSettings'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 

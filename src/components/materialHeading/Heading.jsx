@@ -2,7 +2,7 @@ import React from 'react'
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { toggleHeadingDrawer } from '../store/appStateActions'
+import { toggleHeadingDrawer } from '../../store/appStateActions'
 import { Link } from 'react-router-dom'
 import orderBy from 'lodash/orderBy'
 

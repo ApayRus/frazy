@@ -2,7 +2,7 @@ import React from 'react'
 import { SwipeableDrawer } from '@material-ui/core'
 import Heading from './Heading'
 import { connect } from 'react-redux'
-import { toggleHeadingDrawer } from '../store/appStateActions'
+import { toggleHeadingDrawer } from '../../store/appStateActions'
 
 function HeadingDrawerHOC(props) {
   const { showHeadingDrawer, toggleHeadingDrawer } = props

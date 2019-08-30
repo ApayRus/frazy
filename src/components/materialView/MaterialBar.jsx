@@ -9,7 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { toggleHeadingDrawer, toggleSettingsDrawer } from '../store/appStateActions'
+import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
 
 const useStyles = makeStyles(theme => ({
   bottom: {
