@@ -4,7 +4,8 @@ import {
   Menu as MenuIcon,
   Settings as SettingsIcon,
   Help as HelpIcon,
-  Edit as EditIcon
+  Edit as EditIcon,
+  Home as HomeIcon
 } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   },
   menu: {
     left: 3
+  },
+  home: {
+    left: 58
   },
   settings: {
     right: 3
@@ -49,6 +53,17 @@ function Appbar(props) {
       >
         <MenuIcon />
       </Fab>
+
+      <Fab
+        className={`${classes.bottom} ${classes.home}`}
+        component={Link}
+        to='/'
+        color='primary'
+        size='medium'
+      >
+        <HomeIcon />
+      </Fab>
+
       <Fab className={`${classes.bottom} ${classes.help}`} color='primary' size='medium'>
         <HelpIcon />
       </Fab>

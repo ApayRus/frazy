@@ -7,12 +7,14 @@ import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormHOC'
 import DrawerSettings from './components/DrawerSettings'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import MainPage from './components/MainPage'
 
 function App(props) {
   return (
     <BrowserRouter>
       <div className='App'>
         <Switch>
+          <Route exact path='/' component={MainPage} />
           <Route path='/material/add' component={MaterialForm} />
           <Route path='/material/edit/:materialId/:trLang' component={MaterialFormHOC} />
           <Route path='/material/edit/:materialId/' component={MaterialFormHOC} />
