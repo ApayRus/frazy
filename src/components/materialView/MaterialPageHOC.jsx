@@ -11,6 +11,8 @@ import { setMenuParameter } from '../../store/menuActions'
 import { CircularProgress } from '@material-ui/core'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
+import DrawerSettings from '../DrawerSettings'
+import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseHOC'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -70,6 +72,8 @@ function MaterialPageHOC(props) {
       <MuiThemeProvider theme={theme}>
         <MaterialPage />
         <MaterialBar />
+        {unit ? <HeadingFirebaseHOC /> : null}
+        <DrawerSettings />
         <LangFonts lang={lang} />
       </MuiThemeProvider>
     )

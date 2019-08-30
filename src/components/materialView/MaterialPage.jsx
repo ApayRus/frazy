@@ -2,7 +2,6 @@ import React from 'react'
 import PlayerControls from './PlayerControls'
 import Phrases from './Phrases'
 import Waveform from '../Waveform'
-import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseHOC'
 
 import { connect } from 'react-redux'
 import PlayerSlideShow from './PlayerSlideShow'
@@ -28,8 +27,7 @@ function MaterialPage(props) {
     phrases,
     mediaLinkDownloadUrl,
     title,
-    trTitle,
-    unit
+    trTitle
   } = props
 
   console.log(mediaLinkDownloadUrl)
@@ -134,7 +132,6 @@ function MaterialPage(props) {
         <PlayerControls {...playerControlsProps} />
       </div>
       <Phrases playPhrase={playPhrase} />
-      {unit ? <HeadingFirebaseHOC /> : null}
     </div>
   )
 }
@@ -143,7 +140,6 @@ const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
   const { phrases, title, trTitle, mediaLinkDownloadUrl } = state.pageContent
-  const { unit } = state.menu
   return {
     currentPhraseId,
     dictationCurrentRepeat,
@@ -155,8 +151,7 @@ const mapStateToProps = state => {
     mediaLinkDownloadUrl,
     phrases,
     title,
-    trTitle,
-    unit
+    trTitle
   }
 }
 

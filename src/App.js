@@ -5,7 +5,6 @@ import UnitPage from './components/UnitPage'
 import MaterialPageHOC from './components/materialView/MaterialPageHOC'
 import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormHOC'
-import DrawerSettings from './components/DrawerSettings'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import MainPage from './components/MainPage'
 
@@ -22,7 +21,6 @@ function App(props) {
           <Route path='/material/:materialId' component={MaterialPageHOC} />
           <Route path='/unit/:unitId' component={UnitPage} />
         </Switch>
-        <DrawerSettings />
       </div>
     </BrowserRouter>
   )
