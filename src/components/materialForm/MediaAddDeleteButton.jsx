@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { setPageParameter } from '../../store/pageContentActions'
 import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
 import firebase from '../../firebase/firebase'
+import nanoid from 'nanoid'
 
 const MediaAddDeleteButton = props => {
   const { mediaLinkDownloadUrl, mediaLink, uploadProgress, setPageParameter } = props
@@ -52,7 +53,8 @@ const MediaAddDeleteButton = props => {
   const handleFileSelect = event => {
     setPageParameter(['mediaLinkDownloadUrl', ''])
     const [file] = event.target.files
-    const fileRef = firebase.storage().ref(`hs/${file.name}`)
+    const nanoName = nanoid()
+    const fileRef = firebase.storage().ref(nanoName)
     const uploadTask = fileRef.put(file)
 
     uploadTask.on('state_changed', snapshot => {
