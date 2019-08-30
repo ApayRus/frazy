@@ -8,14 +8,17 @@ import orderBy from 'lodash/orderBy'
 
 function Heading(props) {
   const { toggleHeadingDrawer } = props
-  const { title, author, heading, logo, background } = props
+  const { title, author, heading, logo, background, trLang } = props
   const headingOrdered = orderBy(heading, ['order'], ['asc'])
 
   const useStyles = makeStyles(theme => ({
     header: {
       textAlign: 'center',
       padding: 20,
-      background: `url(${background})`
+      backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7)), url(${background})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'round',
+      backgroundPosition: 'center center'
     },
     listItem: {
       paddingTop: 0,
@@ -36,14 +39,14 @@ function Heading(props) {
       <div className={classes.header}>
         <Typography variant='h6'>{title}</Typography>
         <Typography variant='subtitle1'>{author}</Typography>
-        <img alt={title} src={logo} />
+        <img style={{ maxWidth: 200 }} alt={title} src={logo} />
       </div>
       <List>
         {headingOrdered.map(elem => {
           return (
             <ListItem
               component={Link}
-              to={`/material/${elem.id}`}
+              to={`/material/${elem.id}/${trLang}`}
               className={classes.listItem}
               button
               divider
@@ -61,7 +64,8 @@ function Heading(props) {
 
 const mapStateToProps = state => {
   const { title, author, heading, logo, background } = state.menu
-  return { title, author, heading, logo, background }
+  const { trLang } = state.pageContent
+  return { title, author, heading, logo, background, trLang }
 }
 
 const mapDispatchToProps = dispatch => ({

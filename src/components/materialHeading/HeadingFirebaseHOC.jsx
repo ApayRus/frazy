@@ -20,7 +20,7 @@ function HeadingFirebaseHOC(props) {
       const { title, author, logo, background } = unitInfo
       setMenuParameter(['title', title])
       setMenuParameter(['author', author])
-      setMenuParameter(['heading', heading])
+
       setMenuParameter(['background', background])
 
       firebase
@@ -41,7 +41,16 @@ function HeadingFirebaseHOC(props) {
     } else {
       //default heading when unit data not exists
       setMenuParameter(['title', unit])
-      setMenuParameter(['author', 'There is no info for this unit. Please add it'])
+      setMenuParameter(['author', 'There is no info for this unit yet'])
+      setMenuParameter([
+        'background',
+        'https://png.pngtree.com/thumb_back/fh260/back_pic/02/68/42/5957908fe6d9740.jpg'
+      ])
+      setMenuParameter(['logo', 'http://origin.lcv.org/wp-content/uploads/2018/01/f-grade.png'])
+    }
+
+    if (heading) {
+      setMenuParameter(['heading', heading])
     }
 
     return <HeadingDrawerHOC />
