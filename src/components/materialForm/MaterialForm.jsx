@@ -123,7 +123,11 @@ const MaterialForm = props => {
       uploadMaterialPhrasesTask,
       uploadTranslationInfoTask,
       uploadTranslationPhrasesTask
-    ]).then(values => setPageParameter(['redirectTo', `${materialId}/${trLang}`]))
+    ]).then(values => {
+      setPageParameter(['redirectTo', `${materialId}/${trLang}`])
+      const eventsRef = db.collection(`events`)
+      eventsRef.add({ lang, trLang, title, trTitle, materialId, time: Date.now(), unit })
+    })
   }
 
   return (
