@@ -5,7 +5,7 @@ import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import firebase from '../../firebase/firebase'
 import { setMenuParameter } from '../../store/menuActions'
 import { CircularProgress } from '@material-ui/core'
-import HeadingDrawerHOC from './HeadingDrawerHOC'
+import HeadingDrawerHOC from './HeadingDrawerContainer'
 
 /**
  * this component loads data from Firebase

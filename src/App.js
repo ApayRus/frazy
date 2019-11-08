@@ -2,9 +2,9 @@ import React from 'react'
 
 import './App.css'
 import UnitPage from './components/UnitPage'
-import MaterialPageHOC from './components/materialView/MaterialPageHOC'
+import MaterialPageHOC from './components/materialView/MaterialPageFirebaseContainer'
 import MaterialForm from './components/materialForm/MaterialForm'
-import MaterialFormHOC from './components/materialForm/MaterialFormHOC'
+import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseContainer'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import MainPage from './components/MainPage'
 
