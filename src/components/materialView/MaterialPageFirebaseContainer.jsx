@@ -27,6 +27,12 @@ function MaterialPageHOC(props) {
     setMenuParameter,
     setPageParameter
   } = props
+
+  console.log(
+    'isLoaded all ',
+    isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)
+  )
+
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     // const { materialId } = props.match.params
     // console.log('materialId', materialId)
@@ -51,7 +57,7 @@ function MaterialPageHOC(props) {
     setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
     setPageParameter(['mediaLinkDownloadUrl', ''])
-
+    console.log('mediaLink', mediaLink)
     if (mediaLink.match('http')) {
       //is external link, with full path to file
       setPageParameter(['mediaLinkDownloadUrl', mediaLink])
@@ -62,6 +68,8 @@ function MaterialPageHOC(props) {
         .ref(mediaLink)
         .getDownloadURL()
         .then(url => {
+          console.log('url', url)
+
           setPageParameter(['mediaLinkDownloadUrl', url])
         })
     }
