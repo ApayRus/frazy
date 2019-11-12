@@ -8,7 +8,7 @@ import PlayerSlideShow from './PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { setPlayerState } from '../../store/playerStateActions'
-import { Typography, CircularProgress } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' }
@@ -25,12 +25,9 @@ function MaterialPage(props) {
     showSlideshow,
     showWaveform,
     phrases,
-    mediaLinkDownloadUrl,
     title,
     trTitle
   } = props
-
-  console.log(mediaLinkDownloadUrl)
 
   const currentPhraseNum = phrases.findIndex(elem => elem.id === currentPhraseId)
 
@@ -120,13 +117,9 @@ function MaterialPage(props) {
         <Typography variant='h5'>{title}</Typography>
         {trTitle ? <Typography variant='subtitle2'>{trTitle}</Typography> : null}
       </div>
-      {mediaLinkDownloadUrl ? (
-        <div className={showWaveform ? '' : classes.hidden}>
-          <Waveform readOnly />
-        </div>
-      ) : (
-        <CircularProgress />
-      )}
+      <div className={showWaveform ? '' : classes.hidden}>
+        <Waveform readOnly />
+      </div>
       <div className={showSlideshow ? '' : classes.hidden}>
         <PlayerSlideShow currentPhraseNum={currentPhraseNum} />
         <PlayerControls {...playerControlsProps} />
@@ -139,7 +132,7 @@ function MaterialPage(props) {
 const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
-  const { phrases, title, trTitle, mediaLinkDownloadUrl } = state.pageContent
+  const { phrases, title, trTitle } = state.pageContent
   return {
     currentPhraseId,
     dictationCurrentRepeat,
@@ -148,7 +141,6 @@ const mapStateToProps = state => {
     dictationDelay,
     showWaveform,
     showSlideshow,
-    mediaLinkDownloadUrl,
     phrases,
     title,
     trTitle
