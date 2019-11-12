@@ -7,6 +7,7 @@ import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseContainer'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import MainPage from './components/MainPage'
+import LoginPage from './components/LoginPage'
 
 function App(props) {
   return (
@@ -20,6 +21,7 @@ function App(props) {
           <Route path='/material/:materialId/:trLang' component={MaterialPageHOC} />
           <Route path='/material/:materialId' component={MaterialPageHOC} />
           <Route path='/unit/:unitId' component={UnitPage} />
+          <Route path='/login' component={LoginPage} />
         </Switch>
       </div>
     </BrowserRouter>
