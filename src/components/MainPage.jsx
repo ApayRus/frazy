@@ -58,7 +58,6 @@ function MainPage(props) {
 }
 
 const mapStateToProps = state => {
-  console.log('state.firestore', state.firestore)
   return { events: state.firestore.ordered.events }
 }
 

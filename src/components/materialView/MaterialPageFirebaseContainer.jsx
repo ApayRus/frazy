@@ -28,15 +28,8 @@ function MaterialPageHOC(props) {
     setPageParameter
   } = props
 
-  console.log(
-    'isLoaded all ',
-    isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)
-  )
 
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
-    // const { materialId } = props.match.params
-    // console.log('materialId', materialId)
-
     const { mediaLink, unit, lang, title } = materialInfo
     let phrases = materialPhrases
     phrases = makePhrasesArray(materialPhrases)
@@ -57,7 +50,8 @@ function MaterialPageHOC(props) {
     setPageParameter(['lang', lang])
     setPageParameter(['phrases', phrases])
     setPageParameter(['mediaLinkDownloadUrl', ''])
-    console.log('mediaLink', mediaLink)
+    setPageParameter(['waveformRenderProgress', -1])
+    // console.log('mediaLink', mediaLink)
     if (mediaLink.match('http')) {
       //is external link, with full path to file
       setPageParameter(['mediaLinkDownloadUrl', mediaLink])
@@ -68,8 +62,6 @@ function MaterialPageHOC(props) {
         .ref(mediaLink)
         .getDownloadURL()
         .then(url => {
-          console.log('url', url)
-
           setPageParameter(['mediaLinkDownloadUrl', url])
         })
     }

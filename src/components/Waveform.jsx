@@ -12,23 +12,27 @@ function Waveform(props) {
 
   useEffect(() => {
     //component will mount
-    wavesurferModule.wavesurfer = wavesurferModule.init(
-      waveformElem,
-      timelineElem,
-      mediaLinkDownloadUrl,
-      phrases,
-      readOnly
-    )
+    if (mediaLinkDownloadUrl) {
+      wavesurferModule.wavesurfer = wavesurferModule.init(
+        waveformElem,
+        timelineElem,
+        mediaLinkDownloadUrl,
+        phrases,
+        readOnly
+      )
 
-    wavesurferModule.wavesurfer.on('ready', e => {
-      setIsReady(true)
-    })
+      wavesurferModule.wavesurfer.on('ready', e => {
+        setIsReady(true)
+      })
+    }
 
     return () => {
       //component will UNmount
-      wavesurferModule.wavesurfer.destroy()
+      if (mediaLinkDownloadUrl) {
+        wavesurferModule.wavesurfer.destroy()
+      }
     }
-  }, [mediaLinkDownloadUrl])
+  }, [mediaLinkDownloadUrl, phrases, readOnly, timelineElem, waveformElem])
 
   return (
     <div className='waveform'>
