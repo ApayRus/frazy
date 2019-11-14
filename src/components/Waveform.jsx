@@ -32,7 +32,8 @@ function Waveform(props) {
         wavesurferModule.wavesurfer.destroy()
       }
     }
-  }, [mediaLinkDownloadUrl, phrases, readOnly, timelineElem, waveformElem])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaLinkDownloadUrl])
 
   return (
     <div className='waveform'>
