@@ -1,11 +1,12 @@
 import React from 'react'
-import { Fab, List, ListItem, ListItemText } from '@material-ui/core'
+import { List, ListItem, ListItemText } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import * as moment from 'moment'
+import ButtonWithAuthPopover from './ButtonWithAuthPopover'
 
 function MainPage(props) {
   const { events } = props
@@ -35,17 +36,16 @@ function MainPage(props) {
       </List>
     )
   }
+  const materialAddLink = 'material/add'
   const AddButton = () => {
     return (
-      <Fab
-        component={Link}
-        to='material/add'
-        color='primary'
-        size='medium'
-        style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}
-      >
-        <AddIcon />
-      </Fab>
+      <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
+        <ButtonWithAuthPopover
+          redirectUrl={materialAddLink}
+          message={`You should login before add a material. `}
+          buttonIcon={<AddIcon />}
+        />
+      </div>
     )
   }
 

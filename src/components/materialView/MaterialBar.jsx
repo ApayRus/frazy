@@ -13,6 +13,7 @@ import { connect, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import LoginPopover from '../LoginPopover'
 import { useFirebase } from 'react-redux-firebase'
+import ButtonWithAuthPopover from '../ButtonWithAuthPopover'
 
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
 
@@ -104,14 +105,14 @@ function Appbar(props) {
       <Fab className={`${classes.bottom} ${classes.help}`} color='primary' size='medium'>
         <HelpIcon />
       </Fab>
-      <Fab
-        onClick={onClickEdit}
-        className={`${classes.bottom} ${classes.edit}`}
-        color='primary'
-        size='medium'
-      >
-        <EditIcon />
-      </Fab>
+      <div className={`${classes.bottom} ${classes.edit}`}>
+        <ButtonWithAuthPopover
+          redirectUrl={materialEditLink}
+          message={`You should login before edit the material. `}
+          buttonIcon={<EditIcon />}
+        />
+      </div>
+
       <Fab
         className={`${classes.bottom} ${classes.settings}`}
         onClick={() => {
