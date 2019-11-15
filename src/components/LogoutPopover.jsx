@@ -20,6 +20,11 @@ export default function SimplePopover(props) {
   } = props
   const classes = useStyles()
 
+  const handleLogout = () => {
+    firebase.logout()
+    handleCloseLoginPopover()
+  }
+
   return (
     <div>
       <Popover
@@ -37,7 +42,7 @@ export default function SimplePopover(props) {
         }}
       >
         <div className={classes.popoverContainer}>
-          <Button variant='contained' onClick={firebase.logout}>
+          <Button variant='contained' onClick={handleLogout}>
             Logout
           </Button>
         </div>

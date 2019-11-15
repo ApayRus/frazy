@@ -64,7 +64,8 @@ function Appbar(props) {
     handleCloseLoginPopover,
     firebase,
     history,
-    redirectUrl: materialEditLink
+    redirectUrl: materialEditLink,
+    message: 'You should login before edit the material.'
   }
   //end Popover
 

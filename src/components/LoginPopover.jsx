@@ -19,7 +19,8 @@ export default function SimplePopover(props) {
     handleCloseLoginPopover,
     firebase,
     history,
-    redirectUrl
+    redirectUrl,
+    message
   } = props
   const classes = useStyles()
 
@@ -40,7 +41,7 @@ export default function SimplePopover(props) {
         }}
       >
         <div className={classes.popoverContainer}>
-          <Typography variant='body1'>You should login before this action.</Typography>
+          <Typography variant='body1'>{message}</Typography>
           <StyledFirebaseAuth
             uiConfig={{
               signInFlow: 'popup',
@@ -49,7 +50,8 @@ export default function SimplePopover(props) {
               callbacks: {
                 signInSuccessWithAuthResult: authResult => {
                   firebase.handleRedirectResult(authResult).then(() => {
-                    history.push(redirectUrl) //if you use react router to redirect
+                    if (redirectUrl) history.push(redirectUrl) //if you use react router to redirect
+                    handleCloseLoginPopover()
                   })
                   return false
                 }

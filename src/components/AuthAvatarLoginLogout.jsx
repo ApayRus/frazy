@@ -42,7 +42,7 @@ function Appbar(props) {
     handleCloseLoginPopover,
     firebase,
     history,
-    redirectUrl: redirectAfterLogout
+    message: `Authentication allows you to add and edit materials.`
   }
   //end Popover
 
@@ -55,7 +55,11 @@ function Appbar(props) {
       <IconButton size='small' onClick={onClickAvatar}>
         {auth.uid ? <Avatar alt='avatar' src={auth.photoURL} /> : <AnonymIcon />}
       </IconButton>
-      {auth.uid ? <LogoutPopover {...popoverProps} /> : <LoginPopover {...popoverProps} />}
+      {auth.uid ? (
+        <LogoutPopover {...popoverProps} redirectUrl={redirectAfterLogout} />
+      ) : (
+        <LoginPopover {...popoverProps} />
+      )}
     </div>
   )
 }
