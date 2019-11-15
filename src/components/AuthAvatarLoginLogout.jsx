@@ -53,7 +53,13 @@ function Appbar(props) {
   return (
     <div className={`${classes.avatar}`}>
       <IconButton size='small' onClick={onClickAvatar}>
-        {auth.uid ? <Avatar alt='avatar' src={auth.photoURL} /> : <AnonymIcon />}
+        {auth.uid ? (
+          <Avatar alt='avatar' src={auth.photoURL} />
+        ) : (
+          <Avatar>
+            <AnonymIcon />
+          </Avatar>
+        )}
       </IconButton>
       {auth.uid ? (
         <LogoutPopover {...popoverProps} redirectUrl={redirectAfterLogout} />
