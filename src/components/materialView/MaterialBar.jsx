@@ -9,10 +9,7 @@ import {
 } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
-import { connect, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import LoginPopover from '../LoginPopover'
-import { useFirebase } from 'react-redux-firebase'
+import { connect } from 'react-redux'
 import ButtonWithAuthPopover from '../ButtonWithAuthPopover'
 
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
@@ -42,42 +39,9 @@ const useStyles = makeStyles(theme => ({
 
 function Appbar(props) {
   const { toggleHeadingDrawer, toggleSettingsDrawer, materialId, trLang } = props
-  const firebase = useFirebase()
   const classes = useStyles()
-  const auth = useSelector(state => state.firebase.auth)
-  const history = useHistory()
 
   const materialEditLink = materialId ? `/material/edit/${materialId}/${trLang}` : `/material/edit/`
-
-  //start POPOVER
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const loginPopoverOpen = Boolean(anchorEl)
-  const loginPopoverId = loginPopoverOpen ? 'simple-popover' : undefined
-
-  const handleCloseLoginPopover = () => {
-    setAnchorEl(null)
-  }
-
-  const popoverProps = {
-    loginPopoverId,
-    loginPopoverOpen,
-    anchorEl,
-    handleCloseLoginPopover,
-    firebase,
-    history,
-    redirectUrl: materialEditLink,
-    message: 'You should login before edit the material.'
-  }
-  //end Popover
-
-  const onClickEdit = event => {
-    console.log('auth', auth)
-    if (auth.uid) {
-      history.push(materialEditLink)
-    } else {
-      setAnchorEl(event.currentTarget)
-    }
-  }
 
   return (
     <div>
@@ -123,7 +87,6 @@ function Appbar(props) {
       >
         <SettingsIcon />
       </Fab>
-      <LoginPopover {...popoverProps} />
     </div>
   )
 }
