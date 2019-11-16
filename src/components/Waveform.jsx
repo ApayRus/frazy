@@ -12,6 +12,7 @@ function Waveform(props) {
 
   useEffect(() => {
     //component will mount
+    setIsReady(false)
     if (mediaLinkDownloadUrl) {
       wavesurferModule.wavesurfer = wavesurferModule.init(
         waveformElem,
