@@ -72,10 +72,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload)),
-  clearCachedDocs: () => dispatch({ type: actionTypes.CLEAR_DATA })
+  clearCachedDocs: () => dispatch({ type: actionTypes.CLEAR_DATA, preserve: { ordered: true } })
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Heading)
+export default connect(mapStateToProps, mapDispatchToProps)(Heading)
