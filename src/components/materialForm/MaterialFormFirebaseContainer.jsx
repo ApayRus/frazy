@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
@@ -26,56 +26,62 @@ function MaterialFormHOC(props) {
     translationPhrases,
     setPageParameter
   } = props
-  const { materialId, trLang } = props.match.params
-  if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
-    const { mediaLink, lang, title, unit, order } = materialInfo
-    let phrases = materialPhrases
-    console.log('lang', lang)
-    phrases = makePhrasesArray(materialPhrases)
-    // console.log('phrases', phrases)
-    setPageParameter(['materialId', materialId])
-    setPageParameter(['unit', unit])
-    setPageParameter(['order', order])
-    setPageParameter(['lang', lang])
-    setPageParameter(['trLang', trLang])
-    setPageParameter(['title', title])
-    setPageParameter(['mediaLink', mediaLink])
-    setPageParameter(['phrases', phrases])
-    const text = localPhrasesToText(phrases)
-    setPageParameter(['text', text])
-    setPageParameter(['mediaLinkDownloadUrl', ''])
-    //is external link, with full path to file
-    if (mediaLink.match('http')) {
-      setPageParameter(['mediaLinkDownloadUrl', mediaLink])
-    } else {
-      //mediaLink is just id to the file on our hosting, we'll get downloadURL
-      firebase
-        .storage()
-        .ref(mediaLink)
-        .getDownloadURL()
-        .then(url => {
-          setPageParameter(['mediaLinkDownloadUrl', url])
-        })
-    }
 
-    //adding translation
-    if (translationInfo) {
-      const { lang: trLang, title: trTitle } = translationInfo
-      setPageParameter(['trLang', trLang])
-      setPageParameter(['trTitle', trTitle])
-      if (translationPhrases) {
-        phrases = addTranslation(phrases, translationPhrases, trLang)
-        const trText = localPhrasesToTrText(phrases, trLang)
-        setPageParameter(['trText', trText])
+  const { materialId } = props.match.params
+  const [isDataLoaded, setIsDataLoaded] = useState(false)
+
+  useEffect(() => {
+    if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
+      const { mediaLink, lang, title, unit, order } = materialInfo
+      let phrases = materialPhrases
+      phrases = makePhrasesArray(materialPhrases)
+      const fillReduxStore = () => {
+        setPageParameter(['materialId', materialId])
+        setPageParameter(['unit', unit])
+        setPageParameter(['order', order])
+        setPageParameter(['lang', lang])
+        setPageParameter(['title', title])
+        setPageParameter(['mediaLink', mediaLink])
+        const text = localPhrasesToText(phrases)
+        setPageParameter(['text', text])
+        // setPageParameter(['mediaLinkDownloadUrl', ''])
+        //TRANSLATION
+        if (translationInfo) {
+          const { lang: trLang, title: trTitle } = translationInfo
+          setPageParameter(['trLang', trLang])
+          setPageParameter(['trTitle', trTitle])
+          if (translationPhrases) {
+            phrases = addTranslation(phrases, translationPhrases, trLang)
+            const trText = localPhrasesToTrText(phrases, trLang)
+            setPageParameter(['trText', trText])
+          }
+        }
+        setPageParameter(['phrases', phrases])
+        // MEDIA-LINK
+        //is external link, with full path to file
+        if (mediaLink.match('http')) {
+          setPageParameter(['mediaLinkDownloadUrl', mediaLink])
+        } else {
+          //mediaLink is just id to the file on our hosting, we'll get downloadURL
+          firebase
+            .storage()
+            .ref(mediaLink)
+            .getDownloadURL()
+            .then(url => {
+              setPageParameter(['mediaLinkDownloadUrl', url])
+            })
+        }
       }
+      fillReduxStore()
+
+      setIsDataLoaded(true)
     }
+    return () => {
+      //on unmount
+    }
+  }, [materialInfo, materialPhrases, translationInfo, translationPhrases])
 
-    // const MP = React.memo(props => <MaterialPage />)
-
-    return <MaterialForm />
-  } else {
-    return <CircularProgress size={100} />
-  }
+  return isDataLoaded ? <MaterialForm /> : <CircularProgress />
 }
 
 const mapStateToProps = state => {
@@ -96,10 +102,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     const { materialId, trLang } = props.match.params
 
