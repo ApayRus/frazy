@@ -24,49 +24,45 @@ function MainPage(props) {
 
   const materialAddLink = 'material/add'
 
-  const AddButton = () => {
-    return (
-      <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
-        <ButtonWithAuthPopover
-          redirectUrl={materialAddLink}
-          message={`You should login before add a material. `}
-          buttonIcon={<AddIcon />}
-        />
-      </div>
-    )
-  }
+  const addButton = (
+    <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
+      <ButtonWithAuthPopover
+        redirectUrl={materialAddLink}
+        message={`You should login before add a material. `}
+        buttonIcon={<AddIcon />}
+      />
+    </div>
+  )
 
-  const EventList = () => {
-    return isDataLoaded ? (
-      <List>
-        {events.map(event => {
-          const { id, materialId, lang, trLang, title, trTitle, time, unit } = event
-          const primaryText = `${lang}: ${title}`
-          const secondaryText = `${trLang}: ${trTitle}, unit: ${unit}, time: ${moment(
-            time
-          ).fromNow()}`
-          return (
-            <ListItem
-              key={id}
-              component={Link}
-              to={`/material/${materialId}/${trLang}`}
-              button
-              divider
-            >
-              <ListItemText primary={primaryText} secondary={secondaryText} />
-            </ListItem>
-          )
-        })}
-      </List>
-    ) : (
-      <CircularProgress />
-    )
-  }
+  const eventList = isDataLoaded ? (
+    <List>
+      {events.map(event => {
+        const { id, materialId, lang, trLang, title, trTitle, time, unit } = event
+        const primaryText = `${lang}: ${title}`
+        const secondaryText = `${trLang}: ${trTitle}, unit: ${unit}, time: ${moment(
+          time
+        ).fromNow()}`
+        return (
+          <ListItem
+            key={id}
+            component={Link}
+            to={`/material/${materialId}/${trLang}`}
+            button
+            divider
+          >
+            <ListItemText primary={primaryText} secondary={secondaryText} />
+          </ListItem>
+        )
+      })}
+    </List>
+  ) : (
+    <CircularProgress />
+  )
 
   return (
     <div>
-      <EventList />
-      <AddButton />
+      {eventList}
+      {addButton}
     </div>
   )
 }
