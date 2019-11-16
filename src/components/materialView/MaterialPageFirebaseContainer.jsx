@@ -28,7 +28,6 @@ function MaterialPageHOC(props) {
     setPageParameter
   } = props
 
-
   if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
     const { mediaLink, unit, lang, title } = materialInfo
     let phrases = materialPhrases
@@ -44,6 +43,7 @@ function MaterialPageHOC(props) {
     }
 
     const { materialId } = props.match.params
+
     setMenuParameter(['unit', unit])
     setPageParameter(['materialId', materialId])
     setPageParameter(['title', title])
@@ -51,6 +51,7 @@ function MaterialPageHOC(props) {
     setPageParameter(['phrases', phrases])
     setPageParameter(['mediaLinkDownloadUrl', ''])
     setPageParameter(['waveformRenderProgress', -1])
+
     // console.log('mediaLink', mediaLink)
     if (mediaLink.match('http')) {
       //is external link, with full path to file
@@ -106,10 +107,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     const { materialId, trLang } = props.match.params
     return [
