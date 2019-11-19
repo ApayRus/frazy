@@ -41,7 +41,7 @@ function Heading(props) {
       <div className={classes.header}>
         <Typography variant='h6'>{title}</Typography>
         <Typography variant='subtitle1'>{author}</Typography>
-        <img style={{ maxWidth: 200 }} alt={title} src={logo} />
+        <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logo} />
       </div>
       <List>
         {headingOrdered.map(elem => {
