@@ -19,22 +19,16 @@ import { CircularProgress } from '@material-ui/core'
  * @param {} props
  */
 function MaterialFormHOC(props) {
-  const {
-    materialInfo,
-    materialPhrases,
-    translationInfo,
-    translationPhrases,
-    setPageParameter
-  } = props
+  const { material, translation, setPageParameter } = props
 
   const { materialId } = props.match.params
   const [isDataLoaded, setIsDataLoaded] = useState(false)
 
   useEffect(() => {
-    if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
-      const { mediaLink, lang, title, unit, order } = materialInfo
-      let phrases = materialPhrases
-      phrases = makePhrasesArray(materialPhrases)
+    if (isLoaded(material, translation)) {
+      const { mediaLink, lang, title, unit, order } = material
+      let { phrases } = material
+      phrases = makePhrasesArray(phrases)
       const fillReduxStore = () => {
         setPageParameter(['materialId', materialId])
         setPageParameter(['unit', unit])
@@ -46,12 +40,12 @@ function MaterialFormHOC(props) {
         setPageParameter(['text', text])
         // setPageParameter(['mediaLinkDownloadUrl', ''])
         //TRANSLATION
-        if (translationInfo) {
-          const { lang: trLang, title: trTitle } = translationInfo
+        if (translation) {
+          const { lang: trLang, title: trTitle } = translation
           setPageParameter(['trLang', trLang])
           setPageParameter(['trTitle', trTitle])
-          if (translationPhrases) {
-            phrases = addTranslation(phrases, translationPhrases, trLang)
+          if (translation.phrases) {
+            phrases = addTranslation(phrases, translation.phrases, trLang)
             const trText = localPhrasesToTrText(phrases, trLang)
             setPageParameter(['trText', trText])
           }
@@ -79,7 +73,7 @@ function MaterialFormHOC(props) {
     return () => {
       //on unmount
     }
-  }, [materialInfo, materialPhrases, translationInfo, translationPhrases])
+  }, [material, translation])
 
   return isDataLoaded ? <MaterialForm /> : <CircularProgress />
 }
@@ -87,10 +81,8 @@ function MaterialFormHOC(props) {
 const mapStateToProps = state => {
   const fs = state.firestore.data
   return {
-    materialInfo: fs.materialInfo,
-    materialPhrases: fs.materialPhrases,
-    translationInfo: fs.translationInfo,
-    translationPhrases: fs.translationPhrases
+    material: fs.material,
+    translation: fs.translation
   }
 }
 
@@ -107,14 +99,8 @@ export default compose(
     const { materialId, trLang } = props.match.params
 
     return [
-      { collection: 'materialInfo', doc: materialId, storeAs: 'materialInfo' },
-      { collection: 'materialPhrases', doc: materialId, storeAs: 'materialPhrases' },
-      { collection: 'translationInfo', doc: `${materialId}_${trLang}`, storeAs: 'translationInfo' },
-      {
-        collection: 'translationPhrases',
-        doc: `${materialId}_${trLang}`,
-        storeAs: 'translationPhrases'
-      }
+      { collection: 'material', doc: materialId, storeAs: 'material' },
+      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' }
     ]
   })
 )(MaterialFormHOC)

@@ -12,8 +12,8 @@ import HeadingDrawerHOC from './HeadingDrawerContainer'
  * @param {} props
  */
 function HeadingFirebaseHOC(props) {
-  const { unitInfo, heading, setMenuParameter, unit } = props
-
+  const { setMenuParameter, unit } = props
+  console.log('unit', unit)
   const setParamAsync = (paramName, firebaseId) => {
     firebase
       .storage()
@@ -26,29 +26,28 @@ function HeadingFirebaseHOC(props) {
 
   const defaultUnitInfo = {
     author: 'There is no info for this unit yet',
-    title: unit,
+    title: 'there should be title',
     logo: 'default-files/default-logo.png',
     background: 'default-files/default-background.jpg'
   }
 
-  if (isLoaded(unitInfo, heading)) {
-    if (unitInfo) {
+  if (isLoaded(unit)) {
+    if (unit) {
       //may be unitInfo not exists
-      const { title, author, logo, background } = unitInfo
+      const { title, author, logo, background } = unit
       setMenuParameter(['title', title ? title : defaultUnitInfo.title])
       setMenuParameter(['author', author ? author : defaultUnitInfo.author])
       setParamAsync('logo', logo ? logo : defaultUnitInfo.logo)
       setParamAsync('background', background ? background : defaultUnitInfo.background)
+      if (unit.heading) {
+        setMenuParameter(['heading', unit.heading])
+      }
     } else {
       //default heading when unit data not exists
       setMenuParameter(['title', defaultUnitInfo.title])
       setMenuParameter(['author', defaultUnitInfo.author])
       setParamAsync('logo', defaultUnitInfo.logo)
       setParamAsync('background', defaultUnitInfo.background)
-    }
-
-    if (heading) {
-      setMenuParameter(['heading', heading])
     }
 
     return <HeadingDrawerHOC />
@@ -58,10 +57,9 @@ function HeadingFirebaseHOC(props) {
 }
 
 const mapStateToProps = state => {
-  const { unitInfo } = state.firestore.data
-  const { heading } = state.firestore.ordered
-  const { unit } = state.menu
-  return { unitInfo, heading, unit }
+  return {
+    unit: state.firestore.data.unit
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -73,15 +71,7 @@ const mapDispatchToProps = dispatch => {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
-    // const { materialId } = props.match.params
-    const { unit } = props
-    return [
-      { collection: 'units', doc: unit, storeAs: 'unitInfo' },
-      {
-        collection: 'materialInfo',
-        where: [['unit', '==', unit]],
-        storeAs: 'heading'
-      } //[materialInfo]
-    ]
+    const { unitId } = props
+    return [{ collection: 'unit', doc: unitId, storeAs: 'unit' }]
   })
 )(HeadingFirebaseHOC)

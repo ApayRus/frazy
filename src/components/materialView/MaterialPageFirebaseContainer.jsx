@@ -19,26 +19,20 @@ import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
  * @param {} props
  */
 function MaterialPageHOC(props) {
-  const {
-    materialInfo,
-    materialPhrases,
-    translationInfo,
-    translationPhrases,
-    setMenuParameter,
-    setPageParameter
-  } = props
+  const { material, translation, setMenuParameter, setPageParameter } = props
 
-  if (isLoaded(materialInfo, materialPhrases, translationInfo, translationPhrases)) {
-    const { mediaLink, unit, lang, title } = materialInfo
-    let phrases = materialPhrases
-    phrases = makePhrasesArray(materialPhrases)
+  if (isLoaded(material, translation)) {
+    const { mediaLink, unit, lang, title } = material
+    console.log('translation', translation)
+    let phrases = material.phrases
+    phrases = makePhrasesArray(phrases)
 
-    if (translationInfo) {
-      const { lang, title } = translationInfo
+    if (translation) {
+      const { lang, title } = translation
       setPageParameter(['trLang', lang])
       setPageParameter(['trTitle', title])
-      if (translationPhrases) {
-        phrases = addTranslation(phrases, translationPhrases, translationInfo.lang)
+      if (translation) {
+        phrases = addTranslation(phrases, translation.phrases, translation.lang)
       }
     }
 
@@ -67,13 +61,19 @@ function MaterialPageHOC(props) {
         })
     }
 
+    /*     console.log('material', JSON.stringify({ ...materialInfo, phrases: { ...materialPhrases } }))
+    console.log(
+      'translation',
+      JSON.stringify({ ...translationInfo, phrases: { ...translationPhrases } })
+    ) */
+
     const theme = langTheme(lang)
 
     return (
       <MuiThemeProvider theme={theme}>
         <MaterialPage />
         <MaterialBar />
-        {unit ? <HeadingFirebaseHOC /> : null}
+        {unit ? <HeadingFirebaseHOC unitId={unit} /> : null}
         <DrawerSettings />
         <LangFonts lang={lang} />
       </MuiThemeProvider>
@@ -84,19 +84,8 @@ function MaterialPageHOC(props) {
 }
 
 const mapStateToProps = state => {
-  const {
-    materialInfo,
-    materialPhrases,
-    translationInfo,
-    translationPhrases
-  } = state.firestore.data
-
-  return {
-    materialInfo,
-    materialPhrases,
-    translationInfo,
-    translationPhrases
-  }
+  const fs = state.firestore.data
+  return { material: fs.material, translation: fs.translation }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -111,15 +100,8 @@ export default compose(
   firestoreConnect(props => {
     const { materialId, trLang } = props.match.params
     return [
-      { collection: 'materialInfo', doc: materialId, storeAs: 'materialInfo' },
-      { collection: 'materialPhrases', doc: materialId, storeAs: 'materialPhrases' },
-      { collection: 'translationInfo', doc: `${materialId}_${trLang}`, storeAs: 'translationInfo' },
-      {
-        collection: 'translationPhrases',
-        doc: `${materialId}_${trLang}`,
-        storeAs: 'translationPhrases'
-      }
-      // { collection: "applications", where: [["tournamentId", "==", tournamentId]] }
+      { collection: 'material', doc: materialId, storeAs: 'material' },
+      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' }
     ]
   })
 )(MaterialPageHOC)
