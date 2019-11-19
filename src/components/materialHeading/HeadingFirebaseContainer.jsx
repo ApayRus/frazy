@@ -14,39 +14,37 @@ import HeadingDrawerHOC from './HeadingDrawerContainer'
 function HeadingFirebaseHOC(props) {
   const { unitInfo, heading, setMenuParameter, unit } = props
 
+  const setParamAsync = (paramName, firebaseId) => {
+    firebase
+      .storage()
+      .ref(firebaseId)
+      .getDownloadURL()
+      .then(url => {
+        setMenuParameter([paramName, url])
+      })
+  }
+
+  const defaultUnitInfo = {
+    author: 'There is no info for this unit yet',
+    title: unit,
+    logo: 'default-files/default-logo.png',
+    background: 'default-files/default-background.jpg'
+  }
+
   if (isLoaded(unitInfo, heading)) {
     if (unitInfo) {
       //may be unitInfo not exists
       const { title, author, logo, background } = unitInfo
-      setMenuParameter(['title', title])
-      setMenuParameter(['author', author])
-
-      setMenuParameter(['background', background])
-
-      firebase
-        .storage()
-        .ref(logo)
-        .getDownloadURL()
-        .then(url => {
-          setMenuParameter(['logo', url])
-        })
-
-      firebase
-        .storage()
-        .ref(background)
-        .getDownloadURL()
-        .then(url => {
-          setMenuParameter(['background', url])
-        })
+      setMenuParameter(['title', title ? title : defaultUnitInfo.title])
+      setMenuParameter(['author', author ? author : defaultUnitInfo.author])
+      setParamAsync('logo', logo ? logo : defaultUnitInfo.logo)
+      setParamAsync('background', background ? background : defaultUnitInfo.background)
     } else {
       //default heading when unit data not exists
-      setMenuParameter(['title', unit])
-      setMenuParameter(['author', 'There is no info for this unit yet'])
-      setMenuParameter([
-        'background',
-        'https://png.pngtree.com/thumb_back/fh260/back_pic/02/68/42/5957908fe6d9740.jpg'
-      ])
-      setMenuParameter(['logo', 'http://origin.lcv.org/wp-content/uploads/2018/01/f-grade.png'])
+      setMenuParameter(['title', defaultUnitInfo.title])
+      setMenuParameter(['author', defaultUnitInfo.author])
+      setParamAsync('logo', defaultUnitInfo.logo)
+      setParamAsync('background', defaultUnitInfo.background)
     }
 
     if (heading) {
@@ -73,10 +71,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     // const { materialId } = props.match.params
     const { unit } = props
