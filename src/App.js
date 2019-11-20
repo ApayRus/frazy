@@ -7,7 +7,7 @@ import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseContainer'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import MainPage from './components/MainPage'
-import AuthAvatarLoginLogout from './components/AuthAvatarLoginLogout'
+import AuthAvatarLoginLogout from './components/auth/AuthAvatarLoginLogout'
 
 function App(props) {
   return (

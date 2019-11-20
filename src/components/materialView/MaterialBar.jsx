@@ -10,7 +10,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import ButtonWithAuthPopover from '../ButtonWithAuthPopover'
+import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
 

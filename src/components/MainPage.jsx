@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import * as moment from 'moment'
-import ButtonWithAuthPopover from './ButtonWithAuthPopover'
+import ButtonWithAuthPopover from './auth/ButtonWithAuthPopover'
 
 function MainPage(props) {
   const { events } = props
