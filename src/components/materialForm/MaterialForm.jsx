@@ -21,16 +21,7 @@ import {
 import PhrasesForTextArea from './MaterialFormPhrases'
 
 const MaterialForm = props => {
-  const {
-    mediaLinkDownloadUrl,
-    uploadProgress,
-    redirectTo,
-    setPageParameter,
-    text,
-    phrases
-  } = props
-
-  let { materialId } = props
+  const { mediaLinkDownloadUrl, uploadProgress, redirectTo, setPageParameter, text } = props
 
   setPageParameter(['redirectTo', ''])
 
@@ -57,73 +48,54 @@ const MaterialForm = props => {
 
   const handleSubmit = () => {
     // MATERIAL data for submit
-    const { title, mediaLink, lang, unit, order } = props
+    const { title, mediaLink, lang, unit, order, phrases } = props
 
-    const materialInfo = { title, mediaLink, lang, unit, order }
+    let { materialId } = props
+
     const materialPhrases = localPhrasesToDBphrases(phrases)
+
+    const material = { title, mediaLink, lang, unit, order, phrases: materialPhrases }
 
     const db = firebase.firestore()
 
     // refs to 2 documents in 2 collections:
-    let materialInfoDocRef
-    //exist materialId => it is update material
-    if (materialId) {
-      materialInfoDocRef = db.doc(`materialInfo/${materialId}`)
-    }
-    //not exist materialId => it is create material
-    else {
-      materialInfoDocRef = db.collection(`materialInfo`).doc()
-      materialId = materialInfoDocRef.id
-    }
-    const materialPhrasesDocRef = db.doc(`materialPhrases/${materialId}`)
+    const materialDocRef = materialId
+      ? db.collection(`material`).doc(materialId)
+      : db.collection(`material`).doc()
+    materialId = materialDocRef.id // if it was generated now, we updated it
 
     //upload promices
     //  material
-    const uploadMaterialInfoTask = materialInfoDocRef
-      .set(materialInfo)
-      .then(snapshot => console.log('materialInfo uploaded'))
-      .catch(error => console.log('error', error))
-
-    const uploadMaterialPhrasesTask = materialPhrasesDocRef
-      .set(materialPhrases)
-      .then(snapshot => console.log('materialPhrases uploaded'))
+    const uploadMaterialTask = materialDocRef
+      .set(material)
+      .then(snapshot => console.log('material uploaded'))
       .catch(error => console.log('error', error))
 
     //  translation
 
     // TRANSLATION
-    const { trLang, trTitle, trText } = props
-    const translationInfo = { title: trTitle, lang: trLang, for: materialId }
+    const { trLang, trTitle /* trText */ } = props
+    const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
+    const translation = {
+      title: trTitle,
+      lang: trLang,
+      for: materialId,
+      phrases: translationPhrases
+    }
 
     // 2 documents in 2 collections:
 
     //INFO
-    let uploadTranslationInfoTask
+    let uploadTranslationTask
     if (trLang && trTitle) {
-      const translationInfoDocRef = db.doc(`translationInfo/${materialId}_${trLang}`)
-      uploadTranslationInfoTask = translationInfoDocRef
-        .set(translationInfo)
-        .then(snapshot => console.log('translationInfo uploaded'))
+      const translationDocRef = db.doc(`materialTr/${materialId}_${trLang}`)
+      uploadTranslationTask = translationDocRef
+        .set(translation)
+        .then(snapshot => console.log('translation uploaded'))
         .catch(error => console.log('error', error))
     }
 
-    //PHRASES
-    let uploadTranslationPhrasesTask
-    if (trText.length > 0) {
-      const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
-      const translationPhrasesDocRef = db.doc(`translationPhrases/${materialId}_${trLang}`)
-      uploadTranslationPhrasesTask = translationPhrasesDocRef
-        .set(translationPhrases)
-        .then(snapshot => console.log('translationPhrases uploaded'))
-        .catch(error => console.log('error', error))
-    }
-
-    Promise.all([
-      uploadMaterialInfoTask,
-      uploadMaterialPhrasesTask,
-      uploadTranslationInfoTask,
-      uploadTranslationPhrasesTask
-    ]).then(values => {
+    Promise.all([uploadMaterialTask, uploadTranslationTask]).then(values => {
       setPageParameter(['redirectTo', `${materialId}/${trLang}`])
       const eventsRef = db.collection(`events`)
       eventsRef.add({ lang, trLang, title, trTitle, materialId, time: Date.now(), unit })
@@ -192,7 +164,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MaterialForm)
+export default connect(mapStateToProps, mapDispatchToProps)(MaterialForm)
