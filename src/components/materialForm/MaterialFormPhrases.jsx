@@ -68,9 +68,9 @@ function Phrases(props) {
 
     phrases.forEach((elem, index) => {
       const { id } = elem
-      const label = newText[index] || ''
-      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label } })
-      newPhrases[index]['text'] = label
+      const label1 = newText[index] || ''
+      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label1 } })
+      newPhrases[index]['text'] = label1
     })
 
     setPageParameter(['phrases', newPhrases])
@@ -83,11 +83,12 @@ function Phrases(props) {
     let newPhrases = phrases
 
     phrases.forEach((elem, index) => {
-      // const { id } = elem
-      const trText = newText[index] || ''
+      const { id } = elem
+      const label2 = newText[index] || ''
       // translations: {ru: Хоббит, es: El Hobboto, ua: Хиббит}
       const oldTranslations = elem.translations || {}
-      const newTranslations = { ...oldTranslations, [trLang]: trText }
+      const newTranslations = { ...oldTranslations, [trLang]: label2 }
+      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label2 } })
       newPhrases[index]['translations'] = newTranslations
     })
 
@@ -178,7 +179,4 @@ const mapDispatchToProps = dispatch => ({
   setPageParameter: payload => dispatch(setPageParameter(payload))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Phrases)
+export default connect(mapStateToProps, mapDispatchToProps)(Phrases)

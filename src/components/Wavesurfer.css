@@ -1,5 +1,6 @@
+/* original phrase text */
 region.wavesurfer-region:before {
-  content: attr(data-region-label);
+  content: attr(data-region-label1);
   font-size: 0.5em;
   position: absolute;
   top: 1px;
@@ -7,16 +8,16 @@ region.wavesurfer-region:before {
   color: rgb(71, 71, 71);
 }
 
-.waveform {
-  margin-bottom: 10px;
-}
-/* for translation 
+/* translation */
 region.wavesurfer-region:after {
-  content: attr(data-region-label);
+  content: attr(data-region-label2);
   font-size: 0.5em;
   position: absolute;
   bottom: 1px;
   left: 1px;
   color: rgb(71, 71, 71);
 }
- */
+
+.waveform {
+  margin-bottom: 10px;
+}

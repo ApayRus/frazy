@@ -67,20 +67,23 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   // edit mode
 
   const regionsToPhrasesArray = () => {
+    const trLang = store.getState().pageContent.trLang
     let phrases = map(wavesurfer.regions.list, (elem, key) => {
       const {
         start,
         end,
         color,
-        attributes: { label: text }
+        attributes: { label1: text, label2: trText }
       } = elem
       const id = key
-      return { id, start, end, color, text }
+      return { id, start, end, color, text, translations: { [trLang]: trText } }
     })
     phrases = orderBy(phrases, 'start')
     store.dispatch(setPageParameter(['phrases', phrases]))
     const text = map(phrases, 'text') //textarea content
+    const trText = map(phrases, `translations.${trLang}`)
     store.dispatch(setPageParameter(['text', text]))
+    store.dispatch(setPageParameter(['trText', trText]))
   }
 
   wavesurfer.on('region-update-end', region => {

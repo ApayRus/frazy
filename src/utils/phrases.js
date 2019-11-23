@@ -19,7 +19,7 @@ export function makePhrasesArray(phrasesObject) {
     return {
       ...elem, //start, end, text - for
       id: key,
-      attributes: { label: elem.text }, //for wavesurfer
+      attributes: { label1: elem.text }, //for wavesurfer
       color: randomColor(0.5) //for wavesurfer
     }
   })
@@ -41,7 +41,11 @@ export function addTranslation(phrases, trPhrases, trLang) {
     const trText = tr ? tr.text : ''
     const oldTranslations = elem.translations
     const newTranslation = { [trLang]: trText }
-    return { ...elem, translations: { ...oldTranslations, ...newTranslation } }
+    return {
+      ...elem,
+      attributes: { ...elem.attributes, label2: trText },
+      translations: { ...oldTranslations, ...newTranslation }
+    }
   })
 }
 
