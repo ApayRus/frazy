@@ -23,7 +23,6 @@ function MaterialPageHOC(props) {
 
   if (isLoaded(material, translation)) {
     const { mediaLink, unit, lang, title } = material
-    console.log('translation', translation)
     let phrases = material.phrases
     phrases = makePhrasesArray(phrases)
 
