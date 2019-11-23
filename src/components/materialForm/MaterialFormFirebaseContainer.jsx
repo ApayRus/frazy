@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
-import {
-  makePhrasesArray,
-  addTranslation,
-  localPhrasesToText,
-  localPhrasesToTrText
-} from '../../utils/phrases'
+import { makePhrasesArray, addTranslation } from '../../utils/phrases'
 import MaterialForm from './MaterialForm'
 import firebase from '../../firebase/firebase'
 import { setPageParameter } from '../../store/pageContentActions'
@@ -37,8 +32,6 @@ function MaterialFormHOC(props) {
         setPageParameter(['title', title])
         setPageParameter(['mediaLink', mediaLink])
         setPageParameter(['materialPhrases', materialPhrases])
-        const text = localPhrasesToText(phrases)
-        setPageParameter(['text', text])
         // setPageParameter(['mediaLinkDownloadUrl', ''])
         //TRANSLATION
         if (translation) {
@@ -55,9 +48,6 @@ function MaterialFormHOC(props) {
           setPageParameter(['translationPhrases', translationPhrases])
           if (translation.phrases) {
             phrases = addTranslation(phrases, translation.phrases, trLang)
-            console.log('phrases000', phrases)
-            const trText = localPhrasesToTrText(phrases, trLang)
-            setPageParameter(['trText', trText])
           }
         }
         setPageParameter(['phrases', phrases])

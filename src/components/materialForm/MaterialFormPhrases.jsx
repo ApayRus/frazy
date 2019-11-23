@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialFormTitle from './MaterialFormTitle'
+import { map } from 'lodash'
 
 import { connect } from 'react-redux'
 
@@ -46,23 +47,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Phrases(props) {
-  const {
-    phrases,
-    currentPhraseId,
-    setPageParameter,
-    text,
-    trText,
-    lang,
-    trLang,
-    title,
-    trTitle
-  } = props
+  const { phrases, currentPhraseId, setPageParameter, lang, trLang, title, trTitle } = props
 
   const classes = useStyles()
 
+  const text = map(phrases, 'text').join('\n') //textarea content original text
+  const trText = map(phrases, `translations.${trLang}`).join('\n') //textarea content translation text
+
   const handleTextChanged = event => {
     const newText = event.target.value.split('\n')
-    setPageParameter(['text', newText])
 
     let newPhrases = phrases
 
@@ -72,13 +65,11 @@ function Phrases(props) {
       wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label1 } })
       newPhrases[index]['text'] = label1
     })
-
     setPageParameter(['phrases', newPhrases])
   }
 
   const handleTrTextChanged = event => {
     const newText = event.target.value.split('\n')
-    setPageParameter(['trText', newText])
 
     let newPhrases = phrases
 
@@ -91,7 +82,6 @@ function Phrases(props) {
       wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label2 } })
       newPhrases[index]['translations'] = newTranslations
     })
-
     setPageParameter(['phrases', newPhrases])
   }
 
@@ -135,7 +125,7 @@ function Phrases(props) {
         </div>
         <PhrasesColumn />
         <textarea
-          value={text.join('\n')}
+          value={text}
           onChange={handleTextChanged}
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaOriginal}`}
@@ -151,7 +141,7 @@ function Phrases(props) {
           titleLabel='Title of translation'
         />
         <textarea
-          value={trText.join('\n')}
+          value={trText}
           onChange={handleTrTextChanged}
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaTranslation}`}
@@ -165,8 +155,6 @@ const mapStateToProps = state => {
   const pc = state.pageContent
   return {
     phrases: pc.phrases,
-    text: pc.text,
-    trText: pc.trText,
     lang: pc.lang,
     trLang: pc.trLang,
     title: pc.title,

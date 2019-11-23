@@ -76,17 +76,16 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
         attributes: { label1: text, label2: trText }
       } = elem
       const id = key
+      /*       console.log('text', text)
+      console.log('trText', trText) */
       return { id, start, end, color, text, translations: { [trLang]: trText } }
     })
     phrases = orderBy(phrases, 'start')
     store.dispatch(setPageParameter(['phrases', phrases]))
-    const text = map(phrases, 'text') //textarea content
-    const trText = map(phrases, `translations.${trLang}`)
-    store.dispatch(setPageParameter(['text', text]))
-    store.dispatch(setPageParameter(['trText', trText]))
   }
 
   wavesurfer.on('region-update-end', region => {
+    console.log('region-update-end')
     regionsToPhrasesArray()
   })
 
@@ -102,7 +101,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     regionsToPhrasesArray()
   })
 
-  // Time stretcher
+  // Time stretcher (preserve pitch on speeds != 1 )
   wavesurfer.on('ready', function() {
     var st = new soundtouch.SoundTouch(wavesurfer.backend.ac.sampleRate)
     var buffer = wavesurfer.backend.buffer
