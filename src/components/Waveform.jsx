@@ -38,9 +38,7 @@ function Waveform(props) {
 
   return (
     <div className='waveform'>
-      {isReady ? (
-        ''
-      ) : (
+      {!isReady && (
         <div style={{ textAlign: 'center' }}>
           <Typography variant='body2' color='textSecondary'>
             Waveform rendering...
