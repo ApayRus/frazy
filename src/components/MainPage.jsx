@@ -37,8 +37,9 @@ function MainPage(props) {
   const eventList = isDataLoaded ? (
     <List>
       {events.map(event => {
-        const { id, materialId, lang, trLang, title, trTitle, time, unit } = event
-        const primaryText = `${lang}: ${title}`
+        const { id, materialId, lang, title, trTitle, time, unit, message } = event
+        const trLang = event.trLang || ''
+        const primaryText = `${lang}: ${title}, message: ${message}`
         const secondaryText = `${trLang}: ${trTitle}, unit: ${unit}, time: ${moment(
           time
         ).fromNow()}`
