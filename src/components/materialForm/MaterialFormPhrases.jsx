@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
 function Phrases(props) {
   const { phrases, currentPhraseId, setPageParameter, lang, trLang, title, trTitle } = props
   const classes = useStyles()
-
   const text = map(phrases, 'text').join('\n') //textarea content original text
   const trText = map(phrases, `translations.${trLang}`).join('\n') //textarea content translation text
 
@@ -61,9 +60,11 @@ function Phrases(props) {
     phrases.forEach((elem, index) => {
       const { id } = elem
       const label1 = newText[index] || ''
-      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label1 } })
+      const region = wavesurferModule.wavesurfer.regions.list[id]
+      region.update({ attributes: { ...region.attributes, label1 } })
       newPhrases[index]['text'] = label1
     })
+
     setPageParameter(['phrases', newPhrases])
   }
 
@@ -78,7 +79,8 @@ function Phrases(props) {
       // translations: {ru: Хоббит, es: El Hobboto, ua: Хиббит}
       const oldTranslations = elem.translations || {}
       const newTranslations = { ...oldTranslations, [trLang]: label2 }
-      wavesurferModule.wavesurfer.regions.list[id].update({ attributes: { label2 } })
+      const region = wavesurferModule.wavesurfer.regions.list[id]
+      region.update({ attributes: { ...region.attributes, label2 } })
       newPhrases[index]['translations'] = newTranslations
     })
     setPageParameter(['phrases', newPhrases])
