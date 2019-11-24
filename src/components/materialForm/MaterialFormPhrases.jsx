@@ -48,7 +48,6 @@ const useStyles = makeStyles(theme => ({
 
 function Phrases(props) {
   const { phrases, currentPhraseId, setPageParameter, lang, trLang, title, trTitle } = props
-
   const classes = useStyles()
 
   const text = map(phrases, 'text').join('\n') //textarea content original text
@@ -57,7 +56,7 @@ function Phrases(props) {
   const handleTextChanged = event => {
     const newText = event.target.value.split('\n')
 
-    let newPhrases = phrases
+    let newPhrases = [...phrases]
 
     phrases.forEach((elem, index) => {
       const { id } = elem
@@ -71,7 +70,7 @@ function Phrases(props) {
   const handleTrTextChanged = event => {
     const newText = event.target.value.split('\n')
 
-    let newPhrases = phrases
+    let newPhrases = [...phrases]
 
     phrases.forEach((elem, index) => {
       const { id } = elem
