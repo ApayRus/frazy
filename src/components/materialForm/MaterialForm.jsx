@@ -71,11 +71,11 @@ const MaterialForm = props => {
     const waitPromisesBeforeRedirect = []
 
     // MATERIAL data for submit
-    const { title, mediaLink, lang, unit, order, phrases } = props
+    const { title, mediaLink, lang, unit, order, phrases, duration } = props
     const materialId = props.materialId || db.collection(`material`).doc().id
     const materialPhrases = localPhrasesToDBphrases(phrases)
     //new material after user input:
-    const material = { title, mediaLink, lang, unit, order, phrases: materialPhrases }
+    const material = { title, mediaLink, lang, unit, order, phrases: materialPhrases, duration }
 
     // TRANSLATION data for submit
     const { trLang, trTitle /* trText */ } = props
@@ -185,6 +185,7 @@ const mapStateToProps = state => {
     unit: pc.unit,
     order: pc.order,
     materialPhrases: pc.materialPhrases,
+    duration: pc.duration,
     //from Translation (MaterialTr)
     trTitle: pc.trTitle,
     trLang: pc.trLang,

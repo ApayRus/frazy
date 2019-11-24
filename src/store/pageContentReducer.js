@@ -4,12 +4,11 @@ const initState = {
   unit: '',
   order: '',
   phrases: [],
-  text: [],
-  trText: [],
   trTitle: '',
   trLang: '',
   mediaLink: '', // saved in db, folder/filename.mp3
   mediaLinkDownloadUrl: '', // current active link, long,  with tokens
+  duration: 0, // 45.035 (sec)
   uploadProgress: -1,
   downloadProgress: -1,
   waveformRenderProgress: -1
