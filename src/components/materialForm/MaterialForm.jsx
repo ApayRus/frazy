@@ -11,7 +11,7 @@ import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
 import firebase from '../../firebase/firebase'
 import { map } from 'lodash'
-import { diff } from 'deep-object-diff'
+import { diff, detailedDiff } from 'deep-object-diff'
 
 import {
   subtitlesToLocalPhrases,
@@ -90,8 +90,13 @@ const MaterialForm = props => {
     const diffMaterial = diff(prevMaterial, material) //diff object after user input
     const diffTranslation = diff(prevTranslation, translation) //diff object after user input
 
-    console.log('diffMaterial', diffMaterial)
-    console.log('diffTranslation', diffTranslation)
+    const detailedDiffMaterial = detailedDiff(prevMaterial, material)
+    const detailedDiffTranslation = detailedDiff(prevTranslation, translation)
+
+    /*     console.log('diffMaterial', diffMaterial)
+    console.log('diffTranslation', diffTranslation) */
+    console.log('detailedDiffMaterial', detailedDiffMaterial)
+    console.log('detailedDiffTranslation', detailedDiffTranslation)
 
     if (Object.entries(diffMaterial).length) {
       const uploadMaterialTask = db
