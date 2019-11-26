@@ -31,7 +31,8 @@ service cloud.firestore {
       allow write: if true;
     } 
    match /user/{userId} {
-      allow read, write: if request.auth.uid == userId;
+      allow create: if isAuthorized();
+      allow read, update: if request.auth.uid == userId; 
     }
   }
 }

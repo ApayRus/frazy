@@ -4,7 +4,16 @@ import { createFirestoreInstance } from 'redux-firestore'
 
 const rrfProps = {
   firebase,
-  config: { userProfile: 'user', useFirestoreForProfile: true },
+  config: {
+    userProfile: 'user',
+    useFirestoreForProfile: true,
+    profileFactory: (userData, profileData /* , firebase */) => {
+      return {
+        ...profileData,
+        uid: userData.uid
+      }
+    }
+  },
   dispatch: store.dispatch,
   createFirestoreInstance
 }
