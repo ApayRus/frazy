@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
     bottom: 2,
     zIndex: 1,
     right: 1,
-    top: 1
+    top: 1,
+    maxHeight: 40
   }
 }))
 
