@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { List, ListItem, ListItemText, CircularProgress } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
-import * as moment from 'moment'
-import ButtonWithAuthPopover from './auth/ButtonWithAuthPopover'
+// import * as moment from 'moment'
+import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
+import Grid from '@material-ui/core/Grid'
+import LastEvents from './LastEvents'
 
 function MainPage(props) {
   const { events } = props
@@ -34,30 +35,13 @@ function MainPage(props) {
     </div>
   )
 
-  const eventList = isDataLoaded ? (
-    <List>
-      {events.map(event => {
-        const { id, materialId, lang, title, trTitle, time, unit, message } = event
-        const trLang = event.trLang || ''
-        const primaryText = `${lang}: ${title}, message: ${message}`
-        const secondaryText = `${trLang}: ${trTitle}, unit: ${unit}, time: ${moment(
-          time
-        ).fromNow()}`
-        return (
-          <ListItem
-            key={id}
-            component={Link}
-            to={`/material/${materialId}/${trLang}`}
-            button
-            divider
-          >
-            <ListItemText primary={primaryText} secondary={secondaryText} />
-          </ListItem>
-        )
-      })}
-    </List>
-  ) : (
-    <CircularProgress />
+  const eventList = (
+    <Grid container>
+      <Grid item xs={12} sm={12} md={6}>
+        {isDataLoaded ? <LastEvents /> : <CircularProgress />}
+      </Grid>
+      <Grid item xs={12} sm={12} md={6}></Grid>
+    </Grid>
   )
 
   return (

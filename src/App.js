@@ -6,7 +6,7 @@ import MaterialPageHOC from './components/materialView/MaterialPageFirebaseConta
 import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseContainer'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import MainPage from './components/MainPage'
+import MainPage from './components/mainPage/MainPage'
 import AuthAvatarLoginLogout from './components/auth/AuthAvatarLoginLogout'
 
 function App(props) {
