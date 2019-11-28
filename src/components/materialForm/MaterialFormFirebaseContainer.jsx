@@ -41,9 +41,10 @@ function MaterialFormHOC(props) {
             for: forMaterial,
             phrases: translationPhrases
           } = translation
-
+          const translationId = `${materialId}_${trLang}`
           setPageParameter(['trLang', trLang])
           setPageParameter(['trTitle', trTitle])
+          setPageParameter(['translationId', translationId])
           setPageParameter(['for', forMaterial])
           setPageParameter(['translationPhrases', translationPhrases])
           if (translation.phrases) {

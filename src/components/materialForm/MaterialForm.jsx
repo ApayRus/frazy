@@ -71,7 +71,22 @@ const MaterialForm = props => {
     const waitPromisesBeforeRedirect = []
 
     // MATERIAL data for submit
-    const { title, mediaLink, lang, unit, order, phrases, duration } = props
+    const { title, mediaLink, lang, unit, order, phrases, duration, profile } = props
+    //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
+    const materialAction = props.materialId ? 'material updated' : 'material added'
+    const translationAction = props.translationId ? 'translation updated' : 'translation added'
+
+    const createInfo = (profile, time) => ({
+      createdBy: { userId: profile.uid, userName: profile.displayName },
+      createdAt: time,
+      updatedAt: time
+    })
+
+    const updateInfo = (profile, time) => ({
+      updatedBy: { userId: profile.uid, userName: profile.displayName },
+      updatedAt: time
+    })
+
     const materialId = props.materialId || db.collection(`material`).doc().id
     const materialPhrases = localPhrasesToDBphrases(phrases)
     //new material after user input:
@@ -79,12 +94,16 @@ const MaterialForm = props => {
 
     // TRANSLATION data for submit
     const { trLang, trTitle /* trText */ } = props
-    const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
-    const translation = {
-      title: trTitle,
-      lang: trLang,
-      for: materialId,
-      phrases: translationPhrases
+    let translation = {}
+    const translationId = props.translationId || `${materialId}_${trLang}`
+    if (trLang && trTitle) {
+      const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
+      translation = {
+        title: trTitle,
+        lang: trLang,
+        for: materialId,
+        phrases: translationPhrases
+      }
     }
 
     const diffMaterial = diff(prevMaterial, material) //diff object after user input
@@ -93,49 +112,39 @@ const MaterialForm = props => {
     const detailedDiffMaterial = detailedDiff(prevMaterial, material)
     const detailedDiffTranslation = detailedDiff(prevTranslation, translation)
 
-    /*     console.log('diffMaterial', diffMaterial)
-    console.log('diffTranslation', diffTranslation) */
+    console.log('diffMaterial', diffMaterial)
+    console.log('diffTranslation', diffTranslation)
     console.log('detailedDiffMaterial', detailedDiffMaterial)
     console.log('detailedDiffTranslation', detailedDiffTranslation)
 
+    //material has created or changed
     if (Object.entries(diffMaterial).length) {
+      const additionalInfo =
+        materialAction === 'material added'
+          ? createInfo(profile, Date.now())
+          : updateInfo(profile, Date.now())
+
       const uploadMaterialTask = db
         .collection(`material`)
         .doc(materialId)
-        .set(material)
+        .set({ ...material, ...additionalInfo })
         .then()
         .catch(error => console.log('error', error))
-
-      db.collection(`events`).add({
-        lang,
-        title,
-        materialId,
-        time: Date.now(),
-        unit,
-        message: 'material has changed'
-      })
-
       waitPromisesBeforeRedirect.push(uploadMaterialTask)
     }
-    if (Object.entries(diffTranslation).length) {
+    //translation is not empty, has created or changed
+    if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
+      console.log('trrrr')
+      const additionalInfo =
+        translationAction === 'translation added'
+          ? createInfo(profile, Date.now())
+          : updateInfo(profile, Date.now())
       const uploadTranslationTask = db
         .collection('materialTr')
-        .doc(`${materialId}_${trLang}`)
-        .set(translation)
+        .doc(translationId)
+        .set({ ...translation, ...additionalInfo })
         .then()
         .catch(error => console.log('error', error))
-
-      db.collection(`events`).add({
-        lang,
-        title,
-        trLang,
-        trTitle,
-        materialId,
-        time: Date.now(),
-        unit,
-        message: 'translation has changed'
-      })
-
       waitPromisesBeforeRedirect.push(uploadTranslationTask)
     }
 
@@ -184,6 +193,7 @@ const mapStateToProps = state => {
   return {
     //from Material
     materialId: pc.materialId,
+    translationId: pc.translationId,
     title: pc.title,
     mediaLink: pc.mediaLink,
     lang: pc.lang,
@@ -202,7 +212,9 @@ const mapStateToProps = state => {
     mediaLinkDownloadUrl: pc.mediaLinkDownloadUrl,
     text: pc.text,
     trText: pc.trText,
-    uploadProgress: pc.uploadProgress
+    uploadProgress: pc.uploadProgress,
+    //auth, profile
+    profile: state.firebase.profile
   }
 }
 
