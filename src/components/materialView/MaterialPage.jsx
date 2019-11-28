@@ -112,7 +112,7 @@ function MaterialPage(props) {
   }
 
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       <div style={{ margin: 20 }}>
         <Typography variant='h5'>{title}</Typography>
         {trTitle ? <Typography variant='subtitle2'>{trTitle}</Typography> : null}
@@ -151,7 +151,4 @@ const mapDispatchToProps = dispatch => ({
   setPlayerState: payload => dispatch(setPlayerState(payload))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MaterialPage)
+export default connect(mapStateToProps, mapDispatchToProps)(MaterialPage)
