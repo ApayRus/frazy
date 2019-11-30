@@ -1,3 +1,13 @@
+/**
+ * In this  component joins together and happens many things
+ * There is editing of two Objects: Material and Translation.
+ * Maybe it is their creation, or update, both of them or only one of them.
+ * Before editing we do snapshop of material and translation, and then using diff(obj1, obj2)
+ * we decide what has happend and run related promises.
+ * After promises fullfilled we writes Event about what happend, and redirect to material view page.
+ * Also, if has created translation, we writes to material Doc new avaliableTranslation language.
+ */
+
 import React, { useState, useEffect } from 'react'
 import { Button, CircularProgress, Typography } from '@material-ui/core'
 import { Save as SaveIcon } from '@material-ui/icons'
@@ -11,7 +21,7 @@ import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
 import firebase from '../../firebase/firebase'
 import { map } from 'lodash'
-import { diff, detailedDiff } from 'deep-object-diff'
+import { diff } from 'deep-object-diff'
 
 import {
   subtitlesToLocalPhrases,
@@ -33,8 +43,17 @@ const MaterialForm = props => {
     //onMount
     // snapshot from material
     {
-      const { title, mediaLink, lang, unit, order, materialPhrases: phrases } = props
-      const materialData = { title, mediaLink, lang, unit, order, phrases }
+      const {
+        title,
+        mediaLink,
+        lang,
+        unit,
+        order,
+        materialPhrases: phrases,
+        duration,
+        translations
+      } = props
+      const materialData = { title, mediaLink, lang, unit, order, phrases, duration, translations }
       setPrevMaterial(materialData)
     }
     // snapshot from translation
@@ -71,10 +90,12 @@ const MaterialForm = props => {
     const waitPromisesBeforeRedirect = []
 
     // MATERIAL data for submit
-    const { title, mediaLink, lang, unit, order, phrases, duration, profile } = props
+    const { title, mediaLink, lang, unit, order, phrases, duration, translations, profile } = props
     //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     const materialAction = props.materialId ? 'material updated' : 'material added'
     const translationAction = props.translationId ? 'translation updated' : 'translation added'
+
+    let actions = [] // materialAction and translationAction both, or one of them.
 
     const createInfo = (profile, time) => ({
       createdBy: { userId: profile.uid, userName: profile.displayName },
@@ -90,10 +111,19 @@ const MaterialForm = props => {
     const materialId = props.materialId || db.collection(`material`).doc().id
     const materialPhrases = localPhrasesToDBphrases(phrases)
     //new material after user input:
-    const material = { title, mediaLink, lang, unit, order, phrases: materialPhrases, duration }
+    const material = {
+      title,
+      mediaLink,
+      lang,
+      unit,
+      order,
+      phrases: materialPhrases,
+      duration,
+      translations
+    }
 
     // TRANSLATION data for submit
-    const { trLang, trTitle /* trText */ } = props
+    const { trLang, trTitle } = props
     let translation = {}
     const translationId = props.translationId || `${materialId}_${trLang}`
     if (trLang && trTitle) {
@@ -109,16 +139,15 @@ const MaterialForm = props => {
     const diffMaterial = diff(prevMaterial, material) //diff object after user input
     const diffTranslation = diff(prevTranslation, translation) //diff object after user input
 
-    const detailedDiffMaterial = detailedDiff(prevMaterial, material)
-    const detailedDiffTranslation = detailedDiff(prevTranslation, translation)
-
-    console.log('diffMaterial', diffMaterial)
-    console.log('diffTranslation', diffTranslation)
-    console.log('detailedDiffMaterial', detailedDiffMaterial)
-    console.log('detailedDiffTranslation', detailedDiffTranslation)
+    // console.log('diffMaterial', diffMaterial)
+    // console.log('diffTranslation', diffTranslation)
+    // console.log('detailedDiffMaterial', detailedDiffMaterial)
+    // console.log('detailedDiffTranslation', detailedDiffTranslation)
 
     //material has created or changed
     if (Object.entries(diffMaterial).length) {
+      actions.push(materialAction)
+
       const additionalInfo =
         materialAction === 'material added'
           ? createInfo(profile, Date.now())
@@ -130,11 +159,12 @@ const MaterialForm = props => {
         .set({ ...material, ...additionalInfo })
         .then()
         .catch(error => console.log('error', error))
+
       waitPromisesBeforeRedirect.push(uploadMaterialTask)
     }
     //translation is not empty, has created or changed
     if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
-      console.log('trrrr')
+      actions.push(translationAction)
       const additionalInfo =
         translationAction === 'translation added'
           ? createInfo(profile, Date.now())
@@ -145,10 +175,17 @@ const MaterialForm = props => {
         .set({ ...translation, ...additionalInfo })
         .then()
         .catch(error => console.log('error', error))
+
       waitPromisesBeforeRedirect.push(uploadTranslationTask)
     }
 
     Promise.all([waitPromisesBeforeRedirect]).then(values => {
+      const event = { title, lang, translations, trTitle, trLang, actions, time: Date.now() }
+      console.log('event: ', event)
+      db.collection('lastEvents')
+        .doc('main')
+        .update({ [materialId]: event })
+
       history.push(`/material/${materialId}/${trLang}`)
     })
   }
@@ -201,6 +238,7 @@ const mapStateToProps = state => {
     order: pc.order,
     materialPhrases: pc.materialPhrases,
     duration: pc.duration,
+    translations: pc.translations,
     //from Translation (MaterialTr)
     trTitle: pc.trTitle,
     trLang: pc.trLang,
