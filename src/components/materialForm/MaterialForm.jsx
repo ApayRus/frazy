@@ -153,7 +153,17 @@ const MaterialForm = props => {
 
     //material has created or changed
     if (Object.entries(diffMaterial).length) {
-      actions.push(materialAction)
+      console.log('diffMaterial', diffMaterial)
+      //if there wasn't material change, only translation, we should update [translations] in material
+      // but in actions we need only "translation added"
+      if (
+        !(
+          Object.entries(diffMaterial).length === 1 &&
+          Object.entries(diffMaterial)[0][0] === 'translations'
+        )
+      ) {
+        actions.push(materialAction)
+      }
 
       const additionalInfo =
         materialAction === 'material added'
@@ -171,19 +181,6 @@ const MaterialForm = props => {
     }
     //translation is not empty, has created or changed
     if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
-      //if there wasn't material change, only translation, we should update [translations] in material
-      if (!Object.entries(diffMaterial).length && translationAction === 'translation added') {
-        const uploadMaterialTask = db
-          .collection(`material`)
-          .doc(materialId)
-          .update({
-            translations: material.translations
-          })
-          .then()
-          .catch(error => console.log('error', error))
-
-        waitPromisesBeforeRedirect.push(uploadMaterialTask)
-      }
       actions.push(translationAction)
       const additionalInfo =
         translationAction === 'translation added'
