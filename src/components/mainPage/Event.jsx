@@ -15,26 +15,35 @@ const useStyles = makeStyles(theme => ({
     position: 'relative'
   },
   secondLine: {
-    position: 'relative'
+    position: 'relative',
+    paddingLeft: 36
   },
   translations: {
     position: 'absolute',
     right: 1,
     bottom: 1
   },
-  detailedInfoExpand: {
-    position: 'absolute',
-    top: 0,
-    right: 5,
-    height: 20,
-    width: 20,
-    zIndex: 20
-  },
+
   title: {
     display: 'inline',
     marginLeft: 5
     // fontFamily: theme.typography.fontFamily,
     // fontSize: theme.typography.fontSize,
+  },
+  detailedInfoExpand: {
+    position: 'absolute',
+    top: -8,
+    right: 2,
+    height: 20,
+    width: 20,
+    zIndex: 20
+  },
+  actions: {
+    position: 'absolute',
+    top: 1,
+    right: 20,
+    color: theme.palette.grey[400],
+    fontSize: 10
   },
   detailedInfo: {
     backgroundColor: theme.palette.grey[100],
@@ -92,6 +101,9 @@ const Event = props => {
 
   return (
     <div className={classes.materialEvent}>
+      <Typography className={classes.actions} variant='body2'>
+        {props.actions.join(', ')}
+      </Typography>
       <div className={classes.detailedInfoExpand}>
         <IconButton size='small' edge='start' onClick={() => setExpanded(!expanded)}>
           <ExpandMoreIcon />
@@ -111,11 +123,8 @@ const Event = props => {
         </Typography>
       </div>
       <div className={classes.secondLine}>
-        <Typography color='textPrimary' variant='body2'>
-          {props.trTitle}
-        </Typography>
         <Typography color='textSecondary' variant='body2'>
-          {props.actions.join(', ')}
+          {props.trTitle}
         </Typography>
 
         <div className={classes.translations}>

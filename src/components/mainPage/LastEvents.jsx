@@ -16,7 +16,7 @@ function LastEvents(props) {
   lastEvents = orderBy(lastEvents, 'time').reverse()
 
   return (
-    <div>
+    <div style={{ marginTop: 20 }}>
       <Typography align='center' variant='h5'>
         Last updates
       </Typography>
