@@ -8,7 +8,7 @@
  * Also, if has created translation, we writes to material Doc new avaliableTranslation language.
  * If we not changed material, but only translation,
  * we should update 'translations' in material, but event won't include that record,
- * and we see like material not changed, only added translation.
+ * and we see on main page as if material not changed, only added translation.
  */
 
 import React, { useState, useEffect } from 'react'
@@ -176,7 +176,9 @@ const MaterialForm = props => {
         const uploadMaterialTask = db
           .collection(`material`)
           .doc(materialId)
-          .update({ translations })
+          .update({
+            translations: material.translations
+          })
           .then()
           .catch(error => console.log('error', error))
 
@@ -199,7 +201,15 @@ const MaterialForm = props => {
     }
 
     Promise.all([waitPromisesBeforeRedirect]).then(values => {
-      const event = { title, lang, translations, trTitle, trLang, actions, time: Date.now() }
+      const event = {
+        title,
+        lang,
+        translations: material.translations,
+        trTitle,
+        trLang,
+        actions,
+        time: Date.now()
+      }
       console.log('event: ', event)
       db.collection('lastEvents')
         .doc('main')
