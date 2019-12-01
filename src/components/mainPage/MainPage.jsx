@@ -29,7 +29,7 @@ function MainPage(props) {
     <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
       <ButtonWithAuthPopover
         redirectUrl={materialAddLink}
-        message={`You should login before add a material. `}
+        message={`You have to log in to add new material. `}
         buttonIcon={<AddIcon />}
       />
     </div>
