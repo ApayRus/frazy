@@ -10,18 +10,18 @@ import Grid from '@material-ui/core/Grid'
 import LastEvents from './LastEvents'
 
 function MainPage(props) {
-  const { events } = props
+  const { lastEventsDoc } = props
 
   const [isDataLoaded, setIsDataLoaded] = useState(false)
 
   useEffect(() => {
-    if (isLoaded(events)) {
+    if (isLoaded(lastEventsDoc)) {
       setIsDataLoaded(true)
     }
     return () => {
       //on unmount
     }
-  }, [events])
+  }, [lastEventsDoc])
 
   const materialAddLink = 'material/add'
 
@@ -38,7 +38,7 @@ function MainPage(props) {
   const eventList = (
     <Grid container>
       <Grid item xs={12} sm={12} md={6}>
-        {isDataLoaded ? <LastEvents /> : <CircularProgress />}
+        {isDataLoaded ? <LastEvents lastEventsDoc={lastEventsDoc} /> : <CircularProgress />}
       </Grid>
       <Grid item xs={12} sm={12} md={6}></Grid>
     </Grid>
@@ -53,12 +53,18 @@ function MainPage(props) {
 }
 
 const mapStateToProps = state => {
-  return { events: state.firestore.ordered.events }
+  return { lastEventsDoc: state.firestore.data.lastEventsDoc }
 }
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect(props => {
-    return [{ collection: 'events', orderBy: [['time', 'desc']] }]
+    return [
+      {
+        collection: 'lastEvents',
+        doc: 'main',
+        storeAs: 'lastEventsDoc'
+      }
+    ]
   })
 )(MainPage)
