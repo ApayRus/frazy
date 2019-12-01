@@ -1,11 +1,14 @@
 /**
  * In this  component joins together and happens many things
- * There is editing of two Objects: Material and Translation.
+ * There is editing of two models: Material and Translation.
  * Maybe it is their creation, or update, both of them or only one of them.
  * Before editing we do snapshop of material and translation, and then using diff(obj1, obj2)
  * we decide what has happend and run related promises.
  * After promises fullfilled we writes Event about what happend, and redirect to material view page.
  * Also, if has created translation, we writes to material Doc new avaliableTranslation language.
+ * If we not changed material, but only translation,
+ * we should update 'translations' in material, but event won't include that record,
+ * and we see like material not changed, only added translation.
  */
 
 import React, { useState, useEffect } from 'react'
@@ -93,7 +96,6 @@ const MaterialForm = props => {
     const { title, mediaLink, lang, unit, order, phrases, duration, translations, profile } = props
     //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     const materialAction = props.materialId ? 'material updated' : 'material added'
-    const translationAction = props.translationId ? 'translation updated' : 'translation added'
 
     let actions = [] // materialAction and translationAction both, or one of them.
 
@@ -110,6 +112,25 @@ const MaterialForm = props => {
 
     const materialId = props.materialId || db.collection(`material`).doc().id
     const materialPhrases = localPhrasesToDBphrases(phrases)
+
+    // TRANSLATION data for submit
+    const { trLang, trTitle } = props
+    let translation = {}
+    const translationAction = translations.includes(trLang)
+      ? 'translation updated'
+      : 'translation added'
+
+    const translationId = `${materialId}_${trLang}`
+    if (trLang && trTitle) {
+      const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
+      translation = {
+        title: trTitle,
+        lang: trLang,
+        for: materialId,
+        phrases: translationPhrases
+      }
+    }
+
     //new material after user input:
     const material = {
       title,
@@ -119,21 +140,7 @@ const MaterialForm = props => {
       order,
       phrases: materialPhrases,
       duration,
-      translations
-    }
-
-    // TRANSLATION data for submit
-    const { trLang, trTitle } = props
-    let translation = {}
-    const translationId = props.translationId || `${materialId}_${trLang}`
-    if (trLang && trTitle) {
-      const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
-      translation = {
-        title: trTitle,
-        lang: trLang,
-        for: materialId,
-        phrases: translationPhrases
-      }
+      translations: translations.includes(trLang) ? translations : translations.concat(trLang)
     }
 
     const diffMaterial = diff(prevMaterial, material) //diff object after user input
@@ -164,11 +171,23 @@ const MaterialForm = props => {
     }
     //translation is not empty, has created or changed
     if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
+      //if there wasn't material change, only translation, we should update [translations] in material
+      if (!Object.entries(diffMaterial).length && translationAction === 'translation added') {
+        const uploadMaterialTask = db
+          .collection(`material`)
+          .doc(materialId)
+          .update({ translations })
+          .then()
+          .catch(error => console.log('error', error))
+
+        waitPromisesBeforeRedirect.push(uploadMaterialTask)
+      }
       actions.push(translationAction)
       const additionalInfo =
         translationAction === 'translation added'
           ? createInfo(profile, Date.now())
           : updateInfo(profile, Date.now())
+
       const uploadTranslationTask = db
         .collection('materialTr')
         .doc(translationId)
@@ -230,7 +249,6 @@ const mapStateToProps = state => {
   return {
     //from Material
     materialId: pc.materialId,
-    translationId: pc.translationId,
     title: pc.title,
     mediaLink: pc.mediaLink,
     lang: pc.lang,

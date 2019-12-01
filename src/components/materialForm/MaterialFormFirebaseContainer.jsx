@@ -21,8 +21,15 @@ function MaterialFormHOC(props) {
 
   useEffect(() => {
     if (isLoaded(material, translation)) {
-      const { mediaLink, lang, title, unit, order } = material
-      const { phrases: materialPhrases } = material
+      const {
+        mediaLink,
+        lang,
+        title,
+        unit,
+        order,
+        phrases: materialPhrases,
+        translations = []
+      } = material
       let phrases = makePhrasesArray(materialPhrases)
       const fillReduxStore = () => {
         setPageParameter(['materialId', materialId])
@@ -32,6 +39,7 @@ function MaterialFormHOC(props) {
         setPageParameter(['title', title])
         setPageParameter(['mediaLink', mediaLink])
         setPageParameter(['materialPhrases', materialPhrases])
+        setPageParameter(['translations', translations])
         // setPageParameter(['mediaLinkDownloadUrl', ''])
         //TRANSLATION
         if (translation) {
@@ -41,10 +49,8 @@ function MaterialFormHOC(props) {
             for: forMaterial,
             phrases: translationPhrases
           } = translation
-          const translationId = `${materialId}_${trLang}`
           setPageParameter(['trLang', trLang])
           setPageParameter(['trTitle', trTitle])
-          setPageParameter(['translationId', translationId])
           setPageParameter(['for', forMaterial])
           setPageParameter(['translationPhrases', translationPhrases])
           if (translation.phrases) {
