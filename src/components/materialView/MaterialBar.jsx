@@ -72,7 +72,7 @@ function Appbar(props) {
       <div className={`${classes.bottom} ${classes.edit}`}>
         <ButtonWithAuthPopover
           redirectUrl={materialEditLink}
-          message={`You should login before edit the material. `}
+          message={`You have to log in to edit the material. `}
           buttonIcon={<EditIcon />}
         />
       </div>
