@@ -1,3 +1,46 @@
+## Install
+
+```
+git clone https://github.com/Aparus/frazy.git`
+npm install
+```
+
+Complete backend of this app is [Google Firebase](https://firebase.google.com/).
+
+- Authentication with Google-Provider
+- Firestore for DB
+- Storage for files
+- Hosting
+- Cloud Functions for server code
+
+Client side is botstraped with [Create-React-App](https://github.com/facebook/create-react-app) and logic is written with React and Redux.
+
+For syncronize backend and frontend are used [React-Redux-Firebase](https://react-redux-firebase.com/).
+
+User Interface is written on [Material-UI](https://material-ui.com/).
+
+For visualize and control audio used [Wavesurfer.js](https://wavesurfer-js.org/)
+
+All this things from above will be installed on your local machine after `npm i` command, but we shared these links for help you to dive into project and get some theoretical basics about what used here and how.
+
+For run whole app with your own cloud backend (for testing), you should create your own project (web-app) on [Google Firebase](https://firebase.google.com/) and you'll be provided with application credentianls, which you should past into file `src/config/firebaseConfig`:
+
+```
+export default {
+  apiKey: 'xxxx',
+  authDomain: 'xxxx',
+  databaseURL: 'xxxx',
+  projectId: 'xxxx',
+  storageBucket: 'xxxx',
+  messagingSenderId: 'xxxx',
+  appId: 'xxxx'
+}
+```
+
+Then app will work properly on your machine, except uploading files from `localhost` into `Storage`. For that you should set [cors config](https://firebase.google.com/docs/storage/web/download-files#cors_configuration).
+
+Also you can use in app external links to audio files (mp3, ogg, maybe other formats). But be shure you're using `https`, because http can be blocked by browser while visualizing with web-audio-api.
+
 ## Data models
 
 ### Material
