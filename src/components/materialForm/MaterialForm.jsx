@@ -173,12 +173,13 @@ const MaterialForm = props => {
       const uploadMaterialTask = db
         .collection(`material`)
         .doc(materialId)
-        .set({ ...material, ...additionalInfo })
+        .set({ ...material, ...additionalInfo }, { merge: true })
         .then()
         .catch(error => console.log('error', error))
 
       waitPromisesBeforeRedirect.push(uploadMaterialTask)
     }
+
     //translation is not empty, has created or changed
     if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
       actions.push(translationAction)
@@ -190,7 +191,7 @@ const MaterialForm = props => {
       const uploadTranslationTask = db
         .collection('materialTr')
         .doc(translationId)
-        .set({ ...translation, ...additionalInfo })
+        .set({ ...translation, ...additionalInfo }, { merge: true })
         .then()
         .catch(error => console.log('error', error))
 
