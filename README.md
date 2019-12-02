@@ -1,7 +1,7 @@
 ## Install
 
 ```
-git clone https://github.com/Aparus/frazy.git`
+git clone https://github.com/Aparus/frazy.git
 npm install
 ```
 
