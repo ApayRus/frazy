@@ -76,7 +76,8 @@ const RoundButton = props => {
 }
 
 const Translations = props => {
-  return props.langs.map(lang => (
+  const { langs = [] } = props
+  return langs.map(lang => (
     <RoundButton
       key={lang}
       lang={lang}
@@ -99,10 +100,12 @@ const Event = props => {
     history.push(`material/${materialId}/${trLang}`)
   }
 
+  const { actions = [] } = props
+
   return (
     <div className={classes.materialEvent}>
       <Typography className={classes.actions} variant='body2'>
-        {props.actions.join(', ')}
+        {actions.join(', ')}
       </Typography>
       <div className={classes.detailedInfoExpand}>
         <IconButton size='small' edge='start' onClick={() => setExpanded(!expanded)}>
