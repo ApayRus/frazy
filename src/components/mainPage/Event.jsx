@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import clsx from 'clsx'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
@@ -53,6 +54,16 @@ const useStyles = makeStyles(theme => ({
     minHeight: 200,
     marginTop: 10,
     padding: 20
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)'
   }
 }))
 
@@ -111,7 +122,14 @@ const Event = props => {
         {actions.join(', ')}
       </Typography>
       <div className={classes.detailedInfoExpand}>
-        <IconButton size='small' edge='start' onClick={() => setExpanded(!expanded)}>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded
+          })}
+          size='small'
+          edge='start'
+          onClick={() => setExpanded(!expanded)}
+        >
           <ExpandMoreIcon />
         </IconButton>
       </div>
