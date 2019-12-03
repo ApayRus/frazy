@@ -15,21 +15,35 @@ service cloud.firestore {
     }
   
     match /unit/{doc} {
-    	allow read: if true;
+    	allow read;
       allow write: if false;
     }  
+
     match /material/{doc} {
-      allow read: if true;
+    	allow read;
       allow write: if isAuthorized();
+          //subcollection 
+          match /revisions/{revisionId} {
+            allow read;
+            allow write: if isAuthorized();
+        }
     }
+
     match /materialTr/{doc} {
-    	allow read: if true;
+    	allow read;
       allow write: if isAuthorized();
+          //subcollection 
+          match /revisions/{revisionId} {
+            allow read;
+            allow write: if isAuthorized();
+        }
     }
-    match /events/{doc} {
-      allow read: if true;
-      allow write: if true;
-    } 
+
+    match /lastEvents/{doc} {
+    	allow read;
+    	allow write: if isAuthorized();
+    }
+    
    match /user/{userId} {
       allow create: if isAuthorized();
       allow read, update: if request.auth.uid == userId; 

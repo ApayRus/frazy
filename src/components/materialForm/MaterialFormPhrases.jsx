@@ -58,7 +58,8 @@ function Phrases(props) {
     title,
     trTitle,
     materialRevisions,
-    translationRevisions
+    translationRevisions,
+    materialId
   } = props
   const classes = useStyles()
   const text = map(phrases, 'text').join('\n') //textarea content original text
@@ -143,7 +144,9 @@ function Phrases(props) {
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaOriginal}`}
         />
-        <Revisions revisions={materialRevisions} />
+        <div style={{ marginLeft: 40, marginRight: 1 }}>
+          <Revisions revisions={materialRevisions} docId={materialId} collection='material' />
+        </div>
       </Grid>
       <Grid item sm={5} xs={12}>
         <MaterialFormTitle
@@ -160,7 +163,11 @@ function Phrases(props) {
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaTranslation}`}
         />
-        <Revisions revisions={translationRevisions} />
+        <Revisions
+          revisions={translationRevisions}
+          docId={`${materialId}_${trLang}`}
+          collection='materialTr'
+        />
       </Grid>
     </Grid>
   )
@@ -174,6 +181,7 @@ const mapStateToProps = state => {
     trLang: pc.trLang,
     title: pc.title,
     trTitle: pc.trTitle,
+    materialId: pc.materialId,
     currentPhraseId: state.playerState.currentPhraseId
   }
 }
