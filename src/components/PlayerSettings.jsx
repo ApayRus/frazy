@@ -1,6 +1,9 @@
 import React from 'react'
-import { Settings as SettingsIcon } from '@material-ui/icons'
-import { Typography, Checkbox, Slider, makeStyles } from '@material-ui/core'
+import SettingsIcon from '@material-ui/icons/Settings'
+import Typography from '@material-ui/core/Typography'
+import Checkbox from '@material-ui/core/Checkbox'
+import Slider from '@material-ui/core/Slider'
+import { makeStyles } from '@material-ui/core/styles'
 /* REDUX */
 import { connect } from 'react-redux'
 import { setPlayerSettings } from '../store/playerSettingsActions'
@@ -139,7 +142,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlayerSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerSettings)

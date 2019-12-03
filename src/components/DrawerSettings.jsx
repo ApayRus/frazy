@@ -1,5 +1,5 @@
 import React from 'react'
-import { SwipeableDrawer } from '@material-ui/core'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import PlayerSettings from './PlayerSettings'
 import { connect } from 'react-redux'
 import { toggleSettingsDrawer } from '../store/appStateActions'
@@ -35,7 +35,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DrawerHeading)
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerHeading)

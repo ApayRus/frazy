@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { CircularProgress } from '@material-ui/core'
-import { Add as AddIcon } from '@material-ui/icons'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import AddIcon from '@material-ui/icons/Add'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'

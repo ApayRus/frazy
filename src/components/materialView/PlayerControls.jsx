@@ -1,13 +1,12 @@
 import React from 'react'
-import {
-  PlayArrow,
-  Pause,
-  SkipNext as PlayNext,
-  SkipPrevious as PlayPrev,
-  Replay,
-  Edit as Dictation
-} from '@material-ui/icons'
-import { IconButton } from '@material-ui/core'
+
+import PlayArrow from '@material-ui/icons/PlayArrow'
+import Pause from '@material-ui/icons/Pause'
+import PlayNext from '@material-ui/icons/SkipNext'
+import PlayPrev from '@material-ui/icons/SkipPrevious'
+import Replay from '@material-ui/icons/Replay'
+import Dictation from '@material-ui/icons/Edit'
+import IconButton from '@material-ui/core/IconButton'
 import { connect } from 'react-redux'
 //import { audio } from '../howler'
 

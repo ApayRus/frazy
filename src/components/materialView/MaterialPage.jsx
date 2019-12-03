@@ -8,7 +8,7 @@ import PlayerSlideShow from './PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { setPlayerState } from '../../store/playerStateActions'
-import { Typography } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' }

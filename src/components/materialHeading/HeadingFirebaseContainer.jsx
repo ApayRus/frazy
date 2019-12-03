@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import firebase from '../../firebase/firebase'
 import { setMenuParameter } from '../../store/menuActions'
-import { CircularProgress } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import HeadingDrawerHOC from './HeadingDrawerContainer'
 
 /**

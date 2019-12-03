@@ -1,12 +1,13 @@
 import React from 'react'
-import { Avatar, IconButton } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import LoginPopover from './LoginPopover'
 import LogoutPopover from './LogoutPopover'
 import { useFirebase } from 'react-redux-firebase'
-import { Person as AnonymIcon } from '@material-ui/icons'
+import AnonymIcon from '@material-ui/icons/Person'
 
 const useStyles = makeStyles(theme => ({
   avatar: {

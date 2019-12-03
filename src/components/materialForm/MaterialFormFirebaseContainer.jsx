@@ -7,7 +7,7 @@ import MaterialForm from './MaterialForm'
 import firebase from '../../firebase/firebase'
 import { setPageParameter } from '../../store/pageContentActions'
 import { setMenuParameter } from '../../store/menuActions'
-import { CircularProgress } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -83,6 +83,7 @@ function MaterialFormHOC(props) {
     return () => {
       //on unmount
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [material, translation])
 
   return isDataLoaded ? <MaterialForm /> : <CircularProgress />

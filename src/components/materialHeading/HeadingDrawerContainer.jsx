@@ -1,5 +1,5 @@
 import React from 'react'
-import { SwipeableDrawer } from '@material-ui/core'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Heading from './Heading'
 import { connect } from 'react-redux'
 import { toggleHeadingDrawer } from '../../store/appStateActions'

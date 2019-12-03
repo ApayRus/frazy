@@ -1,8 +1,9 @@
 import React from 'react'
 import './Phrases.css'
-import { PlayArrow } from '@material-ui/icons'
+import PlayArrow from '@material-ui/icons/PlayArrow'
 // import { audio } from '../howler'
-import { ButtonBase, Typography } from '@material-ui/core'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import Typography from '@material-ui/core/Typography'
 
 import { connect } from 'react-redux'
 

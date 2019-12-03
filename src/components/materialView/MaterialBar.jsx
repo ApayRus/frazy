@@ -1,12 +1,10 @@
 import React from 'react'
-import { Fab } from '@material-ui/core'
-import {
-  Menu as MenuIcon,
-  Settings as SettingsIcon,
-  Help as HelpIcon,
-  Edit as EditIcon,
-  Home as HomeIcon
-} from '@material-ui/icons'
+import Fab from '@material-ui/core/Fab'
+import MenuIcon from '@material-ui/icons/Menu'
+import SettingsIcon from '@material-ui/icons/Settings'
+import HelpIcon from '@material-ui/icons/Help'
+import EditIcon from '@material-ui/icons/Edit'
+import HomeIcon from '@material-ui/icons/Home'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'

@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
-import { IconButton, Collapse, Typography, Button } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import IconButton from '@material-ui/core/IconButton'
+import Collapse from '@material-ui/core/Collapse'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 
 function Event(props) {

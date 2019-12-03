@@ -12,8 +12,10 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { Button, CircularProgress, Typography } from '@material-ui/core'
-import { Save as SaveIcon } from '@material-ui/icons'
+import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Typography from '@material-ui/core/Typography'
+import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
 import Waveform from '../Waveform'
 /* import {compose} from 'redux'
@@ -65,6 +67,7 @@ const MaterialForm = props => {
       const translationData = { title, lang, phrases, for: forMaterial }
       setPrevTranslation(translationData)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const playPause = () => {

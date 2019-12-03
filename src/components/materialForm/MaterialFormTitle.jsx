@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { TextField } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../../store/pageContentActions'
 
@@ -56,7 +56,4 @@ const mapDispatchToProps = dispatch => ({
   setPageParameter: payload => dispatch(setPageParameter(payload))
 })
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(MaterialFormTitle)
+export default connect(null, mapDispatchToProps)(MaterialFormTitle)
