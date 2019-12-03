@@ -100,14 +100,12 @@ const MaterialForm = props => {
     let actions = [] // materialAction and translationAction both, or one of them.
 
     const createInfo = (profile, time) => ({
-      createdBy: { userId: profile.uid, userName: profile.displayName },
-      createdAt: time,
-      updatedAt: time
+      created: { userId: profile.uid, userName: profile.displayName, time },
+      updated: { userId: profile.uid, userName: profile.displayName, time }
     })
 
     const updateInfo = (profile, time) => ({
-      updatedBy: { userId: profile.uid, userName: profile.displayName },
-      updatedAt: time
+      updated: { userId: profile.uid, userName: profile.displayName, time }
     })
 
     const materialId = props.materialId || db.collection(`material`).doc().id
@@ -165,7 +163,7 @@ const MaterialForm = props => {
         actions.push(materialAction)
       }
 
-      const additionalInfo =
+      const meta =
         materialAction === 'material added'
           ? createInfo(profile, Date.now())
           : updateInfo(profile, Date.now())
@@ -173,7 +171,7 @@ const MaterialForm = props => {
       const uploadMaterialTask = db
         .collection(`material`)
         .doc(materialId)
-        .set({ ...material, ...additionalInfo }, { merge: true })
+        .set({ ...material, meta }, { merge: true })
         .then()
         .catch(error => console.log('error', error))
 
@@ -183,7 +181,7 @@ const MaterialForm = props => {
     //translation is not empty, has created or changed
     if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
       actions.push(translationAction)
-      const additionalInfo =
+      const meta =
         translationAction === 'translation added'
           ? createInfo(profile, Date.now())
           : updateInfo(profile, Date.now())
@@ -191,7 +189,7 @@ const MaterialForm = props => {
       const uploadTranslationTask = db
         .collection('materialTr')
         .doc(translationId)
-        .set({ ...translation, ...additionalInfo }, { merge: true })
+        .set({ ...translation, meta }, { merge: true })
         .then()
         .catch(error => console.log('error', error))
 
@@ -217,6 +215,9 @@ const MaterialForm = props => {
     })
   }
 
+  const { materialRevisions, translationRevisions } = props
+  const revisionsProps = { materialRevisions, translationRevisions }
+
   return (
     <div style={{ textAlign: 'left', paddingBottom: 50 }}>
       <MaterialInfo />
@@ -235,7 +236,7 @@ const MaterialForm = props => {
         </div>
       ) : null}
       <div>
-        <PhrasesForTextArea />
+        <PhrasesForTextArea {...revisionsProps} />
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button style={{ margin: 10 }} onClick={readSubtitles} variant='outlined'>
@@ -265,11 +266,13 @@ const mapStateToProps = state => {
     materialPhrases: pc.materialPhrases,
     duration: pc.duration,
     translations: pc.translations,
+    materialRevisions: pc.materialRevisions,
     //from Translation (MaterialTr)
     trTitle: pc.trTitle,
     trLang: pc.trLang,
     for: pc.for,
     translationPhrases: pc.translationPhrases,
+    translationRevisions: pc.translationRevisions,
     //combined phrases Material+Translation
     phrases: pc.phrases,
     //temporary values

@@ -40,6 +40,7 @@ function MaterialFormHOC(props) {
         setPageParameter(['mediaLink', mediaLink])
         setPageParameter(['materialPhrases', materialPhrases])
         setPageParameter(['translations', translations])
+        setPageParameter(['materialRevisions', material.meta.revisions])
         // setPageParameter(['mediaLinkDownloadUrl', ''])
         //TRANSLATION
         if (translation) {
@@ -53,6 +54,8 @@ function MaterialFormHOC(props) {
           setPageParameter(['trTitle', trTitle])
           setPageParameter(['for', forMaterial])
           setPageParameter(['translationPhrases', translationPhrases])
+          setPageParameter(['translationRevisions', translation.meta.revisions])
+
           if (translation.phrases) {
             phrases = addTranslation(phrases, translation.phrases, trLang)
           }
