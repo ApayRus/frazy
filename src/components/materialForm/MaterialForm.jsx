@@ -37,7 +37,7 @@ import {
 import PhrasesForTextArea from './MaterialFormPhrases'
 
 const MaterialForm = props => {
-  const { mediaLinkDownloadUrl, uploadProgress, setPageParameter, text } = props
+  const { mediaLink, uploadProgress, setPageParameter, text } = props
   const history = useHistory()
   const [prevMaterial, setPrevMaterial] = useState({})
   const [prevTranslation, setPrevTranslation] = useState({})
@@ -56,7 +56,7 @@ const MaterialForm = props => {
         order,
         materialPhrases: phrases,
         duration,
-        translations
+        translations = []
       } = props
       const materialData = { title, mediaLink, lang, unit, order, phrases, duration, translations }
       setPrevMaterial(materialData)
@@ -96,7 +96,17 @@ const MaterialForm = props => {
     const waitPromisesBeforeRedirect = []
 
     // MATERIAL data for submit
-    const { title, mediaLink, lang, unit, order, phrases, duration, translations, profile } = props
+    const {
+      title,
+      mediaLink,
+      lang,
+      unit,
+      order,
+      phrases,
+      duration,
+      translations = [],
+      profile
+    } = props
     //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     const materialAction = props.materialId ? 'material updated' : 'material added'
 
@@ -232,7 +242,7 @@ const MaterialForm = props => {
           <CircularProgress value={uploadProgress} variant='static' />
         </div>
       ) : null}
-      {mediaLinkDownloadUrl ? (
+      {mediaLink ? (
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
           <Waveform />
           <Button onClick={playPause}>Play/Pause </Button>
@@ -279,9 +289,6 @@ const mapStateToProps = state => {
     //combined phrases Material+Translation
     phrases: pc.phrases,
     //temporary values
-    mediaLinkDownloadUrl: pc.mediaLinkDownloadUrl,
-    text: pc.text,
-    trText: pc.trText,
     uploadProgress: pc.uploadProgress,
     //auth, profile
     profile: state.firebase.profile
