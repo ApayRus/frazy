@@ -1,41 +1,54 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import './Wavesurfer.css'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
+import { afterFirebaseFileDownloadUrlReady } from '../utils/firebase'
 
 function Waveform(props) {
-  let waveformElem,
-    timelineElem = null
+  let waveformElem = useRef(),
+    timelineElem = useRef()
   const [isReady, setIsReady] = useState(false)
-  const { phrases, mediaLinkDownloadUrl, readOnly, waveformRenderProgress } = props
+  const { phrases, mediaLink, readOnly, waveformRenderProgress } = props
 
   useEffect(() => {
     //component will mount
     setIsReady(false)
-    if (mediaLinkDownloadUrl) {
+    if (mediaLink.match('http')) {
       wavesurferModule.wavesurfer = wavesurferModule.init(
-        waveformElem,
-        timelineElem,
-        mediaLinkDownloadUrl,
+        waveformElem.current,
+        timelineElem.current,
+        mediaLink,
         phrases,
         readOnly
       )
-
       wavesurferModule.wavesurfer.on('ready', e => {
         setIsReady(true)
+      })
+    } else {
+      afterFirebaseFileDownloadUrlReady(mediaLink, url => {
+        wavesurferModule.wavesurfer = wavesurferModule.init(
+          waveformElem.current,
+          timelineElem.current,
+          url,
+          phrases,
+          readOnly
+        )
+        wavesurferModule.wavesurfer.on('ready', e => {
+          setIsReady(true)
+        })
       })
     }
 
     return () => {
       //component will UNmount
-      if (mediaLinkDownloadUrl) {
+      if (mediaLink) {
         wavesurferModule.wavesurfer.destroy()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mediaLinkDownloadUrl])
+  }, [mediaLink])
 
   return (
     <div className='waveform'>
@@ -48,16 +61,16 @@ function Waveform(props) {
         </div>
       )}
       <div style={isReady ? {} : { visibility: 'hidden' }}>
-        <div ref={el => (waveformElem = el)} />
-        <div ref={el => (timelineElem = el)} />
+        <div ref={waveformElem} />
+        <div ref={timelineElem} />
       </div>
     </div>
   )
 }
 
 const mapStateToProps = state => {
-  const { mediaLinkDownloadUrl, phrases, waveformRenderProgress } = state.pageContent
-  return { mediaLinkDownloadUrl, phrases, waveformRenderProgress }
+  const { mediaLink, phrases, waveformRenderProgress } = state.pageContent
+  return { mediaLink, phrases, waveformRenderProgress }
 }
 
 export default connect(mapStateToProps)(Waveform)
