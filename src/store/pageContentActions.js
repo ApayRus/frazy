@@ -14,3 +14,17 @@ export const setPageParameter = payload => {
     payload
   }
 }
+
+/**
+ * @param {object} payload
+ * @param {string} payload.materialId
+ * @param {string} payload.mediaLinkDownloadUrl
+ * @param {Object} payload.material - doc
+ * @param {Object} payload.translation - doc
+ */
+export const fillPageContent = payload => {
+  return {
+    type: 'FILL_PAGE_CONTENT',
+    payload
+  }
+}

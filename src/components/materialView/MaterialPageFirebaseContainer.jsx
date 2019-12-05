@@ -1,12 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
-import { makePhrasesArray, addTranslation } from '../../utils/phrases'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
-import firebase from '../../firebase/firebase'
-import { setPageParameter } from '../../store/pageContentActions'
+import { fillPageContent } from '../../store/pageContentActions'
 import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -19,54 +17,15 @@ import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
  * @param {} props
  */
 function MaterialPageHOC(props) {
-  const { material, translation, setMenuParameter, setPageParameter } = props
-
+  const { material, translation } = props
+  const dispatch = useDispatch()
+  const { materialId } = props.match.params
   if (isLoaded(material, translation)) {
-    const { mediaLink, unit, lang, title } = material
-    let phrases = material.phrases
-    phrases = makePhrasesArray(phrases)
+    const { lang, unit } = material
+    dispatch(fillPageContent({ materialId, material, translation }))
+    dispatch(setMenuParameter(['unit', unit]))
 
-    if (translation) {
-      const { lang, title } = translation
-      setPageParameter(['trLang', lang])
-      setPageParameter(['trTitle', title])
-      if (translation) {
-        phrases = addTranslation(phrases, translation.phrases, translation.lang)
-      }
-    }
-
-    const { materialId } = props.match.params
-
-    setMenuParameter(['unit', unit])
-    setPageParameter(['materialId', materialId])
-    setPageParameter(['title', title])
-    setPageParameter(['lang', lang])
-    setPageParameter(['phrases', phrases])
-    setPageParameter(['mediaLinkDownloadUrl', ''])
-    setPageParameter(['waveformRenderProgress', -1])
-
-    // console.log('mediaLink', mediaLink)
-    if (mediaLink.match('http')) {
-      //is external link, with full path to file
-      setPageParameter(['mediaLinkDownloadUrl', mediaLink])
-    } else {
-      //mediaLink is just id to the file on our hosting, we'll get downloadURL
-      firebase
-        .storage()
-        .ref(mediaLink)
-        .getDownloadURL()
-        .then(url => {
-          setPageParameter(['mediaLinkDownloadUrl', url])
-        })
-    }
-
-    /*     console.log('material', JSON.stringify({ ...materialInfo, phrases: { ...materialPhrases } }))
-    console.log(
-      'translation',
-      JSON.stringify({ ...translationInfo, phrases: { ...translationPhrases } })
-    ) */
-
-    const theme = langTheme(lang)
+    const theme = langTheme(material.lang)
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -87,15 +46,8 @@ const mapStateToProps = state => {
   return { material: fs.material, translation: fs.translation }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setPageParameter: payload => dispatch(setPageParameter(payload)),
-    setMenuParameter: payload => dispatch(setMenuParameter(payload))
-  }
-}
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps),
   firestoreConnect(props => {
     const { materialId, trLang } = props.match.params
     return [
