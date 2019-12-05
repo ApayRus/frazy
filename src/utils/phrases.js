@@ -35,7 +35,8 @@ export function makePhrasesArray(phrasesObject) {
  * @param {object} trPhrases - object
  * @param {string} trLang - ru, en, ch, es
  */
-export function addTranslation(phrases, trPhrases, trLang) {
+export function addTranslation(phrases, translation) {
+  const { phrases: trPhrases, lang: trLang } = translation
   return phrases.map(elem => {
     const tr = trPhrases[elem.id]
     const trText = tr ? tr.text : ''
