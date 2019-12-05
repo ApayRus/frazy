@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
-import firebase from '../../firebase/firebase'
 import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import HeadingDrawerHOC from './HeadingDrawerContainer'
+import { afterFirebaseFileDownloadUrlReady } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase
@@ -14,15 +14,9 @@ import HeadingDrawerHOC from './HeadingDrawerContainer'
 function HeadingFirebaseHOC(props) {
   const { setMenuParameter, unit } = props
   console.log('unit', unit)
-  const setParamAsync = (paramName, firebaseId) => {
-    firebase
-      .storage()
-      .ref(firebaseId)
-      .getDownloadURL()
-      .then(url => {
-        setMenuParameter([paramName, url])
-      })
-  }
+
+  const setParamAsync = (paramName, firebaseId) =>
+    afterFirebaseFileDownloadUrlReady(firebaseId, url => setMenuParameter([paramName, url]))
 
   const defaultUnitInfo = {
     author: 'There is no info for this unit yet',
