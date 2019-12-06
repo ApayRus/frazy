@@ -10,6 +10,10 @@ import clsx from 'clsx'
 import * as moment from 'moment'
 import Button from '@material-ui/core/Button'
 import ButtonBase from '@material-ui/core/ButtonBase'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
@@ -18,8 +22,7 @@ import firebase from '../../firebase/firebase'
 
 const useStyles = makeStyles(theme => ({
   collapsedBlock: {
-    backgroundColor: theme.palette.grey[100],
-    padding: 10
+    backgroundColor: theme.palette.grey[50]
   },
   title: {
     color: 'skyblue',
@@ -85,19 +88,30 @@ function Revisions(props) {
 
       <Collapse in={expanded} timeout='auto' unmountOnExit>
         <div className={classes.collapsedBlock}>
-          {revisions.map(elem => (
-            <Typography variant='body2' key={elem.id}>
-              {elem.userName}, {moment(elem.time).fromNow()}{' '}
-              <Button
-                style={{ color: 'skyblue', fontSize: 10, float: 'right' }}
-                size='small'
-                variant='text'
-                onClick={loadRevision(props.collection, props.docId, elem.id)}
-              >
-                Downgrade
-              </Button>
-            </Typography>
-          ))}
+          <List>
+            {revisions.map((elem, index) => {
+              const isNotLastElem = index === revisions.length - 1 ? false : true
+              return (
+                <ListItem key={elem.id} divider={isNotLastElem}>
+                  <ListItemText disableTypography>
+                    <Typography variant='body2'>
+                      {elem.userName}, {moment(elem.time).fromNow()}
+                    </Typography>
+                  </ListItemText>
+                  <ListItemSecondaryAction>
+                    <Button
+                      style={{ color: 'skyblue', fontSize: 10, float: 'right' }}
+                      size='small'
+                      variant='text'
+                      onClick={loadRevision(props.collection, props.docId, elem.id)}
+                    >
+                      Downgrade
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              )
+            })}
+          </List>
         </div>
       </Collapse>
     </div>
