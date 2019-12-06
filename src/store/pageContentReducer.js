@@ -46,8 +46,8 @@ const pageContentReducer = (state = initState, action) => {
         title: trTitle = '',
         phrases: translationPhrases = {},
         for: forMaterial = ''
-      } = translation
-      const { meta: { revisions: translationRevisions = {} } = {} } = translation
+      } = translation || {}
+      const { meta: { revisions: translationRevisions = {} } = {} } = translation || {}
 
       if (translation) {
         if (translation.phrases) {
