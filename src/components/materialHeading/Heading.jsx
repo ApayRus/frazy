@@ -8,12 +8,16 @@ import { connect } from 'react-redux'
 import { toggleHeadingDrawer } from '../../store/appStateActions'
 import { Link } from 'react-router-dom'
 import orderBy from 'lodash/orderBy'
+import map from 'lodash/map'
 import { actionTypes } from 'redux-firestore'
 
 function Heading(props) {
   const { toggleHeadingDrawer, clearCachedDocs } = props
   const { title, author, heading, logo, background, trLang } = props
-  const headingOrdered = orderBy(heading, ['order'], ['asc'])
+  console.log('heading', heading)
+
+  let headingOrdered = map(heading, (elem, key) => ({ id: key, ...elem }))
+  headingOrdered = orderBy(headingOrdered, ['order'], ['asc'])
 
   const useStyles = makeStyles(theme => ({
     header: {
