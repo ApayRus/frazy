@@ -18,13 +18,11 @@ import Typography from '@material-ui/core/Typography'
 import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
 import Waveform from '../Waveform'
-/* import {compose} from 'redux'
-import {firestoreConnect} from 'react-redux-firebase' */
 import { connect } from 'react-redux'
 import { setPageParameter } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
-import firebase from '../../firebase/firebase'
+import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { map } from 'lodash'
 import { diff } from 'deep-object-diff'
 
@@ -48,17 +46,8 @@ const MaterialForm = props => {
     //onMount
     // snapshot from material
     {
-      const {
-        title,
-        mediaLink,
-        lang,
-        unit,
-        order,
-        materialPhrases: phrases,
-        duration,
-        translations = []
-      } = props
-      const materialData = { title, mediaLink, lang, unit, order, phrases, duration, translations }
+      const { title, mediaLink, lang, unit, order, materialPhrases: phrases } = props
+      const materialData = { title, mediaLink, lang, unit, order, phrases }
       setPrevMaterial(materialData)
     }
     // snapshot from translation
@@ -92,7 +81,6 @@ const MaterialForm = props => {
   }
 
   const handleSubmit = () => {
-    const db = firebase.firestore()
     const waitPromisesBeforeRedirect = []
 
     // MATERIAL data for submit
@@ -103,8 +91,8 @@ const MaterialForm = props => {
       unit,
       order,
       phrases,
+      translations: oldTranslations = [],
       duration,
-      translations = [],
       profile
     } = props
     //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
@@ -121,20 +109,20 @@ const MaterialForm = props => {
       updated: { userId: profile.uid, userName: profile.displayName, time }
     })
 
-    const materialId = props.materialId || db.collection(`material`).doc().id
+    const materialId = props.materialId || getNewDocId('material')
     const materialPhrases = localPhrasesToDBphrases(phrases)
 
     // TRANSLATION data for submit
     const { trLang, trTitle } = props
-    let translation = {}
-    const translationAction = translations.includes(trLang)
+    let translationContent = {}
+    const translationAction = oldTranslations.includes(trLang)
       ? 'translation updated'
       : 'translation added'
 
     const translationId = `${materialId}_${trLang}`
     if (trLang && trTitle) {
       const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
-      translation = {
+      translationContent = {
         title: trTitle,
         lang: trLang,
         for: materialId,
@@ -143,19 +131,21 @@ const MaterialForm = props => {
     }
 
     //new material after user input:
-    const material = {
+    const materialContent = {
       title,
       mediaLink,
       lang,
       unit,
       order,
-      phrases: materialPhrases,
-      duration,
-      translations: translations.includes(trLang) ? translations : translations.concat(trLang)
+      phrases: materialPhrases
     }
 
-    const diffMaterial = diff(prevMaterial, material) //diff object after user input
-    const diffTranslation = diff(prevTranslation, translation) //diff object after user input
+    const newTranslations = oldTranslations.includes(trLang)
+      ? oldTranslations
+      : oldTranslations.concat(trLang)
+
+    const diffMaterial = diff(prevMaterial, materialContent) //diff object after user input
+    const diffTranslation = diff(prevTranslation, translationContent) //diff object after user input
 
     // console.log('diffMaterial', diffMaterial)
     // console.log('diffTranslation', diffTranslation)
@@ -176,35 +166,39 @@ const MaterialForm = props => {
         actions.push(materialAction)
       }
 
-      const meta =
+      const materialCreateUpdateInfo =
         materialAction === 'material added'
           ? createInfo(profile, Date.now())
           : updateInfo(profile, Date.now())
 
-      const uploadMaterialTask = db
-        .collection(`material`)
-        .doc(materialId)
-        .set({ ...material, meta }, { merge: true })
-        .then()
-        .catch(error => console.log('error', error))
+      const materialMeta = {
+        ...materialCreateUpdateInfo,
+        duration,
+        translations: newTranslations
+      }
+
+      const uploadMaterialTask = dbSet('material', materialId, {
+        ...materialContent,
+        meta: materialMeta
+      })
 
       waitPromisesBeforeRedirect.push(uploadMaterialTask)
     }
 
     //translation is not empty, has created or changed
-    if (Object.keys(translation).length && Object.entries(diffTranslation).length) {
+    if (Object.keys(translationContent).length && Object.entries(diffTranslation).length) {
       actions.push(translationAction)
-      const meta =
+      const translationCreateUpdateInfo =
         translationAction === 'translation added'
           ? createInfo(profile, Date.now())
           : updateInfo(profile, Date.now())
 
-      const uploadTranslationTask = db
-        .collection('materialTr')
-        .doc(translationId)
-        .set({ ...translation, meta }, { merge: true })
-        .then()
-        .catch(error => console.log('error', error))
+      const translationMeta = { ...translationCreateUpdateInfo }
+
+      const uploadTranslationTask = dbSet('materialTr', translationId, {
+        ...translationContent,
+        meta: translationMeta
+      })
 
       waitPromisesBeforeRedirect.push(uploadTranslationTask)
     }
@@ -213,17 +207,14 @@ const MaterialForm = props => {
       const event = {
         title,
         lang,
-        translations: material.translations,
+        translations: newTranslations,
         trTitle,
         trLang,
         actions,
         time: Date.now()
       }
-      console.log('event: ', event)
-      db.collection('lastEvents')
-        .doc('main')
-        .update({ [materialId]: event })
 
+      dbUpdate('lastEvents', 'main', { [materialId]: event })
       history.push(`/material/${materialId}/${trLang}`)
     })
   }
@@ -279,6 +270,7 @@ const mapStateToProps = state => {
     materialPhrases: pc.materialPhrases,
     duration: pc.duration,
     translations: pc.translations,
+
     materialRevisions: pc.materialRevisions,
     //from Translation (MaterialTr)
     trTitle: pc.trTitle,
