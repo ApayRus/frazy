@@ -1,6 +1,6 @@
 # FraZy
 
-<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png"  style="float: right; margin-left:10px;" />
+<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png"  align="right" hspace="10" />
 
 [Demo](https://frazy-7d371.web.app/material/72z3rX4hunX2eHscZZx1/ru)
 
@@ -30,6 +30,7 @@ This repository provide you with all you need to run similar web-app on your own
 
 ```
 git clone https://github.com/Aparus/frazy.git
+cd frazy
 npm install
 ```
 
