@@ -1,3 +1,31 @@
+# FraZy
+
+<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png"  style="float: right; margin-left:10px;" />
+
+[Demo](https://frazy-7d371.web.app/material/72z3rX4hunX2eHscZZx1/ru)
+
+Frazy is a new kind of language learning materials.
+
+The main idea is that **in an audio file you can play each phrase separately, and at the same time see its text and a translation**.
+
+1. You can play the whole audio and watch captions.
+1. Or you can scroll through the text and play only particular phrases.
+1. You can set up a dictation and each phrase will be repeated a given number of times with a given delay.
+
+You can also create similar materials yourself.
+
+1. Add your audio file.
+1. Highlight phrases in it.
+1. Enter the language and the title.
+1. Place the text so that each line corresponds to a phrase in the audio.
+1. If necessary, add text for translation too.
+1. Save and share with friends.
+1. Then other people will offer their improvements and add translations in different languages.
+
+**In this way both: a small poem and a large book can be adapted.**
+
+This repository provide you with all you need to run similar web-app on your own GoogleFirebase account.
+
 ## Install
 
 ```
