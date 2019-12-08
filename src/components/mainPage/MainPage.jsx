@@ -8,6 +8,12 @@ import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import Grid from '@material-ui/core/Grid'
 import LastEvents from './LastEvents'
+import local from '../localization/en'
+<ButtonWithAuthPopover
+        redirectUrl={materialAddLink}
+        message={local.loginButtonMessageForAddMaterial}
+        buttonIcon={<AddIcon />}
+      />
 
 function MainPage(props) {
   const { lastEventsDoc } = props
