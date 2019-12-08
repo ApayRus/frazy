@@ -6,7 +6,6 @@
 import admin from 'firebase-admin'
 import firebaseConfig from '../../config/firebaseConfig.js'
 import serviceAccount from '../../config/firebaseAdminKey.json'
-import _ from 'lodash'
 import { docTimestamps } from './functions.js'
 
 admin.initializeApp({
@@ -33,14 +32,20 @@ async function assembleHeading(collectionName, unitId) {
       console.log('Error getting documents: ', error)
     })
 
-  const heading = []
+  const heading = {}
+
   querySnapshot.forEach(doc => {
     const { title, order } = doc.data()
     const { createdAt, updatedAt } = docTimestamps(doc)
-    heading.push({ id: doc.id, title, order, createdAt, updatedAt })
+    heading[doc.id] = {
+      title,
+      order,
+      created: { time: createdAt },
+      updated: { time: updatedAt }
+    }
   })
 
-  return _.orderBy(heading, ['order', 'createdAt'])
+  return heading
 }
 
 function rewriteUnitHeading(unitId, object) {
@@ -56,8 +61,9 @@ const unitInfo = {
   author: `יוחנן אליחי`,
   logo: `hs/500HebrewVerbs.jpg`
 }
-const unitId = '500HebrewVerbs'
+
+const unitId = '6minuteEnglishFromBBC'
 
 assembleHeading('material', unitId).then(heading => {
-  rewriteUnitHeading(unitId, { ...unitInfo, heading })
+  rewriteUnitHeading(unitId, { /* ...unitInfo,  */ heading })
 })
