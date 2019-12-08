@@ -8,6 +8,7 @@ import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import Grid from '@material-ui/core/Grid'
 import LastEvents from './LastEvents'
+import local from '../localization/en'
 
 function MainPage(props) {
   const { lastEventsDoc } = props
@@ -29,7 +30,7 @@ function MainPage(props) {
     <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
       <ButtonWithAuthPopover
         redirectUrl={materialAddLink}
-        message={`You have to log in to add new material. `}
+        message={local.loginButtonMessageForAddMaterial}
         buttonIcon={<AddIcon />}
       />
     </div>
