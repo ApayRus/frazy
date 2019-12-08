@@ -16,7 +16,6 @@ export function dbSet(colName, docId, object) {
   db.collection(colName)
     .doc(docId)
     .set(object, { merge: true })
-    .then(doc => console.log('has set doc:', doc.id))
     .catch(error => console.log('error', error))
 }
 
@@ -24,7 +23,6 @@ export function dbUpdate(colName, docId, object) {
   db.collection(colName)
     .doc(docId)
     .update(object)
-    .then(doc => console.log('has updated doc:', doc.id))
     .catch(error => console.log('error', error))
 }
 
