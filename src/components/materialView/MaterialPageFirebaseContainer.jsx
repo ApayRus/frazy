@@ -36,16 +36,22 @@ function MaterialPageHOC(props) {
     const theme = langTheme(material.lang)
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <MaterialPage />
-        <MaterialBar />
-        {unit ? <HeadingFirebaseHOC unitId={unit} /> : null}
-        <DrawerSettings />
-        <LangFonts lang={lang} />
-      </MuiThemeProvider>
+      <div style={{ textAlign: 'center' }}>
+        <MuiThemeProvider theme={theme}>
+          <MaterialPage />
+          <MaterialBar />
+          {unit ? <HeadingFirebaseHOC unitId={unit} /> : null}
+          <DrawerSettings />
+          <LangFonts lang={lang} />
+        </MuiThemeProvider>
+      </div>
     )
   } else {
-    return <CircularProgress size={100} />
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <CircularProgress size={100} />
+      </div>
+    )
   }
 }
 
