@@ -25,6 +25,7 @@ function MaterialPageHOC(props) {
     return () => {
       dispatch(clearPageContent())
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoaded(material, translation)) {

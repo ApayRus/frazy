@@ -56,11 +56,11 @@ function rewriteUnitHeading(unitId, object) {
     .catch(error => console.log('error', error))
 }
 
-const unitInfo = {
+/* const unitInfo = {
   title: `לחיות, לעבוד ולשמוח בעברית : שיטה ללימוד הפעלים`,
   author: `יוחנן אליחי`,
   logo: `hs/500HebrewVerbs.jpg`
-}
+} */
 
 const unitId = '6minuteEnglishFromBBC'
 
