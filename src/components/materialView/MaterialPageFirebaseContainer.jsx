@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
-import { fillPageContent } from '../../store/pageContentActions'
+import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
 import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -20,6 +20,13 @@ function MaterialPageHOC(props) {
   const { material, translation } = props
   const dispatch = useDispatch()
   const { materialId } = props.match.params
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearPageContent())
+    }
+  }, [])
+
   if (isLoaded(material, translation)) {
     const { lang, unit } = material
     dispatch(fillPageContent({ materialId, material, translation }))

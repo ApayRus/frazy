@@ -28,3 +28,9 @@ export const fillPageContent = payload => {
     payload
   }
 }
+
+export const clearPageContent = () => {
+  return {
+    type: 'CLEAR_PAGE_CONTENT'
+  }
+}
