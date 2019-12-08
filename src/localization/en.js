@@ -12,4 +12,5 @@ export default {
   dictation: 'Dictation',
   repeats: 'Number of repetitions',
   delay: 'Delay between repetitions (* phrase length)'
-}
+  loginButtonMessageForAddMaterial: 'You have to log in to add new material.'
+  loginButtonMessageForEditMaterial: 'You have to log in to edit the material.'
