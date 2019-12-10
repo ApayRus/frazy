@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
-import local from '../localization/en'
+import local from '../../localization/en'
 
 const useStyles = makeStyles(theme => ({
   bottom: {
