@@ -219,9 +219,6 @@ const MaterialForm = props => {
     })
   }
 
-  const { materialRevisions, translationRevisions } = props
-  const revisionsProps = { materialRevisions, translationRevisions }
-
   return (
     <div style={{ textAlign: 'left', paddingBottom: 50 }}>
       <MaterialInfo />
@@ -240,7 +237,7 @@ const MaterialForm = props => {
         </div>
       ) : null}
       <div>
-        <PhrasesForTextArea {...revisionsProps} />
+        <PhrasesForTextArea />
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button style={{ margin: 10 }} onClick={readSubtitles} variant='outlined'>
@@ -270,8 +267,6 @@ const mapStateToProps = state => {
     materialPhrases: pc.materialPhrases,
     duration: pc.duration,
     translations: pc.translations,
-
-    materialRevisions: pc.materialRevisions,
     //from Translation (MaterialTr)
     trTitle: pc.trTitle,
     trLang: pc.trLang,

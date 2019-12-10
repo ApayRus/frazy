@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react'
-import { map } from 'lodash'
+import { map, orderBy } from 'lodash'
 import clsx from 'clsx'
 import * as moment from 'moment'
 import Button from '@material-ui/core/Button'
@@ -19,6 +19,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import firebase from '../../firebase/firebase'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   collapsedBlock: {
@@ -43,8 +44,12 @@ const useStyles = makeStyles(theme => ({
 
 function Revisions(props) {
   const db = firebase.firestore()
-  const { revisions: revisionsDoc } = props
   const classes = useStyles()
+  const revisionsDoc = useSelector(state => {
+    return props.collection === 'material'
+      ? state.pageContent.materialRevisions
+      : state.pageContent.translationRevisions
+  })
   const [expanded, setExpanded] = useState(false)
 
   const loadRevision = (collection, docId, revisionId) => event => {
@@ -54,7 +59,7 @@ function Revisions(props) {
       .doc(revisionId)
       .get()
       .then(doc => {
-        console.log('revision doc.data()', doc.data())
+        console.log('doc revision', doc.data())
       })
       .catch(error => console.log(error))
   }
@@ -67,6 +72,8 @@ function Revisions(props) {
       time
     }
   })
+
+  revisions = orderBy(revisions, 'meta.updated.time').reverse()
 
   return (
     <div>

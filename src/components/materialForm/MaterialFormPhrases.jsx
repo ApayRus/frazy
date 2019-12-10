@@ -57,8 +57,6 @@ function Phrases(props) {
     trLang,
     title,
     trTitle,
-    materialRevisions,
-    translationRevisions,
     materialId
   } = props
   const classes = useStyles()
@@ -145,9 +143,7 @@ function Phrases(props) {
           className={`${classes.textarea} ${classes.textareaOriginal}`}
         />
         <div style={{ marginLeft: 40, marginRight: 1 }}>
-          {materialId && (
-            <Revisions revisions={materialRevisions} docId={materialId} collection='material' />
-          )}
+          {materialId && <Revisions docId={materialId} collection='material' />}
         </div>
       </Grid>
       <Grid item sm={5} xs={12}>
@@ -165,13 +161,7 @@ function Phrases(props) {
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaTranslation}`}
         />
-        {materialId && (
-          <Revisions
-            revisions={translationRevisions}
-            docId={`${materialId}_${trLang}`}
-            collection='materialTr'
-          />
-        )}
+        {materialId && <Revisions docId={`${materialId}_${trLang}`} collection='materialTr' />}
       </Grid>
     </Grid>
   )
