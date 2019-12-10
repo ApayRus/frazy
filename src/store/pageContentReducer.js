@@ -77,6 +77,46 @@ const pageContentReducer = (state = initState, action) => {
         phrases
       }
     }
+    case 'UPDATE_FROM_MATERIAL': {
+      console.log('action', action)
+      const { title, lang, mediaLink, unit, order, phrases: phrasesRevision } = action.payload.doc
+
+      const newInfo = { title, lang, mediaLink, unit, order }
+      let { phrases } = state
+      //rewrite text
+      phrases = phrases.map(elem => {
+        const { text: newText = '' } = phrasesRevision[elem.id] || {}
+        return {
+          ...elem,
+          text: newText
+        }
+      })
+
+      //delete not exist in revision
+      phrases = phrases.filter(elem => Object.keys(phrasesRevision).includes(elem.id))
+
+      return { ...state, ...newInfo, phrases }
+    }
+    case 'UPDATE_FROM_TRANSLATION': {
+      const { trTitle, trLang, phrases: phrasesRevision } = action.payload.doc
+      let { phrases } = state
+      //rewrite text
+      phrases = phrases.map(elem => {
+        const { translations: oldTranslations } = elem
+        console.log('elem.id', elem.id)
+        const { text: newText = '' } = phrasesRevision[elem.id] || {}
+        const newTranslation = { [trLang]: newText }
+        console.log('newTranslation', newTranslation)
+        return {
+          ...elem,
+          translations: { ...oldTranslations, ...newTranslation }
+        }
+      })
+
+      const stateAfter = { ...state, trLang, trTitle, phrases }
+
+      return stateAfter
+    }
 
     default:
       return state

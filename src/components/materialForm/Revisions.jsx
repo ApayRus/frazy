@@ -18,8 +18,9 @@ import Collapse from '@material-ui/core/Collapse'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import { updateFromMaterial, updateFromTranslation } from '../../store/pageContentActions'
 import firebase from '../../firebase/firebase'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   collapsedBlock: {
@@ -45,14 +46,16 @@ const useStyles = makeStyles(theme => ({
 function Revisions(props) {
   const db = firebase.firestore()
   const classes = useStyles()
+  const dispatch = useDispatch()
+
   const revisionsDoc = useSelector(state => {
-    return props.collection === 'material'
-      ? state.pageContent.materialRevisions
-      : state.pageContent.translationRevisions
+    const { materialRevisions, translationRevisions } = state.pageContent
+    return props.collection === 'material' ? materialRevisions : translationRevisions
   })
   const [expanded, setExpanded] = useState(false)
 
   const loadRevision = (collection, docId, revisionId) => event => {
+    const action = collection === 'material' ? updateFromMaterial : updateFromTranslation
     db.collection(collection)
       .doc(docId)
       .collection('revisions')
@@ -60,6 +63,7 @@ function Revisions(props) {
       .get()
       .then(doc => {
         console.log('doc revision', doc.data())
+        dispatch(action({ doc: doc.data() }))
       })
       .catch(error => console.log(error))
   }

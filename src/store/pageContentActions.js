@@ -34,3 +34,27 @@ export const clearPageContent = () => {
     type: 'CLEAR_PAGE_CONTENT'
   }
 }
+
+/**
+ *
+ * @param {object} payload
+ * @param {object} payload.materialDoc - loaded from db doc for update
+ */
+export const updateFromMaterial = payload => {
+  return {
+    type: 'UPDATE_FROM_MATERIAL',
+    payload
+  }
+}
+
+/**
+ *
+ * @param {object} payload
+ * @param {object} payload.materialDoc - loaded from db doc for update
+ */
+export const updateFromTranslation = payload => {
+  return {
+    type: 'UPDATE_FROM_TRANSLATION',
+    payload
+  }
+}
