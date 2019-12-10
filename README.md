@@ -95,6 +95,7 @@ Material is the basic data model in the whole app. It contains the following fie
  meta: {
     duration: 292.035, //  (seconds)
     translations: { ru: { name: "russian" }, es: { name:"spanish" }, ... },
+    revisions: { userId: { userName, time }, ... }
     created: { userId, userName, time: timestamp[13] },
     updated: { userId, userName, time: timestamp[13] }
  }
@@ -115,6 +116,8 @@ Material is the basic data model in the whole app. It contains the following fie
 `duration` the length of an audio file in seconds.
 
 `translations` - all avaliable languages. Array auto updates every time when someone adds new translation for the material. Used for generating links to each translation.
+
+`revisions` - short info about for display revisions list. Main data stored in subcollection 'revisions' at the document.
 
 `created, updated` - assigned to the material when you add your own material or edit an existing one. Used for ordering materials and for revisions history.
 
