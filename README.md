@@ -22,9 +22,9 @@ You can also create similar materials yourself.
 1. Save and share with friends.
 1. Then other people will offer their improvements and add translations in different languages.
 
-**In this way both: a small poem and a large book can be adapted.**
+**In this way, both a small poem and a large book can be adapted.**
 
-This repository provide you with all you need to run similar web-app on your own GoogleFirebase account.
+This repository provides you with all you need to run a similar web-app on your own GoogleFirebase account.
 
 ## Install
 
@@ -70,7 +70,7 @@ export default {
 }
 ```
 
-Also before running project, you should turn on every mentioned above Firebase elements (Auth, DB, Storage, Hosting). Also you can [deploy app to Hosting](https://firebase.google.com/docs/hosting/quickstart).
+Also before running project, you should turn on all the above-mentioned Firebase elements (Auth, DB, Storage, Hosting). You can also [deploy app to Hosting](https://firebase.google.com/docs/hosting/quickstart).
 
 The app will work properly on your machine except for uploading files from `localhost` into `Storage`. For that, you should set [cors config](https://firebase.google.com/docs/storage/web/download-files#cors_configuration).
 

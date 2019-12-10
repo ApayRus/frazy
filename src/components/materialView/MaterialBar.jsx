@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
+import local from '../localization/en'
 
 const useStyles = makeStyles(theme => ({
   bottom: {
@@ -70,7 +71,7 @@ function Appbar(props) {
       <div className={`${classes.bottom} ${classes.edit}`}>
         <ButtonWithAuthPopover
           redirectUrl={materialEditLink}
-          message={`You should login before edit the material. `}
+          message={local.loginButtonMessageForEditMaterial}
           buttonIcon={<EditIcon />}
         />
       </div>
