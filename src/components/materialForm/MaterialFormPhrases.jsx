@@ -1,6 +1,5 @@
 import React from 'react'
 import PlayArrow from '@material-ui/icons/PlayArrow'
-// import { audio } from '../howler'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,8 +8,7 @@ import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialFormTitle from './MaterialFormTitle'
 import { map } from 'lodash'
 import Revisions from './Revisions'
-
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   id: {
@@ -49,16 +47,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Phrases(props) {
-  const {
-    phrases,
-    currentPhraseId,
-    setPageParameter,
-    lang,
-    trLang,
-    title,
-    trTitle,
-    materialId
-  } = props
+  const { phrases, lang, trLang, title, trTitle, materialId } = useSelector(
+    state => state.pageContent
+  )
+  const { currentPhraseId } = useSelector(state => state.pageContent)
+  const dispatch = useDispatch()
   const classes = useStyles()
   const text = map(phrases, 'text').join('\n') //textarea content original text
   const trText = map(phrases, `translations.${trLang}`).join('\n') //textarea content translation text
@@ -76,7 +69,7 @@ function Phrases(props) {
       newPhrases[index]['text'] = label1
     })
 
-    setPageParameter(['phrases', newPhrases])
+    dispatch(setPageParameter(['phrases', newPhrases]))
   }
 
   const handleTrTextChanged = event => {
@@ -94,7 +87,7 @@ function Phrases(props) {
       region.update({ attributes: { ...region.attributes, label2 } })
       newPhrases[index]['translations'] = newTranslations
     })
-    setPageParameter(['phrases', newPhrases])
+    dispatch(setPageParameter(['phrases', newPhrases]))
   }
 
   const playPhrase = id => event => {
@@ -167,21 +160,4 @@ function Phrases(props) {
   )
 }
 
-const mapStateToProps = state => {
-  const pc = state.pageContent
-  return {
-    phrases: pc.phrases,
-    lang: pc.lang,
-    trLang: pc.trLang,
-    title: pc.title,
-    trTitle: pc.trTitle,
-    materialId: pc.materialId,
-    currentPhraseId: state.playerState.currentPhraseId
-  }
-}
-
-const mapDispatchToProps = dispatch => ({
-  setPageParameter: payload => dispatch(setPageParameter(payload))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Phrases)
+export default Phrases

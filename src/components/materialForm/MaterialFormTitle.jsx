@@ -3,8 +3,7 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../../store/pageContentActions'
-
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -21,13 +20,13 @@ const useStyles = makeStyles(theme => ({
  * "lang", "title", "trLang", "trTitle"
  */
 function MaterialFormTitle(props) {
-  const { lang, title, langId, langLabel, titleId, titleLabel, setPageParameter } = props
-
+  const { lang, title, langId, langLabel, titleId, titleLabel } = props
+  const dispatch = useDispatch()
   const classes = useStyles()
 
   const handleChange = event => {
     const { id, value } = event.target
-    setPageParameter([id, value])
+    dispatch(setPageParameter([id, value]))
   }
 
   return (
@@ -52,8 +51,4 @@ function MaterialFormTitle(props) {
   )
 }
 
-const mapDispatchToProps = dispatch => ({
-  setPageParameter: payload => dispatch(setPageParameter(payload))
-})
-
-export default connect(null, mapDispatchToProps)(MaterialFormTitle)
+export default MaterialFormTitle
