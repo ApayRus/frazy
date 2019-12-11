@@ -154,18 +154,6 @@ const MaterialForm = props => {
 
     //material has created or changed
     if (Object.entries(diffMaterial).length) {
-      console.log('diffMaterial', diffMaterial)
-      //if there wasn't material change, only translation, we should update [translations] in material
-      // but in actions we need only "translation added"
-      if (
-        !(
-          Object.entries(diffMaterial).length === 1 &&
-          Object.entries(diffMaterial)[0][0] === 'translations'
-        )
-      ) {
-        actions.push(materialAction)
-      }
-
       const materialCreateUpdateInfo =
         materialAction === 'material added'
           ? createInfo(profile, Date.now())
@@ -200,7 +188,15 @@ const MaterialForm = props => {
         meta: translationMeta
       })
 
-      waitPromisesBeforeRedirect.push(uploadTranslationTask)
+      //if translation added we need update material too
+      const uploadMaterialTask =
+        translationAction === 'translation added'
+          ? dbSet('material', materialId, {
+              meta: { translations: newTranslations }
+            })
+          : null
+
+      waitPromisesBeforeRedirect.push(uploadTranslationTask, uploadMaterialTask)
     }
 
     Promise.all([waitPromisesBeforeRedirect]).then(values => {

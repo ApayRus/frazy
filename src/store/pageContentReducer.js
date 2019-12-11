@@ -36,7 +36,7 @@ const pageContentReducer = (state = initState, action) => {
         order,
         mediaLink,
         phrases: materialPhrases,
-        translations
+        meta: { translations, duration }
       } = material
 
       const { meta: { revisions: materialRevisions = {} } = {} } = material
@@ -68,6 +68,7 @@ const pageContentReducer = (state = initState, action) => {
         mediaLink,
         materialPhrases,
         translations,
+        duration,
         materialRevisions,
         trLang,
         trTitle,
