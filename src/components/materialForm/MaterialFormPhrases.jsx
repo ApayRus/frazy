@@ -9,6 +9,7 @@ import MaterialFormTitle from './MaterialFormTitle'
 import { map } from 'lodash'
 import Revisions from './Revisions'
 import { useDispatch, useSelector } from 'react-redux'
+import TranslationSwitcher from '../translations/TranslationSwitcher'
 
 const useStyles = makeStyles(theme => ({
   id: {
@@ -118,7 +119,7 @@ function Phrases(props) {
   return (
     <Grid style={{ padding: 10 }} container>
       <Grid item sm={7} xs={12}>
-        <div style={{ marginLeft: 40 }}>
+        <div style={{ marginLeft: 40, marginTop: 24 }}>
           <MaterialFormTitle
             title={title}
             lang={lang}
@@ -140,6 +141,9 @@ function Phrases(props) {
         </div>
       </Grid>
       <Grid item sm={5} xs={12}>
+        <div style={{ textAlign: 'right' }}>
+          <TranslationSwitcher />
+        </div>
         <MaterialFormTitle
           title={trTitle}
           lang={trLang}
