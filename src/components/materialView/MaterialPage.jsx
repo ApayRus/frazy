@@ -8,7 +8,7 @@ import PlayerSlideShow from './PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { setPlayerState } from '../../store/playerStateActions'
-import Typography from '@material-ui/core/Typography'
+import MaterialTitle from './MaterialTitle'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' }
@@ -24,9 +24,7 @@ function MaterialPage(props) {
     setPlayerState,
     showSlideshow,
     showWaveform,
-    phrases,
-    title,
-    trTitle
+    phrases
   } = props
 
   const currentPhraseNum = phrases.findIndex(elem => elem.id === currentPhraseId)
@@ -113,10 +111,7 @@ function MaterialPage(props) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <div style={{ margin: 20 }}>
-        <Typography variant='h5'>{title}</Typography>
-        {trTitle ? <Typography variant='subtitle2'>{trTitle}</Typography> : null}
-      </div>
+      <MaterialTitle />
       <div className={showWaveform ? '' : classes.hidden}>
         <Waveform readOnly />
       </div>
@@ -132,7 +127,7 @@ function MaterialPage(props) {
 const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
-  const { phrases, title, trTitle } = state.pageContent
+  const { phrases } = state.pageContent
   return {
     currentPhraseId,
     dictationCurrentRepeat,
@@ -141,9 +136,7 @@ const mapStateToProps = state => {
     dictationDelay,
     showWaveform,
     showSlideshow,
-    phrases,
-    title,
-    trTitle
+    phrases
   }
 }
 
