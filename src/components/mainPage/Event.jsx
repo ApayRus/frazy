@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import clsx from 'clsx'
-import Avatar from '@material-ui/core/Avatar'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from 'react-router-dom'
+import RoundButton from '../translations/RoundButton'
+import Translations from '../translations/RoundButtonsBlock'
 
 const useStyles = makeStyles(theme => ({
   materialEvent: {
@@ -67,49 +68,12 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const RoundButton = props => {
-  return (
-    <IconButton
-      size='small'
-      edge='start'
-      style={{ padding: 2, marginRight: 0, display: 'inline' }}
-      onClick={props.redirectTo(props.materialId, props.trLang)}
-    >
-      <Avatar
-        style={{
-          width: props.size,
-          height: props.size,
-          fontSize: 12,
-          background: props.color
-        }}
-      >
-        {props.lang}
-      </Avatar>
-    </IconButton>
-  )
-}
-
-const Translations = props => {
-  const { langs = [] } = props
-  return langs.map(lang => (
-    <RoundButton
-      key={lang}
-      lang={lang}
-      size={20}
-      color={props.activeLang === lang ? 'skyblue' : 'lightgray'}
-      materialId={props.materialId}
-      trLang={lang}
-      redirectTo={props.redirectTo}
-    />
-  ))
-}
-
 const Event = props => {
   const history = useHistory()
   const classes = useStyles()
   const [expanded, setExpanded] = useState(false)
 
-  const redirectTo = (materialId, trLang) => event => {
+  const onTranslationClick = (materialId, trLang) => event => {
     console.log('materialId, trLang', materialId, trLang)
     history.push(`material/${materialId}/${trLang}`)
   }
@@ -140,7 +104,7 @@ const Event = props => {
           color='skyblue'
           materialId={props.id}
           trLang={''}
-          redirectTo={redirectTo}
+          onClick={onTranslationClick}
         />
         <Typography className={classes.title} variant='body1'>
           {props.title}
@@ -153,10 +117,11 @@ const Event = props => {
 
         <div className={classes.translations}>
           <Translations
-            redirectTo={redirectTo}
+            onClick={onTranslationClick}
             materialId={props.id}
             activeLang={props.trLang}
             langs={props.translations}
+            size={20}
           />
         </div>
       </div>
