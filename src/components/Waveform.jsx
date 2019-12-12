@@ -66,7 +66,9 @@ function Waveform(props) {
         const label1 = text || ''
         const label2 = trText
         const region = wavesurferModule.wavesurfer.regions.list[id]
-        region.update({ attributes: { label1, label2 } })
+        if (region) {
+          region.update({ attributes: { label1, label2 } })
+        }
       }
     })
   }, [phrases, trLang])
