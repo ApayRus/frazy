@@ -1,25 +1,15 @@
 import React from 'react'
 import RoundButtonsBlock from '../translations/RoundButtonsBlock'
-import { useSelector, useDispatch } from 'react-redux'
-import { updateFromTranslation, updateTranslationRevisions } from '../../store/pageContentActions'
-import { useFirestore } from 'react-redux-firebase'
+import { useSelector } from 'react-redux'
+import switchTranslation from './switchTranslation'
 
 function TranslationSwitcher() {
   const { trLang, translations, materialId } = useSelector(state => state.pageContent)
-  const dispatch = useDispatch()
-  const db = useFirestore()
 
   const updateTranslation = (lang, trLang) => event => {
     const docId = `${materialId}_${trLang}`
     console.log('docId', docId)
-    db.collection('materialTr')
-      .doc(docId)
-      .get()
-      .then(doc => {
-        dispatch(updateFromTranslation({ doc: doc.data() }))
-        dispatch(updateTranslationRevisions({ doc: doc.data() }))
-      })
-      .catch(error => console.log(error))
+    switchTranslation(docId)
   }
 
   return (
