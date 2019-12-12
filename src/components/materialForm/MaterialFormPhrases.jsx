@@ -51,7 +51,7 @@ function Phrases(props) {
   const { phrases, lang, trLang, title, trTitle, materialId } = useSelector(
     state => state.pageContent
   )
-  const { currentPhraseId } = useSelector(state => state.pageContent)
+  const { currentPhraseId } = useSelector(state => state.playerState)
   const dispatch = useDispatch()
   const classes = useStyles()
   const text = map(phrases, 'text').join('\n') //textarea content original text
