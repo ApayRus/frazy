@@ -58,3 +58,15 @@ export const updateFromTranslation = payload => {
     payload
   }
 }
+
+/**
+ *
+ * @param {object} payload
+ * @param {object} payload.materialDoc - loaded from db doc for update
+ */
+export const updateTranslationRevisions = payload => {
+  return {
+    type: 'UPDATE_TRANSLATION_REVISIONS',
+    payload
+  }
+}

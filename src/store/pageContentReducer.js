@@ -104,10 +104,8 @@ const pageContentReducer = (state = initState, action) => {
       //rewrite text
       phrases = phrases.map(elem => {
         const { translations: oldTranslations } = elem
-        console.log('elem.id', elem.id)
         const { text: newText = '' } = phrasesRevision[elem.id] || {}
         const newTranslation = { [trLang]: newText }
-        console.log('newTranslation', newTranslation)
         return {
           ...elem,
           translations: { ...oldTranslations, ...newTranslation }
@@ -117,6 +115,13 @@ const pageContentReducer = (state = initState, action) => {
       const stateAfter = { ...state, trLang, trTitle, phrases }
 
       return stateAfter
+    }
+    // when we update from revision, we don't rewrite "revisions" cause they'll be actual
+    // when we update from TranslationSwitcher, we update revisions too,
+    // because for each language they are different
+    case 'UPDATE_TRANSLATION_REVISIONS': {
+      const { meta: { revisions: translationRevisions = {} } = {} } = action.payload.doc || {}
+      return { ...state, translationRevisions }
     }
 
     default:

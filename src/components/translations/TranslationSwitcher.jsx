@@ -1,7 +1,7 @@
 import React from 'react'
 import RoundButtonsBlock from '../translations/RoundButtonsBlock'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateFromTranslation } from '../../store/pageContentActions'
+import { updateFromTranslation, updateTranslationRevisions } from '../../store/pageContentActions'
 import { useFirestore } from 'react-redux-firebase'
 
 function TranslationSwitcher() {
@@ -16,8 +16,8 @@ function TranslationSwitcher() {
       .doc(docId)
       .get()
       .then(doc => {
-        console.log('doc.data()', doc.data())
         dispatch(updateFromTranslation({ doc: doc.data() }))
+        dispatch(updateTranslationRevisions({ doc: doc.data() }))
       })
       .catch(error => console.log(error))
   }
