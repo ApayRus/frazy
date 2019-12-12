@@ -3,7 +3,8 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../../store/pageContentActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import switchTranslation from '../translations/switchTranslation'
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -22,11 +23,18 @@ const useStyles = makeStyles(theme => ({
 function MaterialFormTitle(props) {
   const { lang, title, langId, langLabel, titleId, titleLabel } = props
   const dispatch = useDispatch()
+  const { translations, materialId } = useSelector(state => state.pageContent)
   const classes = useStyles()
 
   const handleChange = event => {
     const { id, value } = event.target
     dispatch(setPageParameter([id, value]))
+    if (id === 'trLang') {
+      if (translations.includes(value)) {
+        const docId = `${materialId}_${value}`
+        switchTranslation(docId)
+      }
+    }
   }
 
   return (
