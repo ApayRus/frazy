@@ -125,7 +125,7 @@ function Phrases(props) {
         </div>
       </Grid>
       <Grid item sm={5} xs={12}>
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'right', minHeight: 24 }}>
           <TranslationSwitcher />
         </div>
         <MaterialFormTitle
