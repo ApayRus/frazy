@@ -9,18 +9,10 @@ function MaterialTitle() {
 
   return (
     <div style={{ margin: 20, position: 'relative' }}>
-      <RoundButton color='skyblue' size={20} onClick={() => {}} lang={lang} />
-      <Typography style={{ display: 'inline' }} variant='h5'>
-        {title}
-      </Typography>
-      {trTitle ? (
-        <div style={{ position: 'relative' }}>
-          <Typography style={{ display: 'inline' }} variant='subtitle2'>
-            {trTitle}
-          </Typography>
-        </div>
-      ) : null}
+      <Typography variant='h5'>{title}</Typography>
+      <Typography variant='subtitle2'>{trTitle}</Typography>
       <div>
+        <RoundButton color='skyblue' size={30} onClick={() => {}} lang={lang} />
         <TranslationSwitcher />
       </div>
     </div>
