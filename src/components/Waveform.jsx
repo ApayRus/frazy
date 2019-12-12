@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import './Wavesurfer.css'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
@@ -10,8 +10,12 @@ function Waveform(props) {
   let waveformElem = useRef(),
     timelineElem = useRef()
   const [isReady, setIsReady] = useState(false)
-  const { phrases, mediaLink, readOnly, waveformRenderProgress } = props
+  const { phrases, mediaLink, waveformRenderProgress, trLang } = useSelector(
+    state => state.pageContent
+  )
+  const { readOnly } = props
 
+  //mediaLink changed
   useEffect(() => {
     //component will mount
     setIsReady(false)
@@ -50,6 +54,23 @@ function Waveform(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mediaLink])
 
+  //phrases changed
+  useEffect(() => {
+    phrases.forEach(elem => {
+      if (wavesurferModule.wavesurfer) {
+        const {
+          id,
+          text,
+          translations: { [trLang]: trText = '' }
+        } = elem || {}
+        const label1 = text || ''
+        const label2 = trText
+        const region = wavesurferModule.wavesurfer.regions.list[id]
+        region.update({ attributes: { label1, label2 } })
+      }
+    })
+  }, [phrases, trLang])
+
   return (
     <div className='waveform'>
       {!isReady && (
@@ -68,9 +89,4 @@ function Waveform(props) {
   )
 }
 
-const mapStateToProps = state => {
-  const { mediaLink, phrases, waveformRenderProgress } = state.pageContent
-  return { mediaLink, phrases, waveformRenderProgress }
-}
-
-export default connect(mapStateToProps)(Waveform)
+export default Waveform

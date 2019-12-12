@@ -59,34 +59,18 @@ function Phrases(props) {
 
   const handleTextChanged = event => {
     const newText = event.target.value.split('\n')
-
     let newPhrases = [...phrases]
-
-    phrases.forEach((elem, index) => {
-      const { id } = elem
-      const label1 = newText[index] || ''
-      const region = wavesurferModule.wavesurfer.regions.list[id]
-      region.update({ attributes: { ...region.attributes, label1 } })
-      newPhrases[index]['text'] = label1
+    newPhrases = phrases.map((elem, index) => {
+      return { ...elem, text: newText[index] }
     })
-
     dispatch(setPageParameter(['phrases', newPhrases]))
   }
 
   const handleTrTextChanged = event => {
     const newText = event.target.value.split('\n')
-
     let newPhrases = [...phrases]
-
-    phrases.forEach((elem, index) => {
-      const { id } = elem
-      const label2 = newText[index] || ''
-      // translations: {ru: Хоббит, es: El Hobboto, ua: Хиббит}
-      const oldTranslations = elem.translations || {}
-      const newTranslations = { ...oldTranslations, [trLang]: label2 }
-      const region = wavesurferModule.wavesurfer.regions.list[id]
-      region.update({ attributes: { ...region.attributes, label2 } })
-      newPhrases[index]['translations'] = newTranslations
+    newPhrases = phrases.map((elem, index) => {
+      return { ...elem, translations: { ...elem.translations, [trLang]: newText[index] } }
     })
     dispatch(setPageParameter(['phrases', newPhrases]))
   }
