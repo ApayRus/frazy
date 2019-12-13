@@ -5,7 +5,7 @@ import Pause from '@material-ui/icons/Pause'
 import PlayNext from '@material-ui/icons/SkipNext'
 import PlayPrev from '@material-ui/icons/SkipPrevious'
 import Replay from '@material-ui/icons/Replay'
-import Dictation from '@material-ui/icons/Edit'
+import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import { connect } from 'react-redux'
 //import { audio } from '../howler'
@@ -38,7 +38,13 @@ function PlayerControls(props) {
         </IconButton>
       )}
       <IconButton onClick={playDictation} aria-label='Dictation'>
-        <Dictation color={dictationTimerId ? 'error' : 'inherit'} />
+        <Typography
+          style={{ width: 24, fontWeight: 700 }}
+          title='dictation'
+          color={dictationTimerId ? 'error' : 'inherit'}
+        >
+          D
+        </Typography>
       </IconButton>
       <IconButton onClick={playPhrase(currentPhraseId)} aria-label='Replay'>
         <Replay />
