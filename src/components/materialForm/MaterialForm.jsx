@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import { setPageParameter } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
+import MaterialExportTable from './ExportTable'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { map } from 'lodash'
 import { diff } from 'deep-object-diff'
@@ -234,6 +235,9 @@ const MaterialForm = props => {
       ) : null}
       <div>
         <PhrasesForTextArea />
+      </div>
+      <div>
+        <MaterialExportTable />
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button style={{ margin: 10 }} onClick={readSubtitles} variant='outlined'>
