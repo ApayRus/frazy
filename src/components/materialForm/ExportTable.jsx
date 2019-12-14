@@ -31,9 +31,17 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function MaterialExportTable(props) {
-  const { lang, trLang = '', title, trTitle = '', phrases = [], mediaLink } = useSelector(
-    state => state.pageContent
-  )
+  const {
+    lang,
+    trLang = '',
+    title,
+    trTitle = '',
+    phrases = [],
+    mediaLink,
+    materialId,
+    unit,
+    order
+  } = useSelector(state => state.pageContent)
 
   const classes = useStyles()
 
@@ -54,16 +62,22 @@ function MaterialExportTable(props) {
   const tableHead = (
     <Fragment>
       <tr>
-        <td>
+        <th>
           <IconButton onClick={copyToClipboard} variant='contained' title='copy to clipboard'>
             <CopyIcon />
           </IconButton>
-        </td>
-        <td colSpan='2'>
-          {isCopied ? <Typography color='secondary'>copied to clipboard</Typography> : ''}
-        </td>
+        </th>
+        <th>materialId</th>
         <th>mediaLink</th>
+        <th>unit</th>
+        <th>order</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td>{materialId}</td>
         <td>{mediaLink}</td>
+        <td>{unit}</td>
+        <td>{order}</td>
       </tr>
       <tr>
         <th>id</th>
@@ -96,7 +110,7 @@ function MaterialExportTable(props) {
   const table = (
     <table
       ref={tableRef}
-      style={{ tableLayout: 'fixed', width: '100%', overflowWrap: 'break-word' }}
+      style={{ tableLayout: 'fixed', width: '100%', overflowWrap: 'break-word', fontSize: 12 }}
     >
       <thead>{tableHead}</thead>
       <tbody>{tableBody}</tbody>
@@ -116,9 +130,18 @@ function MaterialExportTable(props) {
     </Button>
   )
 
+  const copiedStatusMessage = isCopied ? (
+    <Typography style={{ display: 'inline', marginLeft: 10 }} color='secondary'>
+      copied to clipboard
+    </Typography>
+  ) : (
+    ''
+  )
+
   return (
     <div style={{ padding: 10 }}>
       {buttonExpand}
+      {copiedStatusMessage}
       <Collapse in={expanded} timeout='auto' unmountOnExit>
         {table}
         <textarea ref={textAreaRef}></textarea>
