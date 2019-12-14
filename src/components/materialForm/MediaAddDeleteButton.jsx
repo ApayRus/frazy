@@ -4,21 +4,20 @@
  */
 import React from 'react'
 import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setPageParameter } from '../../store/pageContentActions'
 import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
 import firebase from '../../firebase/firebase'
-import nanoid from 'nanoid'
 
 const MediaAddDeleteButton = props => {
-  const { mediaLink, uploadProgress, setPageParameter } = props
-
+  const { mediaLink, uploadProgress, materialId } = useSelector(state => state.pageContent)
+  const dispatch = useDispatch()
   const handleFileDelete = () => {
     // console.log('mediaLink', mediaLink)
     const resetMediaSettings = () => {
-      setPageParameter(['mediaLink', ''])
-      setPageParameter(['uploadProgress', -1])
-      setPageParameter(['waveformRenderProgress', -1])
+      dispatch(setPageParameter(['mediaLink', '']))
+      dispatch(setPageParameter(['uploadProgress', -1]))
+      dispatch(setPageParameter(['waveformRenderProgress', -1]))
     }
 
     //file on our hosting, not external link
@@ -45,25 +44,24 @@ const MediaAddDeleteButton = props => {
 
   const handleExternalMedialink = event => {
     const link = event.target.value
-    setPageParameter(['mediaLink', link])
+    dispatch(setPageParameter(['mediaLink', link]))
   }
 
   const handleFileSelect = event => {
     const [file] = event.target.files
-    const nanoName = nanoid()
-    const fileRef = firebase.storage().ref(nanoName)
+    const fileRef = firebase.storage().ref(materialId)
     const uploadTask = fileRef.put(file)
 
     uploadTask.on('state_changed', snapshot => {
       const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       // console.log('uploadProgress', uploadProgress)
-      setPageParameter(['uploadProgress', +uploadProgress.toFixed(0)])
+      dispatch(setPageParameter(['uploadProgress', +uploadProgress.toFixed(0)]))
     })
 
     uploadTask
       .then(snapshot => {
         // console.log('fullPath', snapshot.ref.fullPath)
-        setPageParameter(['mediaLink', snapshot.ref.fullPath])
+        dispatch(setPageParameter(['mediaLink', snapshot.ref.fullPath]))
         return snapshot.ref.getDownloadURL()
       })
       .catch(err => console.error('error uploading file', err))
@@ -125,15 +123,4 @@ const MediaAddDeleteButton = props => {
   )
 }
 
-const mapStateToProps = state => {
-  const { uploadProgress, mediaLink } = state.pageContent
-  return { uploadProgress, mediaLink }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setPageParameter: payload => dispatch(setPageParameter(payload))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MediaAddDeleteButton)
+export default MediaAddDeleteButton

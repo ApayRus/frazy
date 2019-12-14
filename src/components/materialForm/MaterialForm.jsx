@@ -40,6 +40,7 @@ const MaterialForm = props => {
   const history = useHistory()
   const [prevMaterial, setPrevMaterial] = useState({})
   const [prevTranslation, setPrevTranslation] = useState({})
+  const [materialAction, setMaterialAction] = useState('')
 
   // we get initial data snapshots for compare them with user input
   // and detect what has changed
@@ -57,6 +58,15 @@ const MaterialForm = props => {
       const translationData = { title, lang, phrases, for: forMaterial }
       setPrevTranslation(translationData)
     }
+    //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
+    if (props.materialId) {
+      setMaterialAction('material updated')
+    } else {
+      setMaterialAction('material added')
+      //we'll use this id where create translationId (+_trLang) and fileId (the same)
+      setPageParameter(['materialId', getNewDocId('material')])
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -94,10 +104,9 @@ const MaterialForm = props => {
       phrases,
       translations: oldTranslations = [],
       duration,
-      profile
+      profile,
+      materialId
     } = props
-    //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
-    const materialAction = props.materialId ? 'material updated' : 'material added'
 
     let actions = [] // materialAction and translationAction both, or one of them.
 
@@ -110,7 +119,6 @@ const MaterialForm = props => {
       updated: { userId: profile.uid, userName: profile.displayName, time }
     })
 
-    const materialId = props.materialId || getNewDocId('material')
     const materialPhrases = localPhrasesToDBphrases(phrases)
 
     // TRANSLATION data for submit
@@ -155,6 +163,7 @@ const MaterialForm = props => {
 
     //material has created or changed
     if (Object.entries(diffMaterial).length) {
+      actions.push(materialAction)
       const materialCreateUpdateInfo =
         materialAction === 'material added'
           ? createInfo(profile, Date.now())
