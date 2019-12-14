@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function MaterialExportTable(props) {
-  const { lang, trLang, title, trTitle, phrases, mediaLink } = useSelector(
+  const { lang, trLang = '', title, trTitle = '', phrases = [], mediaLink } = useSelector(
     state => state.pageContent
   )
 
@@ -80,18 +80,13 @@ function MaterialExportTable(props) {
   )
 
   const tableBody = phrases.map(elem => {
-    const {
-      id,
-      start,
-      end,
-      text: orText,
-      translations: { [trLang]: trText }
-    } = elem
+    const { id, start, end, text: orText, translations: { [trLang]: trText = '' } = {} } =
+      elem || {}
     return (
       <tr style={{ backgroundColor: elem.color }} key={id}>
-        <td>{id}</td>
-        <td>{start}</td>
-        <td>{end}</td>
+        <td>{id.replace('wavesurfer_', '')}</td>
+        <td>{start.toFixed(2)}</td>
+        <td>{end.toFixed(2)}</td>
         <td>{orText}</td>
         <td>{trText}</td>
       </tr>
