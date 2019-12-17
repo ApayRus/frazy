@@ -48,22 +48,33 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Phrases(props) {
-  const { phrases, lang, trLang, title, trTitle, materialId } = useSelector(
+  const { phrases, lang, trLang, title, trTitle, materialId, textareaOriginal } = useSelector(
     state => state.pageContent
   )
+
   const { currentPhraseId } = useSelector(state => state.playerState)
   const dispatch = useDispatch()
   const classes = useStyles()
-  const text = map(phrases, 'text').join('\n') //textarea content original text
+  const text = phrases.length
+    ? map(phrases, 'text').join('\n') //if phrases exists, we use textarea for display their text
+    : textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
+
   const trText = map(phrases, `translations.${trLang}`).join('\n') //textarea content translation text
 
   const handleTextChanged = event => {
-    const newText = event.target.value.split('\n')
-    let newPhrases = [...phrases]
-    newPhrases = phrases.map((elem, index) => {
-      return { ...elem, text: newText[index] }
-    })
-    dispatch(setPageParameter(['phrases', newPhrases]))
+    const textareaOriginal = event.target.value
+    if (!phrases.length) {
+      //it is import of subtitles
+      dispatch(setPageParameter(['textareaOriginal', textareaOriginal]))
+    } else {
+      //we rewrite text of phrases from textarea lines
+      const newText = textareaOriginal.split('\n')
+      let newPhrases = [...phrases]
+      newPhrases = phrases.map((elem, index) => {
+        return { ...elem, text: newText[index] }
+      })
+      dispatch(setPageParameter(['phrases', newPhrases]))
+    }
   }
 
   const handleTrTextChanged = event => {

@@ -14,7 +14,8 @@ const initState = {
   translations: [], // ['ru', 'ar', 'ch']
   uploadProgress: -1,
   downloadProgress: -1,
-  waveformRenderProgress: -1
+  waveformRenderProgress: -1,
+  textareaOriginal: '' // for import external subtitles
 }
 
 const pageContentReducer = (state = initState, action) => {

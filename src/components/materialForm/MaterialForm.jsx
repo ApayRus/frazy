@@ -18,29 +18,26 @@ import Typography from '@material-ui/core/Typography'
 import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
 import Waveform from '../Waveform'
-import { connect } from 'react-redux'
-import { setPageParameter } from '../../store/pageContentActions'
+import { connect, useDispatch } from 'react-redux'
+import { setPageParameter, fillPageContent } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
 import MaterialExportTable from './ExportTable'
+import { parseFrazyExportTable } from '../../utils/phrases'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
-import { map } from 'lodash'
 import { diff } from 'deep-object-diff'
 
-import {
-  subtitlesToLocalPhrases,
-  localPhrasesToDBphrases,
-  localPhrasesToDBtranslations
-} from '../../utils/phrases'
+import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
 
 import PhrasesForTextArea from './MaterialFormPhrases'
 
 const MaterialForm = props => {
-  const { mediaLink, uploadProgress, setPageParameter, text } = props
+  const { mediaLink, uploadProgress } = props
   const history = useHistory()
   const [prevMaterial, setPrevMaterial] = useState({})
   const [prevTranslation, setPrevTranslation] = useState({})
   const [materialAction, setMaterialAction] = useState('')
+  const dispatch = useDispatch()
 
   // we get initial data snapshots for compare them with user input
   // and detect what has changed
@@ -64,7 +61,7 @@ const MaterialForm = props => {
     } else {
       setMaterialAction('material added')
       //we'll use this id where create translationId (+_trLang) and fileId (the same)
-      setPageParameter(['materialId', getNewDocId('material')])
+      dispatch(setPageParameter(['materialId', getNewDocId('material')]))
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,16 +72,10 @@ const MaterialForm = props => {
   }
 
   const readSubtitles = () => {
-    const phrases = subtitlesToLocalPhrases(text.join('\n'))
-    // console.log('phrases', phrases)
-    setPageParameter(['phrases', phrases])
-
-    if (wavesurferModule.wavesurfer) {
-      phrases.forEach(phrase => {
-        wavesurferModule.wavesurfer.addRegion(phrase)
-      })
-    }
-    setPageParameter(['text', map(phrases, 'text')])
+    const { textareaOriginal } = props
+    const { materialId, material, translation } = parseFrazyExportTable(textareaOriginal)
+    if (!material.mediaLink) material.mediaLink = mediaLink
+    dispatch(fillPageContent({ materialId, material, translation }))
   }
 
   const clearRegions = () => {
@@ -286,15 +277,10 @@ const mapStateToProps = state => {
     phrases: pc.phrases,
     //temporary values
     uploadProgress: pc.uploadProgress,
+    textareaOriginal: pc.textareaOriginal,
     //auth, profile
     profile: state.firebase.profile
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setPageParameter: payload => dispatch(setPageParameter(payload))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialForm)
+export default connect(mapStateToProps)(MaterialForm)
