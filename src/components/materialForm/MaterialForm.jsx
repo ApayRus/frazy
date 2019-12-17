@@ -26,6 +26,7 @@ import MaterialExportTable from './ExportTable'
 import { parseFrazyExportTable } from '../../utils/phrases'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { diff } from 'deep-object-diff'
+// import { actionTypes } from 'redux-firestore'
 
 import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
 
@@ -96,7 +97,9 @@ const MaterialForm = props => {
       translations: oldTranslations = [],
       duration,
       profile,
-      materialId
+      materialId,
+      materialCreated,
+      translationCreated
     } = props
 
     let actions = [] // materialAction and translationAction both, or one of them.
@@ -163,13 +166,19 @@ const MaterialForm = props => {
       const materialMeta = {
         ...materialCreateUpdateInfo,
         duration,
-        translations: newTranslations
+        translations: newTranslations,
+        created: materialCreated
       }
 
-      const uploadMaterialTask = dbSet('material', materialId, {
-        ...materialContent,
-        meta: materialMeta
-      })
+      const uploadMaterialTask = dbSet(
+        'material',
+        materialId,
+        {
+          ...materialContent,
+          meta: materialMeta
+        },
+        { merge: false }
+      )
 
       waitPromisesBeforeRedirect.push(uploadMaterialTask)
     }
@@ -182,12 +191,17 @@ const MaterialForm = props => {
           ? createInfo(profile, Date.now())
           : updateInfo(profile, Date.now())
 
-      const translationMeta = { ...translationCreateUpdateInfo }
+      const translationMeta = { ...translationCreateUpdateInfo, created: translationCreated }
 
-      const uploadTranslationTask = dbSet('materialTr', translationId, {
-        ...translationContent,
-        meta: translationMeta
-      })
+      const uploadTranslationTask = dbSet(
+        'materialTr',
+        translationId,
+        {
+          ...translationContent,
+          meta: translationMeta
+        },
+        { merge: false }
+      )
 
       //if translation added we need update material too
       const uploadMaterialTask =
@@ -213,6 +227,7 @@ const MaterialForm = props => {
 
       dbUpdate('lastEvents', 'main', { [materialId]: event })
       history.push(`/material/${materialId}/${trLang}`)
+      // dispatch({ type: actionTypes.CLEAR_DATA, preserve: { ordered: true } })
     })
   }
 
@@ -267,12 +282,14 @@ const mapStateToProps = state => {
     materialPhrases: pc.materialPhrases,
     duration: pc.duration,
     translations: pc.translations,
+    materialCreated: pc.materialCreated,
     //from Translation (MaterialTr)
     trTitle: pc.trTitle,
     trLang: pc.trLang,
     for: pc.for,
     translationPhrases: pc.translationPhrases,
     translationRevisions: pc.translationRevisions,
+    translationCreated: pc.translationCreated,
     //combined phrases Material+Translation
     phrases: pc.phrases,
     //temporary values

@@ -37,10 +37,13 @@ const pageContentReducer = (state = initState, action) => {
         order,
         mediaLink,
         phrases: materialPhrases,
-        meta: { translations = [], duration = 0 } = {}
+        meta: {
+          translations = [],
+          duration = 0,
+          created: materialCreated = {},
+          revisions: materialRevisions = {}
+        } = {}
       } = material
-
-      const { meta: { revisions: materialRevisions = {} } = {} } = material
 
       let phrases = makePhrasesArray(materialPhrases)
 
@@ -49,9 +52,9 @@ const pageContentReducer = (state = initState, action) => {
         lang: trLang = '',
         title: trTitle = '',
         phrases: translationPhrases = {},
-        for: forMaterial = ''
+        for: forMaterial = '',
+        meta: { revisions: translationRevisions = {}, created: translationCreated = {} } = {}
       } = translation || {}
-      const { meta: { revisions: translationRevisions = {} } = {} } = translation || {}
 
       if (translation) {
         if (translation.phrases) {
@@ -76,6 +79,8 @@ const pageContentReducer = (state = initState, action) => {
         translationPhrases,
         for: forMaterial,
         translationRevisions,
+        translationCreated,
+        materialCreated,
         phrases
       }
     }

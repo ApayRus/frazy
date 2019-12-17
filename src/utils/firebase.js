@@ -12,10 +12,10 @@ export function afterFirebaseFileDownloadUrlReady(fileId, callback) {
     })
 }
 
-export function dbSet(colName, docId, object) {
+export function dbSet(colName, docId, object, options = { merge: true }) {
   db.collection(colName)
     .doc(docId)
-    .set(object, { merge: true })
+    .set(object, options)
     .catch(error => console.log('error', error))
 }
 
