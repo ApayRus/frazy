@@ -1,5 +1,5 @@
 import { map, orderBy } from 'lodash'
-import { assRowToPhraseObject, tsvRowToPhraseObject } from './subtitlesFunctions.js'
+import { assRowToPhraseObject } from './subtitlesFunctions.js'
 
 // phrases = { id: { start, end, text } } - how it stored in DB
 // make array [ id, start, end, text ]
@@ -65,22 +65,6 @@ export function assToPhrases(subsTiming) {
   return phrases
 }
 
-export function tsvToPhrases(subsTiming) {
-  const tsvRows = subsTiming.trim().split('\n')
-  const phrases = {}
-  tsvRows.forEach(row => {
-    phrases[getId('')] = tsvRowToPhraseObject(row)
-  })
-  return phrases
-}
-
-export function subtitlesToLocalPhrases(text) {
-  //know format of text, now is tsv, then ass, srt and others
-  const dbPhrases = tsvToPhrases(text)
-  const localPhrases = makePhrasesArray(dbPhrases)
-  return localPhrases
-}
-
 // array to object, format for DB
 export function localPhrasesToDBphrases(phrases) {
   return phrases.reduce((obj, item) => {
@@ -142,4 +126,61 @@ function getId(prefix) {
       .toString(32)
       .substring(2)
   )
+}
+
+/**
+ * Frazy export table has this structure:
+  header row:    |  (empty) | materialId | mediaLink |     unit    |       order     |
+  material data: |          |            |           |             |                 |
+  header row:    | phraseId |   start    |    end    | lang: title | trLang: trTitle |
+  phrases data:  |          |            |           |             |                 |
+
+  at the end function returns 2 object: material and translation, as we recieved them from the server
+  and we can dispatch action fillPageContent with returned value
+
+ * @param {string} tableText, multiline text. rows separated by \n, columns by \t
+ */
+export function parseFrazyExportTable(tableText) {
+  const tableTextArray = tableText.split('\n')
+  const materialInfo1Array = tableTextArray[1].split('\t')
+  const [, materialId, mediaLink, unit, order] = materialInfo1Array
+  const materialInfo2Array = tableTextArray[2].split('\t')
+  const [, , , langAndTitle, trLangAndTrTitle] = materialInfo2Array
+  const [lang, ...titleArray] = langAndTitle.split(':')
+  const title = titleArray.join(':').trim()
+  const [trLang, ...trTitleArray] = trLangAndTrTitle.split(':')
+  const trTitle = trTitleArray.join(':').trim()
+
+  const phrasesTextArray = tableTextArray.slice(3)
+
+  const materialPhrases = {},
+    translationPhrases = {}
+  phrasesTextArray.forEach(elem => {
+    const [id, start, end, text, trText] = elem.split('\t')
+    materialPhrases[id] = { start: +start, end: +end, text }
+    translationPhrases[id] = { text: trText }
+  })
+
+  const material = {
+    title,
+    mediaLink,
+    unit,
+    order,
+    lang,
+    phrases: materialPhrases
+  }
+
+  const translation = {
+    lang: trLang,
+    title: trTitle,
+    for: materialId,
+    phrases: translationPhrases
+  }
+  // console.log(phrasesTextArray)
+  // const phrases =
+  return {
+    materialId,
+    material,
+    translation
+  }
 }
