@@ -101,9 +101,11 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     regionsToPhrasesArray()
   })
 
+  wavesurfer.on('ready', function() {
+    store.dispatch(setPageParameter(['duration', +wavesurfer.getDuration().toFixed(3)]))
+  })
   // Time stretcher (preserve pitch on speeds != 1 )
   wavesurfer.on('waveform-ready', function() {
-    store.dispatch(setPageParameter(['duration', +wavesurfer.getDuration().toFixed(3)]))
     var st = new soundtouch.SoundTouch(wavesurfer.backend.ac.sampleRate)
     var buffer = wavesurfer.backend.buffer
     var channels = buffer.numberOfChannels
