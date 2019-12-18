@@ -1,6 +1,6 @@
-<div style="text-align:center;" >
-<img src="https://frazy-7d371.web.app/logo.png" width="100px" />
-</div>
+<p align="center">
+<img src="https://frazy-7d371.web.app/logo.png" width="200" />
+ </p>
 
 # FraZy
 
