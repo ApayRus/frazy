@@ -58,11 +58,7 @@ function Waveform(props) {
   useEffect(() => {
     phrases.forEach(elem => {
       if (wavesurferModule.wavesurfer) {
-        const {
-          id,
-          text,
-          translations: { [trLang]: trText = '' }
-        } = elem || {}
+        const { id, text, translations: { [trLang]: trText = '' } = {} } = elem || {}
         const label1 = text || ''
         const label2 = trText
         const region = wavesurferModule.wavesurfer.regions.list[id]
