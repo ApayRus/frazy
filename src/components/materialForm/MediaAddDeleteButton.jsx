@@ -11,6 +11,7 @@ import firebase from '../../firebase/firebase'
 
 const MediaAddDeleteButton = props => {
   const { mediaLink, uploadProgress, materialId } = useSelector(state => state.pageContent)
+  const { profile } = useSelector(state => state.firebase)
   const dispatch = useDispatch()
   const handleFileDelete = () => {
     // console.log('mediaLink', mediaLink)
@@ -50,7 +51,12 @@ const MediaAddDeleteButton = props => {
   const handleFileSelect = event => {
     const [file] = event.target.files
     const fileRef = firebase.storage().ref(materialId)
-    const uploadTask = fileRef.put(file)
+    const metadata = {
+      customMetadata: {
+        owner: profile.uid
+      }
+    }
+    const uploadTask = fileRef.put(file, metadata)
 
     uploadTask.on('state_changed', snapshot => {
       const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
