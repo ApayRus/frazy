@@ -98,20 +98,11 @@ const MaterialForm = props => {
       duration,
       profile,
       materialId,
-      materialCreated,
-      translationCreated
+      materialCreated = {},
+      translationCreated = {}
     } = props
 
     let actions = [] // materialAction and translationAction both, or one of them.
-
-    const createInfo = (profile, time) => ({
-      created: { userId: profile.uid, userName: profile.displayName, time },
-      updated: { userId: profile.uid, userName: profile.displayName, time }
-    })
-
-    const updateInfo = (profile, time) => ({
-      updated: { userId: profile.uid, userName: profile.displayName, time }
-    })
 
     const materialPhrases = localPhrasesToDBphrases(phrases)
 
@@ -160,16 +151,21 @@ const MaterialForm = props => {
       actions.push(materialAction)
       const materialCreateUpdateInfo =
         materialAction === 'material added'
-          ? createInfo(profile, Date.now())
-          : updateInfo(profile, Date.now())
+          ? {
+              created: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+            }
+          : {
+              created: materialCreated,
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+            }
 
       const materialMeta = {
         ...materialCreateUpdateInfo,
         duration,
-        translations: newTranslations,
-        created: materialCreated
+        translations: newTranslations
       }
-
+      console.log('materialId', materialId)
       const uploadMaterialTask = dbSet(
         'material',
         materialId,
@@ -188,8 +184,14 @@ const MaterialForm = props => {
       actions.push(translationAction)
       const translationCreateUpdateInfo =
         translationAction === 'translation added'
-          ? createInfo(profile, Date.now())
-          : updateInfo(profile, Date.now())
+          ? {
+              created: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+            }
+          : {
+              created: materialCreated,
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+            }
 
       const translationMeta = { ...translationCreateUpdateInfo, created: translationCreated }
 
