@@ -26,7 +26,7 @@ export function assRowToPhraseObject(assRow) {
  * timeStringToSeconds("0:16:03.74")
  * will return 963.74
  */
-function timeStringToSeconds(timeString) {
+export function timeStringToSeconds(timeString) {
   const [hours, minutes, seconds] = timeString.split(':')
   return +hours * 3600 + +minutes * 60 + +seconds
 }

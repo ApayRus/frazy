@@ -1,5 +1,6 @@
 import { map, orderBy } from 'lodash'
 import { assRowToPhraseObject } from './subtitlesFunctions.js'
+import { timeStringToSeconds } from './subtitlesFunctions'
 
 // phrases = { id: { start, end, text } } - how it stored in DB
 // make array [ id, start, end, text ]
@@ -156,8 +157,15 @@ export function parseFrazyExportTable(tableText) {
   const materialPhrases = {},
     translationPhrases = {}
   phrasesTextArray.forEach(elem => {
-    const [id, start, end, text, trText] = elem.split('\t')
-    materialPhrases[id] = { start: +start, end: +end, text }
+    const randomId = getId('')
+    const [importedId, importedStart, importedEnd, text, trText] = elem.split('\t')
+    const id = importedId ? importedId : randomId
+    // '0:03:53.52' or '233.52'
+    const importedTimeToSecs = importedTime =>
+      importedTime.includes(':') ? timeStringToSeconds(importedTime) : +importedTime
+    const start = importedTimeToSecs(importedStart)
+    const end = importedTimeToSecs(importedEnd)
+    materialPhrases[id] = { start, end, text }
     translationPhrases[id] = { text: trText }
   })
 
