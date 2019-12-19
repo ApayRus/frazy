@@ -52,13 +52,13 @@ function rewriteHeading(collectionSourceOfAction, collectionRecieverOfAction) {
     .onWrite((doc, context) => {
       //   const docAfter = doc.after.data()
       const { doc: docSourceId } = context.params
-      const { title: titleBefore = '' } = doc.before.data() || {}
-      const { unit: docRecieverId, title: titleAfter } = doc.after.data()
+      const { title: titleBefore = '', order: orderBefore = '' } = doc.before.data() || {}
+      const { unit: docRecieverId, title, order } = doc.after.data()
 
-      if (titleBefore !== titleAfter) {
+      if (titleBefore !== title || orderBefore !== order) {
         db.collection(collectionRecieverOfAction)
           .doc(docRecieverId)
-          .set({ heading: { [docSourceId]: { title: titleAfter } } }, { merge: true })
+          .set({ heading: { [docSourceId]: { title, order } } }, { merge: true })
           .catch(error => console.log(error))
       }
     })
