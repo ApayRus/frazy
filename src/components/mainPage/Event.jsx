@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
-import clsx from 'clsx'
-import IconButton from '@material-ui/core/IconButton'
+import React /* , { useState } */ from 'react'
+
 import Typography from '@material-ui/core/Typography'
-import Collapse from '@material-ui/core/Collapse'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from 'react-router-dom'
 import RoundButton from '../translations/RoundButton'
 import Translations from '../translations/RoundButtonsBlock'
+
+// import clsx from 'clsx'
+// import IconButton from '@material-ui/core/IconButton'
+// import Collapse from '@material-ui/core/Collapse'
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const useStyles = makeStyles(theme => ({
   materialEvent: {
@@ -32,9 +34,16 @@ const useStyles = makeStyles(theme => ({
   title: {
     display: 'inline',
     marginLeft: 5
-    // fontFamily: theme.typography.fontFamily,
-    // fontSize: theme.typography.fontSize,
   },
+  actions: {
+    position: 'absolute',
+    top: 1,
+    // right: 20,
+    right: 8,
+    color: theme.palette.grey[400],
+    fontSize: 10
+  }
+  /* 
   detailedInfoExpand: {
     position: 'absolute',
     top: -8,
@@ -42,13 +51,6 @@ const useStyles = makeStyles(theme => ({
     height: 20,
     width: 20,
     zIndex: 20
-  },
-  actions: {
-    position: 'absolute',
-    top: 1,
-    right: 20,
-    color: theme.palette.grey[400],
-    fontSize: 10
   },
   detailedInfo: {
     backgroundColor: theme.palette.grey[100],
@@ -66,12 +68,13 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: 'rotate(180deg)'
   }
+   */
 }))
 
 const Event = props => {
   const history = useHistory()
   const classes = useStyles()
-  const [expanded, setExpanded] = useState(false)
+  // const [expanded, setExpanded] = useState(false)
 
   const onTranslationClick = (materialId, trLang) => event => {
     console.log('materialId, trLang', materialId, trLang)
@@ -85,6 +88,7 @@ const Event = props => {
       <Typography className={classes.actions} variant='body2'>
         {actions.join(', ')}
       </Typography>
+      {/* 
       <div className={classes.detailedInfoExpand}>
         <IconButton
           className={clsx(classes.expand, {
@@ -97,6 +101,7 @@ const Event = props => {
           <ExpandMoreIcon />
         </IconButton>
       </div>
+       */}
       <div className={classes.firstLine}>
         <RoundButton
           lang={props.lang}
@@ -125,11 +130,13 @@ const Event = props => {
           />
         </div>
       </div>
+      {/* 
       <Collapse in={expanded} timeout='auto' unmountOnExit>
         <div className={classes.detailedInfo}>
           <Typography variant='body2'>detailed info about updates</Typography>
         </div>
       </Collapse>
+       */}
     </div>
   )
 }
