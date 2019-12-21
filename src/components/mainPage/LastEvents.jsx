@@ -17,7 +17,7 @@ function LastEvents(props) {
 
   return (
     <div style={{ marginTop: 20 }}>
-      <Typography align='center' variant='h5'>
+      <Typography align='center' color='primary' variant='h5'>
         Last updates
       </Typography>
       {lastEvents.map(event => (

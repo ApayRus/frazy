@@ -51,7 +51,13 @@ function MainPage(props) {
         ></div>
       </div>
       <Grid item xs={12} sm={12} md={6}>
-        {isDataLoaded ? <LastEvents lastEventsDoc={lastEventsDoc} /> : <CircularProgress />}
+        {isDataLoaded ? (
+          <LastEvents lastEventsDoc={lastEventsDoc} />
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
+        )}
       </Grid>
       <Grid item xs={12} sm={12} md={6}></Grid>
     </Grid>
