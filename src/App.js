@@ -8,6 +8,7 @@ import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseConta
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import MainPage from './components/mainPage/MainPage'
 import AuthAvatarLoginLogout from './components/auth/AuthAvatarLoginLogout'
+import AdminMaterialList from './components/admin/MaterialList'
 
 function App(props) {
   return (
@@ -22,6 +23,7 @@ function App(props) {
           <Route path='/material/:materialId/:trLang' component={MaterialPageHOC} />
           <Route path='/material/:materialId' component={MaterialPageHOC} />
           <Route path='/unit/:unitId' component={UnitPage} />
+          <Route path='/admin-custom-material-list' component={AdminMaterialList} />
         </Switch>
       </div>
     </BrowserRouter>
