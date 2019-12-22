@@ -13,7 +13,6 @@ import { afterFirebaseFileDownloadUrlReady } from '../../utils/firebase'
  */
 function HeadingFirebaseHOC(props) {
   const { setMenuParameter, unit } = props
-  console.log('unit', unit)
 
   const setParamAsync = (paramName, firebaseId) =>
     afterFirebaseFileDownloadUrlReady(firebaseId, url => setMenuParameter([paramName, url]))

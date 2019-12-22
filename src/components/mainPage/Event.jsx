@@ -77,7 +77,6 @@ const Event = props => {
   // const [expanded, setExpanded] = useState(false)
 
   const onTranslationClick = (materialId, trLang) => event => {
-    console.log('materialId, trLang', materialId, trLang)
     history.push(`material/${materialId}/${trLang}`)
   }
 
