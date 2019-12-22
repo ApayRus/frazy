@@ -8,7 +8,11 @@ import HomeIcon from '@material-ui/icons/Home'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
-import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
+import {
+  toggleHeadingDrawer,
+  toggleSettingsDrawer,
+  clearCachedDocs
+} from '../../store/appStateActions'
 import local from '../../localization/en'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -59,6 +63,9 @@ function Appbar(props) {
         className={`${classes.bottom} ${classes.home}`}
         component={Link}
         to='/'
+        onClick={() => {
+          dispatch(clearCachedDocs())
+        }}
         color='primary'
         size='medium'
       >
