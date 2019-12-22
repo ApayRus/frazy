@@ -4,18 +4,16 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { connect } from 'react-redux'
-import { toggleHeadingDrawer } from '../../store/appStateActions'
+import { toggleHeadingDrawer, clearCachedDocs } from '../../store/appStateActions'
 import { Link } from 'react-router-dom'
 import orderBy from 'lodash/orderBy'
 import map from 'lodash/map'
-import { actionTypes } from 'redux-firestore'
+import { useDispatch, useSelector } from 'react-redux'
 
 function Heading(props) {
-  const { toggleHeadingDrawer, clearCachedDocs } = props
-  const { title, author, heading, logo, background, trLang } = props
-  console.log('heading', heading)
-
+  const { title, author, heading, logo, background } = useSelector(state => state.menu)
+  const { trLang } = useSelector(state => state.pageContent)
+  const dispatch = useDispatch()
   let headingOrdered = map(heading, (elem, key) => ({ id: key, ...elem }))
   headingOrdered = orderBy(headingOrdered, ['order'], ['asc'])
 
@@ -39,8 +37,8 @@ function Heading(props) {
   const classes = useStyles()
 
   const handleClick = () => {
-    toggleHeadingDrawer({ showHeadingDrawer: false })
-    clearCachedDocs()
+    dispatch(toggleHeadingDrawer({ showHeadingDrawer: false }))
+    dispatch(clearCachedDocs())
   }
 
   return (
@@ -71,15 +69,4 @@ function Heading(props) {
   )
 }
 
-const mapStateToProps = state => {
-  const { title, author, heading, logo, background } = state.menu
-  const { trLang } = state.pageContent
-  return { title, author, heading, logo, background, trLang }
-}
-
-const mapDispatchToProps = dispatch => ({
-  toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload)),
-  clearCachedDocs: () => dispatch({ type: actionTypes.CLEAR_DATA, preserve: { ordered: true } })
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Heading)
+export default Heading

@@ -1,3 +1,9 @@
+import { actionTypes } from 'redux-firestore'
+
+export const clearCachedDocs = () => {
+  return { type: actionTypes.CLEAR_DATA, preserve: { ordered: true } }
+}
+
 export const toggleHeadingDrawer = payload => {
   return {
     type: 'TOGGLE_HEADING_DRAWER',
