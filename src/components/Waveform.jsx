@@ -19,29 +19,24 @@ function Waveform(props) {
   useEffect(() => {
     //component will mount
     setIsReady(false)
-    if (mediaLink.match('http')) {
+    const initWaveform = url => {
       wavesurferModule.wavesurfer = wavesurferModule.init(
         waveformElem.current,
         timelineElem.current,
-        mediaLink,
+        url,
         phrases,
         readOnly
       )
       wavesurferModule.wavesurfer.on('ready', e => {
         setIsReady(true)
       })
+    }
+
+    if (mediaLink.match('http')) {
+      initWaveform(mediaLink)
     } else {
       afterFirebaseFileDownloadUrlReady(mediaLink, url => {
-        wavesurferModule.wavesurfer = wavesurferModule.init(
-          waveformElem.current,
-          timelineElem.current,
-          url,
-          phrases,
-          readOnly
-        )
-        wavesurferModule.wavesurfer.on('ready', e => {
-          setIsReady(true)
-        })
+        initWaveform(url)
       })
     }
 
