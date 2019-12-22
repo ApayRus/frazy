@@ -7,11 +7,10 @@ import EditIcon from '@material-ui/icons/Edit'
 import HomeIcon from '@material-ui/icons/Home'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
-
 import { toggleHeadingDrawer, toggleSettingsDrawer } from '../../store/appStateActions'
 import local from '../../localization/en'
+import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   bottom: {
@@ -37,7 +36,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Appbar(props) {
-  const { toggleHeadingDrawer, toggleSettingsDrawer, materialId, trLang } = props
+  const dispatch = useDispatch()
+  const { materialId, trLang } = useSelector(state => state.pageContent)
   const classes = useStyles()
 
   const materialEditLink = materialId ? `/material/edit/${materialId}/${trLang}` : `/material/edit/`
@@ -47,7 +47,7 @@ function Appbar(props) {
       <Fab
         className={`${classes.bottom} ${classes.menu}`}
         onClick={() => {
-          toggleHeadingDrawer({ showHeadingDrawer: true })
+          dispatch(toggleHeadingDrawer({ showHeadingDrawer: true }))
         }}
         color='primary'
         size='medium'
@@ -79,7 +79,7 @@ function Appbar(props) {
       <Fab
         className={`${classes.bottom} ${classes.settings}`}
         onClick={() => {
-          toggleSettingsDrawer({ showSettingsDrawer: true })
+          dispatch(toggleSettingsDrawer({ showSettingsDrawer: true }))
         }}
         color='primary'
         size='medium'
@@ -90,18 +90,4 @@ function Appbar(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    materialId: state.pageContent.materialId,
-    trLang: state.pageContent.trLang
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload)),
-    toggleSettingsDrawer: payload => dispatch(toggleSettingsDrawer(payload))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Appbar)
+export default Appbar
