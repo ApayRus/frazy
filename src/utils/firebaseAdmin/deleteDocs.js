@@ -6,6 +6,8 @@ import admin from './admin.js'
 
 const db = admin.firestore()
 
+const storage = admin.storage().bucket()
+
 const materialIds = `
 nqoCXk4lgKoCr8WL8QEc
 3VesZ3m1L8JKCFQ1qPp3
@@ -47,6 +49,9 @@ materialIds.split('\n').forEach(materialId => {
           doc.ref.delete()
         })
       })
+
+    //delete media file from storage
+    storage.file(materialId).delete()
 
     //delete from events
     db.collection('lastEvents')
