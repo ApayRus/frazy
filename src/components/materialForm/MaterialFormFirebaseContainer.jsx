@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import MaterialForm from './MaterialForm'
 import { fillPageContent } from '../../store/pageContentActions'
+import { clearCachedDocs } from '../../store/appStateActions'
 // import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -23,6 +24,7 @@ function MaterialFormHOC(props) {
     }
     return () => {
       //on unmount
+      dispatch(clearCachedDocs())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [material, translation])
