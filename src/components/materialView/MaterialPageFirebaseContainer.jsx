@@ -5,6 +5,7 @@ import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
 import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
+import { clearCachedDocs } from '../../store/appStateActions'
 import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -24,6 +25,7 @@ function MaterialPageHOC(props) {
   useEffect(() => {
     return () => {
       dispatch(clearPageContent())
+      dispatch(clearCachedDocs())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
