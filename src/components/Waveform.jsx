@@ -51,8 +51,10 @@ function Waveform(props) {
 
   //phrases changed
   useEffect(() => {
-    phrases.forEach(elem => {
-      if (wavesurferModule.wavesurfer) {
+    const wavesurfer = wavesurferModule.wavesurfer
+
+    const updateLabelsOfRegionsInWaveform = () => {
+      phrases.forEach(elem => {
         const { id, text, translations: { [trLang]: trText = '' } = {} } = elem || {}
         const label1 = text || ''
         const label2 = trText
@@ -60,8 +62,30 @@ function Waveform(props) {
         if (region) {
           region.update({ attributes: { label1, label2 } })
         }
+      })
+    }
+
+    const createNewRegions = () => {
+      phrases.forEach(elem => {
+        wavesurfer.regions.add(elem)
+      })
+    }
+
+    if (wavesurfer) {
+      const regionsCount = Object.keys(wavesurfer.regions.list).length
+      const newPhrasesCount = phrases.length - regionsCount
+      if (newPhrasesCount > 2 && regionsCount === 0) {
+        //it is import of subtitles
+        console.log('newPhrasesCount', newPhrasesCount)
+        if (wavesurfer.isReady) {
+          createNewRegions()
+        }
+      } else {
+        //textarea changed
+        console.log('newPhrasesCount', newPhrasesCount)
+        updateLabelsOfRegionsInWaveform()
       }
-    })
+    }
   }, [phrases, trLang])
 
   return (
