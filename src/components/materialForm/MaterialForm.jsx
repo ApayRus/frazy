@@ -73,8 +73,11 @@ const MaterialForm = props => {
   }
 
   const readSubtitles = () => {
-    const { textareaOriginal } = props
-    const { materialId, material, translation } = parseFrazyExportTable(textareaOriginal)
+    const { textareaOriginal, materialId: materialIdCurrent } = props
+    const { materialId: materialIdImported, material, translation } = parseFrazyExportTable(
+      textareaOriginal
+    )
+    const materialId = materialIdImported ? materialIdImported : materialIdCurrent
     if (!material.mediaLink) material.mediaLink = mediaLink
     dispatch(fillPageContent({ materialId, material, translation }))
   }
