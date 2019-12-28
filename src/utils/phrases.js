@@ -162,7 +162,9 @@ export function parseFrazyExportTable(tableText) {
     const id = importedId ? importedId : randomId
     // '0:03:53.52' or '233.52'
     const importedTimeToSecs = importedTime =>
-      importedTime.includes(':') ? timeStringToSeconds(importedTime) : +importedTime
+      importedTime.includes(':')
+        ? timeStringToSeconds(importedTime)
+        : +importedTime.replace(',', '.')
     const start = importedTimeToSecs(importedStart)
     const end = importedTimeToSecs(importedEnd)
     materialPhrases[id] = { start, end, text }
