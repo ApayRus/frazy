@@ -39,16 +39,18 @@ function MainPage(props) {
   const eventList = (
     <Grid container>
       <div style={{ textAlign: 'center', width: '100%', marginTop: 3 }}>
-        <div
-          style={{
-            backgroundImage: 'url(/logo.png)',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            width: 150,
-            height: 94,
-            display: 'inline-block'
-          }}
-        ></div>
+        <a href='http://frazy.me'>
+          <div
+            style={{
+              backgroundImage: 'url(/logo.png)',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              width: 150,
+              height: 94,
+              display: 'inline-block'
+            }}
+          />
+        </a>
       </div>
       <Grid item xs={12} sm={12} md={6}>
         {isDataLoaded ? (
