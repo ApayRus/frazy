@@ -1,6 +1,7 @@
 import React /* , { useState } */ from 'react'
 
 import Typography from '@material-ui/core/Typography'
+import ButtonBase from '@material-ui/core/ButtonBase'
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from 'react-router-dom'
 import RoundButton from '../translations/RoundButton'
@@ -16,7 +17,8 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0px 1px 5px lightgrey',
     margin: 5,
     padding: 5,
-    position: 'relative'
+    position: 'relative',
+    display: 'block'
   },
   firstLine: {
     position: 'relative'
@@ -80,10 +82,14 @@ const Event = props => {
     history.push(`material/${materialId}/${trLang}`)
   }
 
+  const onEventClick = event => {
+    history.push(`material/${props.materialId}`)
+  }
+
   const { actions = [] } = props
 
   return (
-    <div className={classes.materialEvent}>
+    <ButtonBase component='div' onClick={onEventClick} className={classes.materialEvent}>
       <Typography className={classes.actions} variant='body2'>
         {actions.join(', ')}
       </Typography>
@@ -106,7 +112,7 @@ const Event = props => {
           lang={props.lang}
           size={30}
           color='skyblue'
-          materialId={props.id}
+          materialId={props.materialId}
           trLang={''}
           onClick={onTranslationClick}
         />
@@ -122,7 +128,7 @@ const Event = props => {
         <div className={classes.translations}>
           <Translations
             onClick={onTranslationClick}
-            materialId={props.id}
+            materialId={props.materialId}
             activeLang={props.trLang}
             langs={props.translations}
             size={20}
@@ -136,7 +142,7 @@ const Event = props => {
         </div>
       </Collapse>
        */}
-    </div>
+    </ButtonBase>
   )
 }
 

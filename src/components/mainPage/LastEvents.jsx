@@ -8,7 +8,7 @@ function LastEvents(props) {
 
   let lastEvents = map(lastEventsDoc, (elem, key) => {
     return {
-      id: key,
+      unit: key,
       ...elem
     }
   })
@@ -21,7 +21,7 @@ function LastEvents(props) {
         Last updates
       </Typography>
       {lastEvents.map(event => (
-        <Event key={event.id} {...event} />
+        <Event key={event.unit} {...event} />
       ))}
     </div>
   )

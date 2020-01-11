@@ -220,19 +220,21 @@ const MaterialForm = props => {
     }
 
     Promise.all([waitPromisesBeforeRedirect]).then(values => {
-      const event = {
-        title,
-        lang,
-        translations: newTranslations,
-        trTitle,
-        trLang,
-        actions,
-        time: Date.now()
+      const addEventToMainPage = () => {
+        const event = {
+          title,
+          lang,
+          materialId,
+          translations: newTranslations,
+          trTitle,
+          trLang,
+          actions,
+          time: Date.now()
+        }
+        dbUpdate('lastEvents', 'main', { [unit]: event })
       }
-
-      dbUpdate('lastEvents', 'main', { [materialId]: event })
+      addEventToMainPage()
       history.push(`/material/${materialId}/${trLang}`)
-      // dispatch({ type: actionTypes.CLEAR_DATA, preserve: { ordered: true } })
     })
   }
 
