@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
   translations: {
     position: 'absolute',
-    right: 1,
+    right: 5,
     bottom: 1
   },
 
@@ -89,11 +89,12 @@ const Event = props => {
   const { actions = [] } = props
 
   return (
-    <ButtonBase component='div' onClick={onEventClick} className={classes.materialEvent}>
-      <Typography className={classes.actions} variant='body2'>
-        {actions.join(', ')}
-      </Typography>
-      {/* 
+    <div style={{ position: 'relative' }}>
+      <ButtonBase component='div' onClick={onEventClick} className={classes.materialEvent}>
+        <Typography className={classes.actions} variant='body2'>
+          {actions.join(', ')}
+        </Typography>
+        {/* 
       <div className={classes.detailedInfoExpand}>
         <IconButton
           className={clsx(classes.expand, {
@@ -107,42 +108,42 @@ const Event = props => {
         </IconButton>
       </div>
        */}
-      <div className={classes.firstLine}>
-        <RoundButton
-          lang={props.lang}
-          size={30}
-          color='skyblue'
-          materialId={props.materialId}
-          trLang={''}
-          onClick={onTranslationClick}
-        />
-        <Typography className={classes.title} variant='body1'>
-          {props.title}
-        </Typography>
-      </div>
-      <div className={classes.secondLine}>
-        <Typography color='textSecondary' variant='body2'>
-          {props.trTitle}
-        </Typography>
-
-        <div className={classes.translations}>
-          <Translations
-            onClick={onTranslationClick}
+        <div className={classes.firstLine}>
+          <RoundButton
+            lang={props.lang}
+            size={30}
+            color='skyblue'
             materialId={props.materialId}
-            activeLang={props.trLang}
-            langs={props.translations}
-            size={20}
+            trLang={''}
+            onClick={() => {}}
           />
+          <Typography className={classes.title} variant='body1'>
+            {props.title}
+          </Typography>
         </div>
-      </div>
-      {/* 
+        <div className={classes.secondLine}>
+          <Typography color='textSecondary' variant='body2'>
+            {props.trTitle}
+          </Typography>
+        </div>
+        {/* 
       <Collapse in={expanded} timeout='auto' unmountOnExit>
         <div className={classes.detailedInfo}>
           <Typography variant='body2'>detailed info about updates</Typography>
         </div>
       </Collapse>
        */}
-    </ButtonBase>
+      </ButtonBase>
+      <div className={classes.translations}>
+        <Translations
+          onClick={onTranslationClick}
+          materialId={props.materialId}
+          activeLang={props.trLang}
+          langs={props.translations}
+          size={20}
+        />
+      </div>
+    </div>
   )
 }
 
