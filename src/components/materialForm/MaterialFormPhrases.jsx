@@ -56,8 +56,11 @@ function Phrases(props) {
   const dispatch = useDispatch()
   const classes = useStyles()
   const text = phrases.length
-    ? map(phrases, 'text').join('\n') //if phrases exists, we use textarea for display their text
-    : textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
+    ? map(phrases, 'text')
+        .join('\n')
+        .trim()
+    : //if phrases exists, we use textarea for display their text
+      textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
 
   const trText = map(phrases, `translations.${trLang}`).join('\n') //textarea content translation text
 
@@ -73,6 +76,7 @@ function Phrases(props) {
       newPhrases = phrases.map((elem, index) => {
         return { ...elem, text: newText[index] }
       })
+      console.log('newPhrases', newPhrases)
       dispatch(setPageParameter(['phrases', newPhrases]))
     }
   }
