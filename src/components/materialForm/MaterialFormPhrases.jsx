@@ -31,7 +31,10 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     overflowX: 'scroll',
     fontSize: 13,
-    lineHeight: '15px'
+    lineHeight: '15px',
+    /* horizontal lines: */
+    backgroundImage: `linear-gradient(white, white 14px, #ccc 14px, #ccc 15px, white 15px)`,
+    backgroundSize: `100% 15px`
   },
   textareaOriginal: {
     width: 'calc(100% - 46px)'
@@ -62,7 +65,9 @@ function Phrases(props) {
     : //if phrases exists, we use textarea for display their text
       textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
 
-  const trText = map(phrases, `translations.${trLang}`).join('\n') //textarea content translation text
+  const trText = map(phrases, `translations.${trLang}`)
+    .join('\n')
+    .trim() //textarea content translation text
 
   const handleTextChanged = event => {
     const textareaOriginal = event.target.value
