@@ -44,7 +44,6 @@ const useStyles = makeStyles(theme => ({
   },
   phrases: {
     verticalAlign: 'top',
-    marginTop: 3,
     display: 'inline-block',
     minWidth: 40
   }
@@ -139,6 +138,7 @@ function Phrases(props) {
           onChange={handleTextChanged}
           rows={phrases.length}
           className={`${classes.textarea} ${classes.textareaOriginal}`}
+          style={lang === 'ar' ? { textAlign: 'right', direction: 'rtl' } : null}
         />
         <div style={{ marginLeft: 40, marginRight: 1 }}>
           {materialId && <Revisions docId={materialId} collection='material' />}
