@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { setPlayerState } from '../../store/playerStateActions'
 import MaterialTitle from './MaterialTitle'
+import PrevNextButtons from './PrevNextButtons'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' }
@@ -120,6 +121,7 @@ function MaterialPage(props) {
         <PlayerControls {...playerControlsProps} />
       </div>
       <Phrases playPhrase={playPhrase} />
+      <PrevNextButtons />
     </div>
   )
 }
