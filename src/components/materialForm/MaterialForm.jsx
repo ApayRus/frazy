@@ -137,9 +137,10 @@ const MaterialForm = props => {
       phrases: materialPhrases
     }
 
-    const newTranslations = oldTranslations.includes(trLang)
-      ? oldTranslations
-      : oldTranslations.concat(trLang)
+    const newTranslations =
+      oldTranslations.includes(trLang) || trLang === ''
+        ? oldTranslations
+        : oldTranslations.concat(trLang)
 
     const diffMaterial = diff(prevMaterial, materialContent) //diff object after user input
     const diffTranslation = diff(prevTranslation, translationContent) //diff object after user input
