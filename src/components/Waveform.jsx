@@ -53,14 +53,14 @@ function Waveform(props) {
   useEffect(() => {
     const wavesurfer = wavesurferModule.wavesurfer
 
-    const updateLabelsOfRegionsInWaveform = () => {
+    const updateRegionsInWaveform = () => {
       phrases.forEach(elem => {
-        const { id, text, translations: { [trLang]: trText = '' } = {} } = elem || {}
+        const { id, text, start, end, translations: { [trLang]: trText = '' } = {} } = elem || {}
         const label1 = text || ''
         const label2 = trText
         const region = wavesurferModule.wavesurfer.regions.list[id]
         if (region) {
-          region.update({ attributes: { label1, label2 } })
+          region.update({ start, end, attributes: { label1, label2 } })
         }
       })
     }
@@ -83,7 +83,7 @@ function Waveform(props) {
       } else {
         //textarea changed
         console.log('newPhrasesCount', newPhrasesCount)
-        updateLabelsOfRegionsInWaveform()
+        updateRegionsInWaveform()
       }
     }
   }, [phrases, trLang])

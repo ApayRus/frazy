@@ -130,6 +130,19 @@ const pageContentReducer = (state = initState, action) => {
       return { ...state, translationRevisions }
     }
 
+    //moves all phrases (waveform regions) to +T or -T secs
+    case 'MOVE_PHRASES': {
+      let { phrases } = state
+      const { delta } = action.payload
+      phrases = phrases.map(elem => {
+        let { start, end } = elem
+        start += delta
+        end += delta
+        return { ...elem, start, end }
+      })
+      return { ...state, phrases }
+    }
+
     default:
       return state
   }
