@@ -1,13 +1,9 @@
 import React from 'react'
-// import './Phrases.css'
 import PlayArrow from '@material-ui/icons/PlayArrow'
-// import { audio } from '../howler'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { connect } from 'react-redux'
-
+import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +36,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Phrases(props) {
-  const { phrases, playPhrase, currentPhraseId, showOriginalText, showTranslation, trLang } = props
+  const { playPhrase } = props
+  const { showOriginalText, showTranslation } = useSelector(state => state.playerSettings)
+  const { currentPhraseId } = useSelector(state => state.playerState)
+  const { phrases, trLang } = useSelector(state => state.pageContent)
   const classes = useStyles()
   return (
     <div className={classes.phrases}>
@@ -77,14 +76,4 @@ function Phrases(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    currentPhraseId: state.playerState.currentPhraseId,
-    showTranslation: state.playerSettings.showTranslation,
-    showOriginalText: state.playerSettings.showOriginalText,
-    phrases: state.pageContent.phrases,
-    trLang: state.pageContent.trLang
-  }
-}
-
-export default connect(mapStateToProps)(Phrases)
+export default Phrases
