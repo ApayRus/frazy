@@ -21,7 +21,7 @@ function Phrases(props) {
     <div className={classes.phrases}>
       {phrases.map((phrase, index) => {
         const isCurrentPhrase = currentPhraseId === phrase.id
-        const actorMatch = phrase.text.match(/^\s*<(.+)>/)
+        const actorMatch = phrase.text.match(/^\s*[<#](.+)[#>]/)
         let actor = null
         let newText = phrase.text
 
