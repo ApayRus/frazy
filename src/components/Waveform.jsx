@@ -65,21 +65,27 @@ function Waveform(props) {
       })
     }
 
-    const createNewRegions = () => {
-      phrases.forEach(elem => {
+    const createNewRegions = newPhrases => {
+      newPhrases.forEach(elem => {
         wavesurfer.regions.add(elem)
       })
     }
 
     if (wavesurfer) {
-      const regionsCount = Object.keys(wavesurfer.regions.list).length
+      const regions = Object.keys(wavesurfer.regions.list)
+      const regionsCount = regions.length
       const newPhrasesCount = phrases.length - regionsCount
       if (newPhrasesCount > 2 && regionsCount === 0) {
         //it is import of subtitles
         console.log('newPhrasesCount', newPhrasesCount)
         if (wavesurfer.isReady) {
-          createNewRegions()
+          createNewRegions(phrases)
         }
+      } else if (newPhrasesCount > 0 && regionsCount > 0 && newPhrasesCount <= regionsCount) {
+        //it is cloning of phrases
+        console.log('it is cloning')
+        const newPhrases = phrases.filter(elem => !regions.includes(elem.id))
+        createNewRegions(newPhrases)
       } else {
         //textarea changed
         console.log('newPhrasesCount', newPhrasesCount)

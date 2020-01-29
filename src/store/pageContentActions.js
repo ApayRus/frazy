@@ -85,3 +85,17 @@ export const movePhrases = payload => {
     payload
   }
 }
+
+/**
+ *
+ * @param {object} payload
+ * @param {number} payload.delta - seconds +/- 
+ * @example 
+  { type: 'CLONE_PHRASES', payload:{ selectedPhrases: ["2e4sdmgetlo", "l9vhq4ucrm"] } }
+ */
+export const clonePhrases = payload => {
+  return {
+    type: 'CLONE_PHRASES',
+    payload
+  }
+}

@@ -1,4 +1,6 @@
 import { makePhrasesArray, addTranslation } from '../utils/phrases'
+import nanoid from 'nanoid'
+import map from 'lodash/map'
 
 const initState = {
   materialId: '',
@@ -160,6 +162,16 @@ const pageContentReducer = (state = initState, action) => {
         phrases = moveSelectedPhrases(delta, selectedPhrases)
       }
 
+      return { ...state, phrases }
+    }
+
+    case 'CLONE_PHRASES': {
+      let { phrases } = state
+      const { selectedPhrases } = action.payload //ids
+      let clonedPhrases = phrases.filter(elem => selectedPhrases.includes(elem.id))
+      clonedPhrases = clonedPhrases.map(elem => ({ ...elem, id: nanoid(10) }))
+      phrases = [...phrases, ...clonedPhrases]
+      console.log('cloned phrases:', map(clonedPhrases, 'id'))
       return { ...state, phrases }
     }
 
