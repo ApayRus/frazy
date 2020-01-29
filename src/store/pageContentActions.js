@@ -77,6 +77,7 @@ export const updateTranslationRevisions = payload => {
  * @param {number} payload.delta - seconds +/- 
  * @example 
   { type: 'MOVE_PHRASES', payload:{ delta: 1.1 } }
+  { type: 'MOVE_PHRASES', payload:{ delta: 0.1, selectedPhrases: ['tfor16kt5o'] } }
  */
 export const movePhrases = payload => {
   return {

@@ -130,16 +130,36 @@ const pageContentReducer = (state = initState, action) => {
       return { ...state, translationRevisions }
     }
 
-    //moves all phrases (waveform regions) to +T or -T secs
+    //moves a phrases (all or only selected) to delta secs (+/-)
     case 'MOVE_PHRASES': {
       let { phrases } = state
       const { delta } = action.payload
-      phrases = phrases.map(elem => {
-        let { start, end } = elem
-        start += delta
-        end += delta
-        return { ...elem, start, end }
-      })
+      const { selectedPhrases } = action.payload
+
+      const moveAllPhrases = delta =>
+        phrases.map(elem => {
+          let { start, end } = elem
+          start += delta
+          end += delta
+          return { ...elem, start, end }
+        })
+
+      const moveSelectedPhrases = (delta, selectedPhrases) =>
+        phrases.map(elem => {
+          let { start, end } = elem
+          if (selectedPhrases.includes(elem.id)) {
+            start += delta
+            end += delta
+          }
+          return { ...elem, start, end }
+        })
+
+      if (!selectedPhrases) {
+        phrases = moveAllPhrases(delta)
+      } else {
+        phrases = moveSelectedPhrases(delta, selectedPhrases)
+      }
+
       return { ...state, phrases }
     }
 
