@@ -9,6 +9,8 @@ import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import Grid from '@material-ui/core/Grid'
 import LastEvents from './LastEvents'
 import local from '../../localization/en'
+import SocialMedia from '../SocialMedia'
+import Donate from '../Donate'
 
 function MainPage(props) {
   const { lastEventsDoc } = props
@@ -51,6 +53,7 @@ function MainPage(props) {
             }}
           />
         </a>
+        <SocialMedia />
       </div>
       <Grid item xs={12} sm={12} md={6}>
         {isDataLoaded ? (
@@ -61,7 +64,11 @@ function MainPage(props) {
           </div>
         )}
       </Grid>
-      <Grid item xs={12} sm={12} md={6}></Grid>
+      <Grid item xs={12} sm={12} md={6}>
+        <div style={{ marginTop: 54 }}>
+          <Donate />
+        </div>
+      </Grid>
     </Grid>
   )
 
