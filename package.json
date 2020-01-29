@@ -10,6 +10,7 @@
     "deep-object-diff": "^1.1.0",
     "firebase": "^6.6.2",
     "moment": "^2.24.0",
+    "nanoid": "^2.1.10",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-firebaseui": "^4.0.0",
