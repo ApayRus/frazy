@@ -27,6 +27,7 @@ import { parseFrazyExportTable } from '../../utils/phrases'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { diff } from 'deep-object-diff'
 // import { actionTypes } from 'redux-firestore'
+import PlayPauseButton from '../PlayPauseButton'
 
 import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
 
@@ -67,10 +68,6 @@ const MaterialForm = props => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const playPause = () => {
-    wavesurferModule.wavesurfer.playPause()
-  }
 
   const readSubtitles = () => {
     const { textareaOriginal, materialId: materialIdCurrent } = props
@@ -253,7 +250,9 @@ const MaterialForm = props => {
       {mediaLink ? (
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
           <Waveform />
-          <Button onClick={playPause}>Play/Pause </Button>
+          <div style={{ marginTop: -66 }}>
+            <PlayPauseButton />
+          </div>
         </div>
       ) : null}
       <div>
