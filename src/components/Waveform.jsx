@@ -5,6 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import { afterFirebaseFileDownloadUrlReady } from '../utils/firebase'
+import WaveformZoom from './WaveformZoom'
 
 function Waveform(props) {
   let waveformElem = useRef(),
@@ -52,7 +53,7 @@ function Waveform(props) {
   //phrases changed
   useEffect(() => {
     const wavesurfer = wavesurferModule.wavesurfer
-
+    console.log('wavesurfer', wavesurfer)
     const updateRegionsInWaveform = () => {
       phrases.forEach(elem => {
         const { id, text, start, end, translations: { [trLang]: trText = '' } = {} } = elem || {}
@@ -107,6 +108,9 @@ function Waveform(props) {
       <div style={isReady ? {} : { visibility: 'hidden' }}>
         <div ref={waveformElem} />
         <div ref={timelineElem} />
+        <div style={{ textAlign: 'right', display: 'flex' }}>
+          <WaveformZoom wavesurfer={wavesurferModule.wavesurfer} />
+        </div>
       </div>
     </div>
   )
