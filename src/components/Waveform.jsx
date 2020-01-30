@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import { afterFirebaseFileDownloadUrlReady } from '../utils/firebase'
 import WaveformZoom from './WaveformZoom'
+import PlayPauseButton from './PlayPauseButton'
 
 function Waveform(props) {
   let waveformElem = useRef(),
@@ -108,8 +109,13 @@ function Waveform(props) {
       <div style={isReady ? {} : { visibility: 'hidden' }}>
         <div ref={waveformElem} />
         <div ref={timelineElem} />
-        <div style={{ textAlign: 'right', display: 'flex' }}>
-          <WaveformZoom wavesurfer={wavesurferModule.wavesurfer} />
+        <div style={{ height: 42 }}>
+          <div style={{ float: 'left' }}>
+            <PlayPauseButton wavesurfer={wavesurferModule.wavesurfer} />
+          </div>
+          <div style={{ float: 'right' }}>
+            <WaveformZoom wavesurfer={wavesurferModule.wavesurfer} />
+          </div>
         </div>
       </div>
     </div>
