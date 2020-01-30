@@ -5,9 +5,10 @@ import ZoomOutIcon from '@material-ui/icons/ZoomOut'
 import IconButton from '@material-ui/core/IconButton'
 import { useSelector, useDispatch } from 'react-redux'
 import { setPlayerSettings } from '../store/playerSettingsActions'
+import wavesurferModule from '../wavesurfer/wavesurfer'
 
 function Zoom(props) {
-  const { wavesurfer } = props
+  const { wavesurfer } = wavesurferModule
   const { waveformZoom } = useSelector(state => state.playerSettings)
   const dispatch = useDispatch()
   const changeZoom = newValue => {

@@ -4,9 +4,10 @@ import PauseIcon from '@material-ui/icons/Pause'
 import IconButton from '@material-ui/core/IconButton'
 import { useSelector, useDispatch } from 'react-redux'
 import { setPlayerState } from '../store/playerStateActions'
+import wavesurferModule from '../wavesurfer/wavesurfer'
 
 function Zoom(props) {
-  const { wavesurfer } = props
+  const { wavesurfer } = wavesurferModule
   const { play } = useSelector(state => state.playerState)
   const dispatch = useDispatch()
 
