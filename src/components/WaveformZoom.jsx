@@ -18,6 +18,7 @@ function Zoom(props) {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <IconButton
+        size='small'
         onClick={() => {
           changeZoom(waveformZoom - 1)
         }}
@@ -37,7 +38,7 @@ function Zoom(props) {
           step={1}
         />
       </div>
-      <IconButton onClick={() => changeZoom(waveformZoom + 1)}>
+      <IconButton size='small' onClick={() => changeZoom(waveformZoom + 1)}>
         <ZoomInIcon />
       </IconButton>
     </div>
