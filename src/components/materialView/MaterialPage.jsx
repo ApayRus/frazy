@@ -10,9 +10,12 @@ import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { setPlayerState } from '../../store/playerStateActions'
 import MaterialTitle from './MaterialTitle'
 import PrevNextButtons from './PrevNextButtons'
+import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
-  hidden: { display: 'none' }
+  hidden: { display: 'none' },
+  playerControlsPanel: { backgroundColor: 'white', zIndex: 2, position: 'sticky', top: 0 },
+  slideshow: { marginBottom: 3 }
 }))
 
 function MaterialPage(props) {
@@ -116,8 +119,10 @@ function MaterialPage(props) {
       <div className={showWaveform ? '' : classes.hidden}>
         <Waveform readOnly />
       </div>
-      <div className={showSlideshow ? '' : classes.hidden}>
+      <div className={clsx(classes.slideshow, { [classes.hidden]: !showSlideshow })}>
         <PlayerSlideShow currentPhraseNum={currentPhraseNum} />
+      </div>
+      <div className={classes.playerControlsPanel}>
         <PlayerControls {...playerControlsProps} />
       </div>
       <Phrases playPhrase={playPhrase} />

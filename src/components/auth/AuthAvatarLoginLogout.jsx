@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     position: 'fixed',
     bottom: 2,
-    zIndex: 1,
+    zIndex: 3,
     right: 1,
     top: 1,
     maxHeight: 40
