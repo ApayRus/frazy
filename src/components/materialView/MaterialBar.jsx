@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   bottom: {
     position: 'fixed',
     bottom: 2,
-    zIndex: 1
+    zIndex: 5
   },
   menu: {
     left: 3
