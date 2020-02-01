@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Frazy.me",
+  "name": "Frazy.me - phrasal player with parallel texts",
   "icons": [
     {
       "src": "favicon.ico",
