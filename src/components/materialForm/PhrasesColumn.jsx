@@ -6,12 +6,14 @@ import { setPageParameter } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
+import { map } from 'lodash'
 
 const useStyles = makeStyles(theme => ({
   phrases: {
     verticalAlign: 'top',
     display: 'inline-block',
-    minWidth: 40
+    minWidth: 40,
+    marginTop: -15
   },
   phraseCell: {
     display: 'flex',
@@ -49,9 +51,22 @@ function Phrases(props) {
       : selectedPhrases.filter(elem => elem !== id)
     dispatch(setPageParameter(['selectedPhrases', newSelectedPhrases]))
   }
+  const onSelectAll = event => {
+    const { checked: isChecked } = event.target
+    const newSelectedPhrases = isChecked ? map(phrases, 'id') : []
+    dispatch(setPageParameter(['selectedPhrases', newSelectedPhrases]))
+  }
 
   return (
     <div className={classes.phrases}>
+      <div className={classes.phraseCell} style={{ justifyContent: 'center' }}>
+        <input
+          onChange={onSelectAll}
+          type='checkbox'
+          title='select all phrases'
+          style={{ display: 'inline-block', padding: 0, margin: 0 }}
+        />
+      </div>
       {phrases.map((phrase, index) => {
         const isCurrentPhrase = currentPhraseId === phrase.id
         const isSelected = selectedPhrases.includes(phrase.id)
