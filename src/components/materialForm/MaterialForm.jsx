@@ -27,7 +27,7 @@ import { parseFrazyExportTable } from '../../utils/phrases'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { diff } from 'deep-object-diff'
 // import { actionTypes } from 'redux-firestore'
-import PlayPauseButton from '../PlayPauseButton'
+import ControlsPanel from './ControlsPanel'
 
 import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
 
@@ -251,7 +251,7 @@ const MaterialForm = props => {
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
           <Waveform />
           <div style={{ marginTop: -66 }}>
-            <PlayPauseButton />
+            <ControlsPanel />
           </div>
         </div>
       ) : null}
