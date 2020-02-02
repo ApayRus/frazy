@@ -5,7 +5,7 @@ function Donate() {
   return (
     <div style={{ marginLeft: 20 }}>
       <Typography variant='body2'>
-        Please, donate us, via{' '}
+        Please donate to us via{' '}
         <a target='_blank' rel='noopener noreferrer' href='https://www.paypal.me/aparus'>
           PayPal
         </a>{' '}
