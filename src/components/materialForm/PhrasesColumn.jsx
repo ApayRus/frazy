@@ -8,28 +8,31 @@ import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
-  id: {
-    color: 'gray',
-    fontSize: 9,
-    display: 'inline-block'
-  },
-  current: {
-    color: 'red'
-  },
-  playButton: {
-    display: 'block',
-    width: 40,
-    height: 15
-  },
   phrases: {
     verticalAlign: 'top',
     display: 'inline-block',
     minWidth: 40
+  },
+  phraseCell: {
+    display: 'flex',
+    alignItems: 'center',
+    width: 40,
+    height: 15
+  },
+  playButton: {
+    color: 'gray',
+    width: '100%'
+  },
+
+  id: { fontSize: 9 },
+  playArrow: { fontSize: 9 },
+  current: {
+    color: 'red'
   }
 }))
 
 function Phrases(props) {
-  const { phrases } = useSelector(state => state.pageContent)
+  const { phrases, selectedPhrases } = useSelector(state => state.pageContent)
 
   const { currentPhraseId } = useSelector(state => state.playerState)
   const dispatch = useDispatch()
@@ -39,24 +42,42 @@ function Phrases(props) {
     wavesurferModule.wavesurfer.regions.list[id].play()
   }
 
+  const onSelect = id => event => {
+    const { checked: isChecked } = event.target
+    const newSelectedPhrases = isChecked
+      ? selectedPhrases.concat(id)
+      : selectedPhrases.filter(elem => elem !== id)
+    dispatch(setPageParameter(['selectedPhrases', newSelectedPhrases]))
+  }
+
   return (
     <div className={classes.phrases}>
       {phrases.map((phrase, index) => {
         const isCurrentPhrase = currentPhraseId === phrase.id
+        const isSelected = selectedPhrases.includes(phrase.id)
         return (
-          <ButtonBase
-            className={classes.playButton}
+          <div
+            className={classes.phraseCell}
             key={`phrase-${phrase.id}`}
             style={{ backgroundColor: phrase.color }}
           >
-            <div
+            <input
+              onChange={onSelect(phrase.id)}
+              type='checkbox'
+              checked={isSelected}
+              style={{ display: 'inline-block', padding: 0, margin: 0 }}
+            />
+            <ButtonBase
+              component='div'
               onClick={playPhrase(phrase.id)}
-              // className={classes.id + ' ' + (isCurrentPhrase ? classes.current : '')}
-              className={clsx(classes.id, { [classes.current]: isCurrentPhrase })}
+              className={clsx(classes.playButton, { [classes.current]: isCurrentPhrase })}
             >
-              {index + 1} <PlayArrow fontSize='inherit' />{' '}
-            </div>
-          </ButtonBase>
+              <div className={classes.id}>{index + 1}</div>
+              <div className={classes.playArrow}>
+                <PlayArrow fontSize='inherit' />
+              </div>
+            </ButtonBase>
+          </div>
         )
       })}
     </div>
