@@ -86,13 +86,11 @@ function Waveform(props) {
       const newPhrasesCount = phrases.length - regionsCount
       if (newPhrasesCount > 2 && regionsCount === 0) {
         //it is import of subtitles
-        console.log('newPhrasesCount', newPhrasesCount)
         if (wavesurfer.isReady) {
           createNewRegions(phrases)
         }
       } else if (newPhrasesCount > 0 && regionsCount > 0 && newPhrasesCount <= regionsCount) {
         //it is cloning of phrases
-        console.log('it is cloning')
         const newPhrases = phrases.filter(elem => !regions.includes(elem.id))
         createNewRegions(newPhrases)
       } else if (newPhrasesCount < 0) {
@@ -102,7 +100,6 @@ function Waveform(props) {
         deleteRegions(regionsForDelete)
       } else {
         //textarea changed
-        console.log('newPhrasesCount', newPhrasesCount)
         updateRegionsInWaveform()
       }
     }
