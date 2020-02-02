@@ -99,3 +99,17 @@ export const clonePhrases = payload => {
     payload
   }
 }
+
+/**
+ *
+ * @param {object} payload
+ * @param {number} payload.delta - seconds +/- 
+ * @example 
+  { type: 'DELETE_PHRASES', payload:{ selectedPhrases: ["2e4sdmgetlo", "l9vhq4ucrm"] } }
+ */
+export const deletePhrases = payload => {
+  return {
+    type: 'DELETE_PHRASES',
+    payload
+  }
+}

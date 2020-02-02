@@ -166,6 +166,14 @@ const pageContentReducer = (state = initState, action) => {
       return { ...state, phrases, selectedPhrases }
     }
 
+    case 'DELETE_PHRASES': {
+      let { phrases } = state
+      let { selectedPhrases } = action.payload //id
+      phrases = phrases.filter(elem => !selectedPhrases.includes(elem.id))
+      selectedPhrases = []
+      return { ...state, phrases, selectedPhrases }
+    }
+
     default:
       return state
   }

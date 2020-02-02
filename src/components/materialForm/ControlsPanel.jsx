@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { useSelector, useDispatch } from 'react-redux'
-import { clonePhrases, movePhrases } from '../../store/pageContentActions'
+import { clonePhrases, movePhrases, deletePhrases } from '../../store/pageContentActions'
 
 function ControlsPanel() {
   const { selectedPhrases } = useSelector(state => state.pageContent)
@@ -32,7 +32,10 @@ function ControlsPanel() {
           >
             <CopyIcon />
           </IconButton>
-          <IconButton title='delete selected phrases'>
+          <IconButton
+            title='delete selected phrases'
+            onClick={() => dispatch(deletePhrases({ selectedPhrases }))}
+          >
             <DeleteIcon />
           </IconButton>
           <IconButton title='move selected phrases back' onClick={handleMovePhrases('back')}>

@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import { afterFirebaseFileDownloadUrlReady } from '../utils/firebase'
 import WaveformZoom from './WaveformZoom'
+import { map } from 'lodash'
 
 function Waveform(props) {
   let waveformElem = useRef(),
@@ -66,6 +67,13 @@ function Waveform(props) {
       })
     }
 
+    const deleteRegions = regionsForDelete => {
+      regionsForDelete.forEach(id => {
+        const region = wavesurferModule.wavesurfer.regions.list[id]
+        region.remove()
+      })
+    }
+
     const createNewRegions = newPhrases => {
       newPhrases.forEach(elem => {
         wavesurfer.regions.add(elem)
@@ -87,6 +95,11 @@ function Waveform(props) {
         console.log('it is cloning')
         const newPhrases = phrases.filter(elem => !regions.includes(elem.id))
         createNewRegions(newPhrases)
+      } else if (newPhrasesCount < 0) {
+        //it is deleting
+        const phrasesIds = map(phrases, 'id')
+        const regionsForDelete = regions.filter(regionId => !phrasesIds.includes(regionId))
+        deleteRegions(regionsForDelete)
       } else {
         //textarea changed
         console.log('newPhrasesCount', newPhrasesCount)
