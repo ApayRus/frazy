@@ -1,29 +1,15 @@
 import React from 'react'
-import PlayArrow from '@material-ui/icons/PlayArrow'
-import ButtonBase from '@material-ui/core/ButtonBase'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../../store/pageContentActions'
-import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialFormTitle from './MaterialFormTitle'
 import { map } from 'lodash'
 import Revisions from './Revisions'
 import { useDispatch, useSelector } from 'react-redux'
 import TranslationSwitcher from '../translations/TranslationSwitcher'
+import PhrasesColumn from './PhrasesColumn'
 
 const useStyles = makeStyles(theme => ({
-  id: {
-    color: 'gray',
-    fontSize: 9
-  },
-  current: {
-    color: 'red'
-  },
-  playButton: {
-    display: 'block',
-    width: 40,
-    height: 15
-  },
   textarea: {
     resize: 'none',
     whiteSpace: 'nowrap',
@@ -41,11 +27,6 @@ const useStyles = makeStyles(theme => ({
   },
   textareaTranslation: {
     width: '100%'
-  },
-  phrases: {
-    verticalAlign: 'top',
-    display: 'inline-block',
-    minWidth: 40
   }
 }))
 
@@ -53,8 +34,6 @@ function Phrases(props) {
   const { phrases, lang, trLang, title, trTitle, materialId, textareaOriginal } = useSelector(
     state => state.pageContent
   )
-
-  const { currentPhraseId } = useSelector(state => state.playerState)
   const dispatch = useDispatch()
   const classes = useStyles()
   const text = phrases.length
@@ -93,31 +72,6 @@ function Phrases(props) {
     })
     dispatch(setPageParameter(['phrases', newPhrases]))
   }
-
-  const playPhrase = id => event => {
-    wavesurferModule.wavesurfer.regions.list[id].play()
-  }
-
-  const PhrasesColumn = () => (
-    <div className={classes.phrases}>
-      {phrases.map((phrase, index) => {
-        return (
-          <ButtonBase
-            className={classes.playButton}
-            onClick={playPhrase(phrase.id)}
-            key={`phrase-${phrase.id}`}
-            style={{ backgroundColor: phrase.color }}
-          >
-            <div
-              className={classes.id + ' ' + (currentPhraseId === phrase.id ? classes.current : '')}
-            >
-              {index + 1} <PlayArrow fontSize='inherit' />{' '}
-            </div>
-          </ButtonBase>
-        )
-      })}
-    </div>
-  )
 
   return (
     <Grid style={{ padding: 10 }} container>
