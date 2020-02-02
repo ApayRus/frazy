@@ -94,7 +94,14 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   })
 
   wavesurfer.on('region-dblclick', region => {
-    region.remove()
+    // region.remove()
+    let { selectedPhrases } = store.getState().pageContent
+    if (selectedPhrases.includes(region.id)) {
+      selectedPhrases = selectedPhrases.filter(elem => elem !== region.id)
+    } else {
+      selectedPhrases = selectedPhrases.concat(region.id)
+    }
+    store.dispatch(setPageParameter(['selectedPhrases', selectedPhrases]))
   })
 
   wavesurfer.on('region-removed', region => {
