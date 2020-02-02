@@ -1,6 +1,6 @@
 import { makePhrasesArray, addTranslation } from '../utils/phrases'
 import nanoid from 'nanoid'
-import map from 'lodash/map'
+import { map, orderBy } from 'lodash'
 
 const initState = {
   materialId: '',
@@ -9,6 +9,7 @@ const initState = {
   unit: '',
   order: '',
   phrases: [],
+  selectedPhrases: [],
   trTitle: '',
   trLang: '',
   mediaLink: '', // saved in db, folder/filename.mp3
@@ -138,14 +139,6 @@ const pageContentReducer = (state = initState, action) => {
       const { delta } = action.payload
       const { selectedPhrases } = action.payload
 
-      const moveAllPhrases = delta =>
-        phrases.map(elem => {
-          let { start, end } = elem
-          start += delta
-          end += delta
-          return { ...elem, start, end }
-        })
-
       const moveSelectedPhrases = (delta, selectedPhrases) =>
         phrases.map(elem => {
           let { start, end } = elem
@@ -155,24 +148,22 @@ const pageContentReducer = (state = initState, action) => {
           }
           return { ...elem, start, end }
         })
-
-      if (!selectedPhrases) {
-        phrases = moveAllPhrases(delta)
-      } else {
-        phrases = moveSelectedPhrases(delta, selectedPhrases)
-      }
+      phrases = moveSelectedPhrases(delta, selectedPhrases)
+      phrases = orderBy(phrases, 'start')
 
       return { ...state, phrases }
     }
 
     case 'CLONE_PHRASES': {
       let { phrases } = state
-      const { selectedPhrases } = action.payload //ids
+      let { selectedPhrases } = action.payload //ids
       let clonedPhrases = phrases.filter(elem => selectedPhrases.includes(elem.id))
       clonedPhrases = clonedPhrases.map(elem => ({ ...elem, id: nanoid(10) }))
       phrases = [...phrases, ...clonedPhrases]
       console.log('cloned phrases:', map(clonedPhrases, 'id'))
-      return { ...state, phrases }
+      phrases = orderBy(phrases, 'start')
+      selectedPhrases = map(clonedPhrases, 'id')
+      return { ...state, phrases, selectedPhrases }
     }
 
     default:
