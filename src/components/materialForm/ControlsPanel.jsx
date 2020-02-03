@@ -7,6 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { useSelector, useDispatch } from 'react-redux'
 import { clonePhrases, movePhrases, deletePhrases } from '../../store/pageContentActions'
+import InputsViewSwitcher from './InputsViewSwitcher'
 
 function ControlsPanel() {
   const { selectedPhrases } = useSelector(state => state.pageContent)
@@ -23,6 +24,9 @@ function ControlsPanel() {
     <div>
       <div style={{ display: 'inline-block' }}>
         <PlayPauseButton />
+      </div>
+      <div style={{ display: 'inline-block', marginLeft: 10, marginRight: 10 }}>
+        <InputsViewSwitcher />
       </div>
       {selectedPhrases.length > 0 && (
         <div style={{ display: 'inline-block' }}>
