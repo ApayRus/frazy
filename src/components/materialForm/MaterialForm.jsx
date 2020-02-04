@@ -250,9 +250,7 @@ const MaterialForm = props => {
       {mediaLink ? (
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
           <Waveform />
-          <div style={{ marginTop: -66 }}>
-            <ControlsPanel />
-          </div>
+          <ControlsPanel editMode />
         </div>
       ) : null}
       <div>

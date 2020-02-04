@@ -5,7 +5,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import { afterFirebaseFileDownloadUrlReady } from '../utils/firebase'
-import WaveformZoom from './WaveformZoom'
 import { map } from 'lodash'
 
 function Waveform(props) {
@@ -118,9 +117,6 @@ function Waveform(props) {
       <div style={isReady ? {} : { visibility: 'hidden' }}>
         <div ref={waveformElem} />
         <div ref={timelineElem} />
-        <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-          <WaveformZoom />
-        </div>
       </div>
     </div>
   )

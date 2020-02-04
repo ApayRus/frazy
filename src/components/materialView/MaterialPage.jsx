@@ -11,6 +11,7 @@ import { setPlayerState } from '../../store/playerStateActions'
 import MaterialTitle from './MaterialTitle'
 import PrevNextButtons from './PrevNextButtons'
 import clsx from 'clsx'
+import ControlsPanel from '../materialForm/ControlsPanel'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' },
@@ -118,6 +119,7 @@ function MaterialPage(props) {
       <MaterialTitle />
       <div className={showWaveform ? '' : classes.hidden}>
         <Waveform readOnly />
+        <ControlsPanel />
       </div>
       <div className={clsx(classes.slideshow, { [classes.hidden]: !showSlideshow })}>
         <PlayerSlideShow currentPhraseNum={currentPhraseNum} />
