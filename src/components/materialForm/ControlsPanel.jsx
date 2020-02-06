@@ -81,7 +81,7 @@ function ControlsPanel(props) {
       }}
     >
       <Grid container>
-        <Grid item sm={8}>
+        <Grid item xs={12} sm={8}>
           {editMode && (
             <div>
               {PlayPause}
@@ -90,7 +90,7 @@ function ControlsPanel(props) {
             </div>
           )}
         </Grid>
-        <Grid item sm={4}>
+        <Grid item xs={12} sm={4}>
           {Zoom}
         </Grid>
       </Grid>
