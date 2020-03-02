@@ -46,7 +46,7 @@ const MaterialForm = props => {
     // snapshot from material
     {
       const { title, mediaLink, lang, unit, order, materialPhrases: phrases } = props
-      const materialData = { title, mediaLink, lang, unit, order, phrases }
+      const materialData = { title, mediaLink, lang, unit, order, phrases, youtubeId }
       setPrevMaterial(materialData)
     }
     // snapshot from translation
@@ -126,6 +126,7 @@ const MaterialForm = props => {
     const materialContent = {
       title,
       mediaLink,
+      youtubeId,
       lang,
       unit,
       order,
