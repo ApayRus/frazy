@@ -18,6 +18,7 @@
     "react-redux-firebase": "^3.0.5",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
+    "react-youtube": "^7.9.0",
     "redux": "^4.0.4",
     "redux-firestore": "^0.8.0",
     "wavesurfer.js": "^3.2.0"
