@@ -6,6 +6,7 @@ import store from '../store/rootReducer'
 import { setPlayerState } from '../store/playerStateActions'
 import { setPageParameter } from '../store/pageContentActions'
 import { map, orderBy } from 'lodash'
+import youtubeModule from '../youtube/youtube'
 
 import soundtouch from './soundtouchFilter'
 
@@ -110,6 +111,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
 
   // Time stretcher (preserve pitch on speeds != 1 )
   wavesurfer.on('ready', function() {
+    youtubeModule.initWavesurfer(wavesurfer)
     store.dispatch(setPageParameter(['duration', +wavesurfer.getDuration().toFixed(3)]))
     var st = new soundtouch.SoundTouch(wavesurfer.backend.ac.sampleRate)
     var buffer = wavesurfer.backend.buffer

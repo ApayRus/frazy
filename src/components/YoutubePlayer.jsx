@@ -1,5 +1,6 @@
 import React from 'react'
 import YouTube from 'react-youtube'
+import youtubeModule from '../youtube/youtube'
 
 export default function YoutubePlayer(props) {
   const opts = {
@@ -7,14 +8,13 @@ export default function YoutubePlayer(props) {
     height: 200,
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
+      controls: 0,
       autoplay: 0
     }
   }
 
   const onReady = event => {
-    // access to player in all event handlers via event.target
-    // event.target.pauseVideo()
-    console.log('onReady, event.target', event.target)
+    youtubeModule.init(event.target)
   }
   return (
     <div>
