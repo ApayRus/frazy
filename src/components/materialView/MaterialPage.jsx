@@ -12,6 +12,7 @@ import MaterialTitle from './MaterialTitle'
 import PrevNextButtons from './PrevNextButtons'
 import clsx from 'clsx'
 import ControlsPanel from '../materialForm/ControlsPanel'
+import YoutubePlayer from '../YoutubePlayer'
 
 const useStyles = makeStyles(theme => ({
   hidden: { display: 'none' },
@@ -29,7 +30,8 @@ function MaterialPage(props) {
     setPlayerState,
     showSlideshow,
     showWaveform,
-    phrases
+    phrases,
+    youtubeId
   } = props
 
   const currentPhraseNum = phrases.findIndex(elem => elem.id === currentPhraseId)
@@ -117,6 +119,11 @@ function MaterialPage(props) {
   return (
     <div style={{ textAlign: 'center' }}>
       <MaterialTitle />
+      {youtubeId && (
+        <div>
+          <YoutubePlayer videoId={youtubeId} />
+        </div>
+      )}
       <div className={showWaveform ? '' : classes.hidden}>
         <Waveform readOnly />
         <ControlsPanel />
@@ -136,7 +143,7 @@ function MaterialPage(props) {
 const mapStateToProps = state => {
   const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = state.playerState
   const { dictationRepeats, dictationDelay, showWaveform, showSlideshow } = state.playerSettings
-  const { phrases } = state.pageContent
+  const { phrases, youtubeId } = state.pageContent
   return {
     currentPhraseId,
     dictationCurrentRepeat,
@@ -145,7 +152,8 @@ const mapStateToProps = state => {
     dictationDelay,
     showWaveform,
     showSlideshow,
-    phrases
+    phrases,
+    youtubeId
   }
 }
 

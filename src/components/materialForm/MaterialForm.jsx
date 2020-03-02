@@ -26,15 +26,13 @@ import MaterialExportTable from './ExportTable'
 import { parseFrazyExportTable } from '../../utils/phrases'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { diff } from 'deep-object-diff'
-// import { actionTypes } from 'redux-firestore'
 import ControlsPanel from './ControlsPanel'
-
 import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
-
 import PhrasesForTextArea from './MaterialFormPhrases'
+import YoutubePlayer from '../YoutubePlayer'
 
 const MaterialForm = props => {
-  const { mediaLink, uploadProgress } = props
+  const { mediaLink, youtubeId, uploadProgress } = props
   const history = useHistory()
   const [prevMaterial, setPrevMaterial] = useState({})
   const [prevTranslation, setPrevTranslation] = useState({})
@@ -142,11 +140,6 @@ const MaterialForm = props => {
     const diffMaterial = diff(prevMaterial, materialContent) //diff object after user input
     const diffTranslation = diff(prevTranslation, translationContent) //diff object after user input
 
-    // console.log('diffMaterial', diffMaterial)
-    // console.log('diffTranslation', diffTranslation)
-    // console.log('detailedDiffMaterial', detailedDiffMaterial)
-    // console.log('detailedDiffTranslation', detailedDiffTranslation)
-
     //material has created or changed
     if (Object.entries(diffMaterial).length) {
       actions.push(materialAction)
@@ -247,12 +240,19 @@ const MaterialForm = props => {
           <CircularProgress value={uploadProgress} variant='static' />
         </div>
       ) : null}
-      {mediaLink ? (
-        <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
-          <Waveform />
-          <ControlsPanel editMode />
-        </div>
-      ) : null}
+      <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
+        {youtubeId && (
+          <div>
+            <YoutubePlayer videoId={youtubeId} />
+          </div>
+        )}
+        {mediaLink && (
+          <div>
+            <Waveform />
+            <ControlsPanel editMode />
+          </div>
+        )}
+      </div>
       <div>
         <PhrasesForTextArea />
       </div>
@@ -281,6 +281,7 @@ const mapStateToProps = state => {
     materialId: pc.materialId,
     title: pc.title,
     mediaLink: pc.mediaLink,
+    youtubeId: pc.youtubeId,
     lang: pc.lang,
     unit: pc.unit,
     order: pc.order,

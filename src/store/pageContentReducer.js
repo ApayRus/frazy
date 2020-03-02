@@ -42,6 +42,7 @@ const pageContentReducer = (state = initState, action) => {
         order,
         mediaLink,
         phrases: materialPhrases,
+        youtubeId,
         meta: {
           translations = [],
           duration = 0,
@@ -75,6 +76,7 @@ const pageContentReducer = (state = initState, action) => {
         unit,
         order,
         mediaLink,
+        youtubeId,
         materialPhrases,
         translations,
         duration,
