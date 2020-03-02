@@ -104,7 +104,7 @@ function Phrases(props) {
       value={text}
       onChange={handleTextChanged}
       rows={phrases.length}
-      className={clsx(classes.textarea, { rtl: lang === 'ar' })}
+      className={clsx(classes.textarea, { [classes.rtl]: lang === 'ar' })}
       style={{ width }}
     />
   )
