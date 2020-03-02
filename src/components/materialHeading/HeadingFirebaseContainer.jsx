@@ -19,7 +19,7 @@ function HeadingFirebaseHOC(props) {
 
   const defaultUnitInfo = {
     author: 'There is no info for this unit yet',
-    title: 'there should be title',
+    title: 'There should be a title here',
     logo: 'default-files/default-logo.png',
     background: 'default-files/default-background.jpg'
   }
