@@ -4,6 +4,7 @@ import './Wavesurfer.css'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
+import youtubeModule from '../youtube/youtube'
 import { afterFirebaseFileDownloadUrlReady } from '../utils/firebase'
 import { map } from 'lodash'
 
@@ -11,7 +12,7 @@ function Waveform(props) {
   let waveformElem = useRef(),
     timelineElem = useRef()
   const [isReady, setIsReady] = useState(false)
-  const { phrases, mediaLink, waveformRenderProgress, trLang } = useSelector(
+  const { phrases, mediaLink, youtubeId, waveformRenderProgress, trLang } = useSelector(
     state => state.pageContent
   )
   const { readOnly } = props
@@ -29,6 +30,9 @@ function Waveform(props) {
         readOnly
       )
       wavesurferModule.wavesurfer.on('ready', e => {
+        if (youtubeId) {
+          youtubeModule.initWavesurfer(wavesurferModule.wavesurfer)
+        }
         setIsReady(true)
       })
     }
@@ -53,7 +57,6 @@ function Waveform(props) {
   //phrases changed
   useEffect(() => {
     const wavesurfer = wavesurferModule.wavesurfer
-    console.log('wavesurfer', wavesurfer)
     const updateRegionsInWaveform = () => {
       phrases.forEach(elem => {
         const { id, text, start, end, translations: { [trLang]: trText = '' } = {} } = elem || {}
