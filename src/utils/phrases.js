@@ -1,6 +1,7 @@
 import { map, orderBy } from 'lodash'
 import { assRowToPhraseObject } from './subtitlesFunctions.js'
 import { timeStringToSeconds } from './subtitlesFunctions'
+import nanoid from 'nanoid'
 
 // phrases = { id: { start, end, text } } - how it stored in DB
 // make array [ id, start, end, text ]
@@ -61,7 +62,8 @@ export function assToPhrases(subsTiming) {
   const assRows = subsTiming.trim().split('\n')
   const phrases = {}
   assRows.forEach(row => {
-    phrases[getId('')] = assRowToPhraseObject(row)
+    const randomId = nanoid(11)
+    phrases[randomId] = assRowToPhraseObject(row)
   })
   return phrases
 }
@@ -117,18 +119,6 @@ export function randomColor(alpha) {
   )
 }
 
-function getId(prefix) {
-  if (prefix === undefined) {
-    prefix = 'wavesurfer_'
-  }
-  return (
-    prefix +
-    Math.random()
-      .toString(32)
-      .substring(2)
-  )
-}
-
 /**
  * Frazy export table has this structure:
   header row:    |  (empty) | materialId | mediaLink |     unit    |       order     |
@@ -141,7 +131,7 @@ function getId(prefix) {
 
  * @param {string} tableText, multiline text. rows separated by \n, columns by \t
  */
-export function parseFrazyExportTable(tableText) {
+function parseFrazyExportTable(tableText) {
   const tableTextArray = tableText.split('\n')
   const materialInfo1Array = tableTextArray[1].split('\t')
   const [, materialId, mediaLink, unit, order] = materialInfo1Array
@@ -157,16 +147,12 @@ export function parseFrazyExportTable(tableText) {
   const materialPhrases = {},
     translationPhrases = {}
   phrasesTextArray.forEach(elem => {
-    const randomId = getId('')
+    const randomId = nanoid(11)
     const [importedId, importedStart, importedEnd, text, trText] = elem.split('\t')
     const id = importedId ? importedId : randomId
     // '0:03:53.52' or '233.52'
-    const importedTimeToSecs = importedTime =>
-      importedTime.includes(':')
-        ? timeStringToSeconds(importedTime)
-        : +importedTime.replace(',', '.')
-    const start = importedTimeToSecs(importedStart)
-    const end = importedTimeToSecs(importedEnd)
+    const start = timeStringToSeconds(importedStart)
+    const end = timeStringToSeconds(importedEnd)
     materialPhrases[id] = { start, end, text }
     translationPhrases[id] = { text: trText }
   })
@@ -192,5 +178,54 @@ export function parseFrazyExportTable(tableText) {
     materialId,
     material,
     translation
+  }
+}
+
+function parseWebvtt(subsText) {
+  const subsArray = subsText.split('\n\n')
+  const subsInfoArray = subsArray.shift().split('\n')
+  const title = subsInfoArray.join(' ')
+  const lang = subsInfoArray[2].split(': ')[1]
+
+  const phrasesArray = subsArray.map(elem => {
+    const id = nanoid(11)
+    const [timing, ...textArray] = elem.split('\n')
+    const [startText, , endText] = timing.split(' ')
+    const start = timeStringToSeconds(startText)
+    const end = timeStringToSeconds(endText)
+    const text = textArray.join(' ')
+    return { id, start, end, text }
+  })
+
+  const phrases = phrasesArray.reduce((obj, item) => {
+    const { id } = item
+    delete item.id
+    obj[id] = { ...item }
+    return obj
+  }, {})
+
+  const material = { title, lang, phrases, order: '' }
+
+  return { material }
+}
+
+function checkSubsImportType(importText) {
+  const importTextArray = importText.split('\n')
+  const firstLine = importTextArray[0]
+  if (firstLine === '\tmaterialId\tmediaLink\tunit\torder') {
+    return 'frazyTable'
+  }
+  if (firstLine === 'WEBVTT') {
+    return 'webvtt'
+  }
+}
+
+export function parseImportedSubs(text) {
+  const subsImportType = checkSubsImportType(text)
+  if (subsImportType === 'frazyTable') {
+    return parseFrazyExportTable(text)
+  }
+  if (subsImportType === 'webvtt') {
+    return parseWebvtt(text)
   }
 }

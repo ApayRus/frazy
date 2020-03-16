@@ -23,7 +23,7 @@ import { setPageParameter, fillPageContent } from '../../store/pageContentAction
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
 import MaterialExportTable from './ExportTable'
-import { parseFrazyExportTable } from '../../utils/phrases'
+import { parseImportedSubs } from '../../utils/phrases'
 import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { diff } from 'deep-object-diff'
 import ControlsPanel from './ControlsPanel'
@@ -69,10 +69,9 @@ const MaterialForm = props => {
 
   const readSubtitles = () => {
     const { textareaOriginal, materialId: materialIdCurrent } = props
-    const { materialId: materialIdImported, material, translation } = parseFrazyExportTable(
+    const { materialId = materialIdCurrent, material, translation } = parseImportedSubs(
       textareaOriginal
     )
-    const materialId = materialIdImported ? materialIdImported : materialIdCurrent
     if (!material.mediaLink) material.mediaLink = mediaLink
     dispatch(fillPageContent({ materialId, material, translation }))
   }
@@ -132,6 +131,9 @@ const MaterialForm = props => {
       order,
       phrases: materialPhrases
     }
+    if (!youtubeId) {
+      delete materialContent.youtubeId
+    }
 
     const newTranslations =
       oldTranslations.includes(trLang) || trLang === ''
@@ -160,7 +162,7 @@ const MaterialForm = props => {
         duration,
         translations: newTranslations
       }
-      console.log('materialId', materialId)
+
       const uploadMaterialTask = dbSet(
         'material',
         materialId,

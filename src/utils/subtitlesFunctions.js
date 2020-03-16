@@ -9,8 +9,8 @@
 export function assRowToPhraseObject(assRow) {
   if (assRow) {
     const [, startString, endString, , , , , , , text] = assRow.split(',')
-    const start = +timeStringToSeconds(startString).toFixed(2)
-    const end = +timeStringToSeconds(endString).toFixed(2)
+    const start = timeStringToSeconds(startString).toFixed(2)
+    const end = timeStringToSeconds(endString).toFixed(2)
     return { start, end, text }
   } else {
     //we need empty phrases, for empty rows in multiline timing-text
@@ -23,10 +23,14 @@ export function assRowToPhraseObject(assRow) {
  * @param {String} timeString
  * @returns {Number} seconds
  * @example
- * timeStringToSeconds("0:16:03.74")
- * will return 963.74
+ * timeStringToSeconds("0:16:03.74") // 963.74
+ * timeStringToSeconds("1,28") // 1.28
  */
 export function timeStringToSeconds(timeString) {
-  const [hours, minutes, seconds] = timeString.split(':')
-  return +hours * 3600 + +minutes * 60 + +seconds.replace(',', '.')
+  if (timeString.includes(':')) {
+    const [hours, minutes, seconds] = timeString.split(':')
+    return +(+hours * 3600 + +minutes * 60 + +seconds.replace(',', '.')).toFixed(3)
+  } else {
+    return +timeString.replace(',', '.')
+  }
 }
