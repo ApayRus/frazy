@@ -57,3 +57,14 @@ export function LangFonts(props) {
       return null
   }
 }
+
+/**
+ *
+ * @param {string} lang - language code, 'en', 'ar', 'ru'
+ * @returns {string} - 'rtl' or 'ltr'
+ */
+export function langDirection(lang) {
+  const rtlLanguages = ['ar', 'he']
+  const direction = rtlLanguages.includes(lang) ? 'rtl' : 'ltr'
+  return direction
+}
