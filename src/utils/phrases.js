@@ -2,6 +2,7 @@ import { map, orderBy } from 'lodash'
 import { assRowToPhraseObject } from './subtitlesFunctions.js'
 import { timeStringToSeconds } from './subtitlesFunctions'
 import nanoid from 'nanoid'
+import { phraseTextToObject } from './phrasesXmlParser'
 
 // phrases = { id: { start, end, text } } - how it stored in DB
 // make array [ id, start, end, text ]
@@ -18,10 +19,12 @@ export function makePhrasesArray(phrasesObject) {
   let phrasesArray = []
 
   phrasesArray = map(phrasesObject, (elem, key) => {
+    const phraseObjectFromText = phraseTextToObject(elem.text)
     return {
-      ...elem, //start, end, text - for
+      ...elem, //start, end
+      ...phraseObjectFromText, //text, actor, dict, comment
       id: key,
-      attributes: { label1: elem.text }, //for wavesurfer
+      attributes: { label1: phraseObjectFromText.text }, //for wavesurfer
       color: randomColor(0.5) //for wavesurfer
     }
   })
@@ -42,11 +45,13 @@ export function addTranslation(phrases, translation) {
   return phrases.map(elem => {
     const tr = trPhrases[elem.id]
     const trText = tr ? tr.text : ''
+    const phraseObjectFromText = phraseTextToObject(trText)
+
     const oldTranslations = elem.translations
-    const newTranslation = { [trLang]: trText }
+    const newTranslation = { [trLang]: { ...phraseObjectFromText } }
     return {
       ...elem,
-      attributes: { ...elem.attributes, label2: trText },
+      attributes: { ...elem.attributes, label2: phraseObjectFromText.text },
       translations: { ...oldTranslations, ...newTranslation }
     }
   })

@@ -55,7 +55,7 @@ function PlayerSlideShow(props) {
           ) : null}
           {showTranslation && currentPhrase.translations ? (
             <Typography variant='body2' color='textSecondary'>
-              {currentPhrase.translations[trLang]}
+              {currentPhrase.translations[trLang].text}
             </Typography>
           ) : null}
           <div className={classes.currentPhrase}>{`${currentPhraseNum + 1} / ${phrasesCount}`}</div>

@@ -2,7 +2,6 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useSelector } from 'react-redux'
 import Phrase from './Phrase'
-import { phraseTextToObject } from '../../utils/phrasesXmlParser'
 
 const useStyles = makeStyles(theme => ({
   phrases: {
@@ -23,14 +22,6 @@ function Phrases(props) {
       {phrases.map((phrase, index) => {
         const isCurrentPhrase = currentPhraseId === phrase.id
 
-        const phraseTextObject = phraseTextToObject(phrase.text)
-        const phraseTrTextObject = phraseTextToObject(phrase.translations[trLang])
-        const newPhrase = {
-          ...phrase,
-          ...phraseTextObject,
-          translations: { [trLang]: { ...phraseTrTextObject } }
-        }
-
         const phraseProps = {
           showOriginalText,
           showTranslation,
@@ -38,7 +29,7 @@ function Phrases(props) {
           trLang,
           lang,
           num: index + 1,
-          phrase: newPhrase,
+          phrase,
           playPhrase
         }
 
