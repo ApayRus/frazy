@@ -8,13 +8,13 @@ import { ButtonBase, Collapse } from '@material-ui/core'
 import { langDirection } from '../../theme/functions'
 
 const useStyles = makeStyles(theme => ({
-  phrase: {
-    boxShadow: '0px 1px 5px lightgrey',
+  phrase: props => ({
+    boxShadow: `0px 1px 5px ${props.isCurrentPhrase ? theme.palette.primary.main : 'lightgrey'}`,
     textAlign: 'left',
     padding: '10px 10px 10px 10px',
     position: 'relative',
     margin: 5
-  },
+  }),
   translation: {
     color: 'gray'
   },
@@ -57,9 +57,6 @@ const useStyles = makeStyles(theme => ({
   opened: {
     transform: 'rotate(180deg)'
   },
-  currentId: {
-    color: theme.palette.primary.main
-  },
   detailedInfo: {
     marginTop: 10,
     backgroundColor: theme.palette.grey[100],
@@ -83,7 +80,7 @@ function Phrases(props) {
 
   const direction = langDirection(lang)
 
-  const classes = useStyles({ direction })
+  const classes = useStyles({ direction, isCurrentPhrase })
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded)
@@ -120,17 +117,12 @@ function Phrases(props) {
     <div>
       {phrase.actor && <Actor actor={actor} trActor={trActor} />}
       <div className={classes.phrase}>
-        <ButtonBase
-          onClick={playPhrase(phrase.id)}
-          className={clsx(classes.id, {
-            [classes.currentId]: isCurrentPhrase
-          })}
-        >
+        <ButtonBase onClick={playPhrase(phrase.id)} className={classes.id}>
           {num}
           <PlayArrow fontSize='inherit' />{' '}
         </ButtonBase>
-        <ButtonBase className={clsx(classes.expandButton)} onClick={handleExpand}>
-          {phraseHasHiddenParts && (
+        {phraseHasHiddenParts && (
+          <ButtonBase className={clsx(classes.expandButton)} onClick={handleExpand}>
             <ExpandMore
               className={clsx({
                 [classes.closed]: !isExpanded,
@@ -138,8 +130,8 @@ function Phrases(props) {
               })}
               fontSize='inherit'
             />
-          )}
-        </ButtonBase>
+          </ButtonBase>
+        )}
         {showOriginalText ? (
           <div>
             <Typography variant='body1'>{phrase.text}</Typography>
