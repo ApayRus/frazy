@@ -93,7 +93,6 @@ function Phrases(props) {
   const { dict: trDict, actor: trActor, comment: trComment } = phrase.translations[trLang]
 
   const phraseHasHiddenParts = Boolean(dict || trDict || comment || trComment)
-  console.log('phraseHasHiddenParts', phraseHasHiddenParts)
 
   const dictBlock = dictArray => (
     <div>
