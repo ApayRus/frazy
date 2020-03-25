@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { useSelector } from 'react-redux'
 import Phrase from './Phrase'
+import { phraseTextToObject } from '../../utils/phrasesXmlParser'
 
 const useStyles = makeStyles(theme => ({
   phrases: {
@@ -15,19 +16,19 @@ function Phrases(props) {
   const { playPhrase } = props
   const { showOriginalText, showTranslation } = useSelector(state => state.playerSettings)
   const { currentPhraseId } = useSelector(state => state.playerState)
-  const { phrases, trLang } = useSelector(state => state.pageContent)
+  const { phrases, trLang, lang } = useSelector(state => state.pageContent)
   const classes = useStyles()
   return (
     <div className={classes.phrases}>
       {phrases.map((phrase, index) => {
         const isCurrentPhrase = currentPhraseId === phrase.id
-        const actorMatch = phrase.text.match(/^\s*[<#](.+)[#>]/)
-        let actor = null
-        let newText = phrase.text
 
-        if (actorMatch) {
-          newText = newText.replace(actorMatch[0], '')
-          actor = { name: actorMatch[1] }
+        const phraseTextObject = phraseTextToObject(phrase.text)
+        const phraseTrTextObject = phraseTextToObject(phrase.translations[trLang])
+        const newPhrase = {
+          ...phrase,
+          ...phraseTextObject,
+          translations: { [trLang]: { ...phraseTrTextObject } }
         }
 
         const phraseProps = {
@@ -35,8 +36,9 @@ function Phrases(props) {
           showTranslation,
           isCurrentPhrase,
           trLang,
+          lang,
           num: index + 1,
-          phrase: { ...phrase, text: newText, actor },
+          phrase: newPhrase,
           playPhrase
         }
 
