@@ -34,7 +34,7 @@ const pageContentReducer = (state = initState, action) => {
     }
     case 'FILL_PAGE_CONTENT': {
       //material
-      const { materialId, material, translation } = action.payload
+      const { materialId, material, translation, mode = 'forView' } = action.payload
       const {
         lang,
         title,
@@ -51,7 +51,7 @@ const pageContentReducer = (state = initState, action) => {
         } = {}
       } = material
 
-      let phrases = makePhrasesArray(materialPhrases)
+      let phrases = makePhrasesArray(materialPhrases, mode)
 
       //translations
       const {
@@ -64,7 +64,7 @@ const pageContentReducer = (state = initState, action) => {
 
       if (translation) {
         if (translation.phrases) {
-          phrases = addTranslation(phrases, translation)
+          phrases = addTranslation(phrases, translation, mode)
         }
       }
 

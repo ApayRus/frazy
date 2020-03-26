@@ -18,9 +18,9 @@ export const setPageParameter = payload => {
 /**
  * @param {object} payload
  * @param {string} payload.materialId
- * @param {string} payload.mediaLinkDownloadUrl
  * @param {Object} payload.material - doc
  * @param {Object} payload.translation - doc
+ * @param {string} payload.mode - 'forEdit' || 'forView'
  */
 export const fillPageContent = payload => {
   return {

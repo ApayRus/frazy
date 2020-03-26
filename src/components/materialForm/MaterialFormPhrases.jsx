@@ -47,7 +47,7 @@ function Phrases(props) {
     : //if phrases exists, we use textarea for display their text
       textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
 
-  const trText = map(phrases, `translations.${trLang}`)
+  const trText = map(phrases, `translations.${trLang}.text`)
     .join('\n')
     .trim() //textarea content translation text
 
@@ -72,7 +72,7 @@ function Phrases(props) {
     const newText = event.target.value.split('\n')
     let newPhrases = [...phrases]
     newPhrases = phrases.map((elem, index) => {
-      return { ...elem, translations: { ...elem.translations, [trLang]: newText[index] } }
+      return { ...elem, translations: { ...elem.translations, [trLang]: { text: newText[index] } } }
     })
     dispatch(setPageParameter(['phrases', newPhrases]))
   }

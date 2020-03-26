@@ -15,11 +15,12 @@ import { phraseTextToObject } from './phrasesXmlParser'
  * Converts phrasesObject from DB to array of objects,  with additional id, color and label
  * @param {*} phrasesObject
  */
-export function makePhrasesArray(phrasesObject) {
+export function makePhrasesArray(phrasesObject, mode = 'forView') {
   let phrasesArray = []
 
   phrasesArray = map(phrasesObject, (elem, key) => {
-    const phraseObjectFromText = phraseTextToObject(elem.text)
+    const phraseObjectFromText =
+      mode === 'forView' ? phraseTextToObject(elem.text) : { text: elem.text }
     return {
       ...elem, //start, end
       ...phraseObjectFromText, //text, actor, dict, comment
@@ -40,12 +41,12 @@ export function makePhrasesArray(phrasesObject) {
  * @param {object} trPhrases - object
  * @param {string} trLang - ru, en, ch, es
  */
-export function addTranslation(phrases, translation) {
+export function addTranslation(phrases, translation, mode = 'forView') {
   const { phrases: trPhrases, lang: trLang } = translation
   return phrases.map(elem => {
     const tr = trPhrases[elem.id]
-    const trText = tr ? tr.text : ''
-    const phraseObjectFromText = phraseTextToObject(trText)
+    const trText = tr.text || ''
+    const phraseObjectFromText = mode === 'forView' ? phraseTextToObject(trText) : { text: trText }
 
     const oldTranslations = elem.translations
     const newTranslation = { [trLang]: { ...phraseObjectFromText } }
@@ -96,7 +97,7 @@ export function localPhrasesToDBphrases(phrases) {
 export function localPhrasesToDBtranslations(phrases, trLang) {
   return phrases.reduce((obj, item) => {
     let { id, translations } = item
-    const text = translations[trLang] || ''
+    const text = translations[trLang].text || ''
     id = id.replace('wavesurfer_', '')
     obj[id] = { text }
     return obj

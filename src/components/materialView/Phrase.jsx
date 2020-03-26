@@ -86,8 +86,9 @@ function Phrases(props) {
     setIsExpanded(!isExpanded)
   }
 
-  const { dict, actor, comment } = phrase
-  const { dict: trDict, actor: trActor, comment: trComment } = phrase.translations[trLang]
+  const { dict, actor, comment, translations = {} } = phrase
+
+  const { dict: trDict, actor: trActor, comment: trComment } = translations[trLang] || {}
 
   const phraseHasHiddenParts = Boolean(dict || trDict || comment || trComment)
 

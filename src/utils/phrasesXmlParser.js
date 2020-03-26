@@ -18,6 +18,17 @@
  * Register of tag always will be changed to lower case. You can youse <ACTOR> and <actor>, both will be the same
  *
  * @param {string} phraseLine - string with xml-like parts : <actor /> <dict /> <comment /> or just plain text
+ * @example
+ * const phraseLine = '<Neil> Hello! This is 6 minute English. <#1 hello - greeting; #2 English - language of Britain >'
+ * phraseTextToObject(phraseLine) // will return :
+ * {
+ * actor: {name: 'Neil'},
+ * text: 'Hello! This is 6 minute English.',
+ * dict: [
+ *   { wordOrder: 1, wordForms: "hello", wordTranslations: 'greeting; ' },
+ *   { wordOrder: 2, wordForms: "English", wordTranslations: 'language of Britain' },
+ *  ]
+ * }
  */
 export function phraseTextToObject(phraseLine) {
   const xmlPattern = /<.+?\/*>/g

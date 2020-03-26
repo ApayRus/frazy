@@ -19,7 +19,7 @@ function MaterialFormHOC(props) {
 
   useEffect(() => {
     if (isLoaded(material, translation)) {
-      dispatch(fillPageContent({ materialId, material, translation }))
+      dispatch(fillPageContent({ materialId, material, translation, mode: 'forEdit' }))
       setAllDataIsLoaded(true)
     }
     return () => {

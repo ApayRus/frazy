@@ -59,8 +59,8 @@ function Waveform(props) {
     const wavesurfer = wavesurferModule.wavesurfer
     const updateRegionsInWaveform = () => {
       phrases.forEach(elem => {
-        const { id, text, start, end, translations: { [trLang]: { text: trText = '' } } = {} } =
-          elem || {}
+        const { id, text, start, end, translations = {} } = elem || {}
+        const { text: trText = '' } = translations[trLang] || {}
         const label1 = text || ''
         const label2 = trText
         const region = wavesurferModule.wavesurfer.regions.list[id]
