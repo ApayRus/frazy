@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { PlayArrow, ExpandMore } from '@material-ui/icons'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import Actor from './Actor'
 import { ButtonBase, Collapse } from '@material-ui/core'
 import { langDirection } from '../../theme/functions'
+import { map } from 'lodash'
 
 const useStyles = makeStyles(theme => ({
   phrase: props => ({
@@ -15,6 +16,10 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     margin: 5
   }),
+  wordFromDict: {
+    borderBottom: '1px dashed skyblue',
+    cursor: 'pointer'
+  },
   translation: {
     color: 'gray'
   },
@@ -92,6 +97,29 @@ function Phrases(props) {
 
   const phraseHasHiddenParts = Boolean(dict || trDict || comment || trComment)
 
+  const phraseWordByWord = () => {
+    const { text } = phrase
+    const wordIdsInDict = map(trDict, 'wordOrder')
+    const phraseTextArray = text.split(' ')
+    return (
+      <Fragment>
+        {phraseTextArray.map((word, index) => {
+          return (
+            <Fragment key={`word-${index}`}>
+              <span
+                className={clsx({
+                  [classes.wordFromDict]: wordIdsInDict.includes(index + 1)
+                })}
+              >
+                {word}
+              </span>{' '}
+            </Fragment>
+          )
+        })}
+      </Fragment>
+    )
+  }
+
   const dictBlock = dictArray => (
     <div>
       {dictArray.map((elem, index) => {
@@ -135,7 +163,7 @@ function Phrases(props) {
         )}
         {showOriginalText ? (
           <div>
-            <Typography variant='body1'>{phrase.text}</Typography>
+            <Typography variant='body1'>{phraseWordByWord()}</Typography>
           </div>
         ) : null}
         {showTranslation && phrase.translations ? (
