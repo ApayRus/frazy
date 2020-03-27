@@ -4,9 +4,8 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Actor from './Actor'
-import { ButtonBase, Collapse } from '@material-ui/core'
+import { ButtonBase, Collapse, Tooltip } from '@material-ui/core'
 import { langDirection } from '../../theme/functions'
-import { map } from 'lodash'
 
 const useStyles = makeStyles(theme => ({
   phrase: props => ({
@@ -91,30 +90,43 @@ function Phrases(props) {
     setIsExpanded(!isExpanded)
   }
 
-  const { dict, actor, comment, translations = {} } = phrase
+  const { dict = [], actor, comment, translations = {} } = phrase
 
-  const { dict: trDict, actor: trActor, comment: trComment } = translations[trLang] || {}
+  const { dict: trDict = [], actor: trActor, comment: trComment } = translations[trLang] || {}
 
-  const phraseHasHiddenParts = Boolean(dict || trDict || comment || trComment)
+  const phraseHasHiddenParts = Boolean(dict.length || trDict.length || comment || trComment)
 
   const phraseWordByWord = () => {
     const { text } = phrase
-    const wordIdsInDict = map(trDict, 'wordOrder')
     const phraseTextArray = text.split(' ')
+
     return (
       <Fragment>
         {phraseTextArray.map((word, index) => {
-          return (
-            <Fragment key={`word-${index}`}>
-              <span
-                className={clsx({
-                  [classes.wordFromDict]: wordIdsInDict.includes(index + 1)
-                })}
-              >
-                {word}
-              </span>{' '}
-            </Fragment>
+          const wordSpan = <span>{word}</span>
+
+          const wordInDict = trDict.find(elem => elem.wordOrder === index + 1)
+          const { wordForms, wordTranslations } = wordInDict || {}
+
+          const wordSpanTooltip = (
+            <Tooltip
+              arrow
+              placement='top'
+              title={
+                <Fragment>
+                  <Typography variant='body1'>{wordForms}</Typography>
+                  <hr />
+                  <Typography variant='body2'>{wordTranslations}</Typography>
+                </Fragment>
+              }
+            >
+              <span className={classes.wordFromDict}>{word}</span>
+            </Tooltip>
           )
+
+          const wordDisplay = wordInDict ? wordSpanTooltip : wordSpan
+
+          return <Fragment key={`word-${index}`}>{wordDisplay} </Fragment>
         })}
       </Fragment>
     )
@@ -123,9 +135,9 @@ function Phrases(props) {
   const dictBlock = dictArray => (
     <div>
       {dictArray.map((elem, index) => {
-        const { /* wordOrder, */ wordForms, wordTranslations } = elem
+        const { wordOrder, wordForms, wordTranslations } = elem
         return (
-          <div key={index}>
+          <div key={`word-${wordOrder}`}>
             <Typography display='inline' variant='body1'>
               {wordForms}
             </Typography>
