@@ -118,7 +118,7 @@ const pageContentReducer = (state = initState, action) => {
       phrases = phrases.map(elem => {
         const { translations: oldTranslations } = elem
         const { text: newText = '' } = phrasesRevision[elem.id] || {}
-        const newTranslation = { [trLang]: newText }
+        const newTranslation = { [trLang]: { text: newText } }
         return {
           ...elem,
           translations: { ...oldTranslations, ...newTranslation }
