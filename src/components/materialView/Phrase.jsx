@@ -140,7 +140,9 @@ function Phrases(props) {
         ) : null}
         {showTranslation && phrase.translations ? (
           <div className={classes.translation}>
-            <Typography variant='body2'>{phrase.translations[trLang].text}</Typography>
+            <Typography variant='body2' align={direction === 'rtl' ? 'right' : 'left'}>
+              {phrase.translations[trLang].text}
+            </Typography>
           </div>
         ) : null}
         {phraseHasHiddenParts && (

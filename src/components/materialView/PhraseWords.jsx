@@ -27,7 +27,7 @@ function PhraseWords(props) {
   }
 
   return (
-    <Fragment>
+    <Typography variant='body1'>
       {phraseTextArray.map((word, index) => {
         const wordSpan = <span>{word}</span>
 
@@ -45,11 +45,11 @@ function PhraseWords(props) {
             disableHoverListener
             disableTouchListener
             title={
-              <div>
+              <Fragment>
                 <Typography variant='body1'>{wordForms}</Typography>
                 <hr />
                 <Typography variant='body2'>{wordTranslations}</Typography>
-              </div>
+              </Fragment>
             }
           >
             <span onClick={toggleTooltip(wordOrder)} className={classes.wordFromDict}>
@@ -62,7 +62,7 @@ function PhraseWords(props) {
 
         return <Fragment key={`word-${index}`}>{wordDisplay} </Fragment>
       })}
-    </Fragment>
+    </Typography>
   )
 }
 
