@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import HeadingDrawerHOC from './HeadingDrawerContainer'
+import HeadingDrawerContainer from './HeadingDrawerContainer'
 import { afterFirebaseFileDownloadUrlReady } from '../../utils/firebase'
 
 /**
@@ -43,7 +43,7 @@ function HeadingFirebaseHOC(props) {
       setParamAsync('background', defaultUnitInfo.background)
     }
 
-    return <HeadingDrawerHOC />
+    return <HeadingDrawerContainer />
   } else {
     return <CircularProgress />
   }
