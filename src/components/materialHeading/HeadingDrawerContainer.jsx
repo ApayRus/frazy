@@ -1,19 +1,20 @@
 import React from 'react'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Heading from './Heading'
-import { connect } from 'react-redux'
 import { toggleHeadingDrawer } from '../../store/appStateActions'
+import { useDispatch, useSelector } from 'react-redux'
 
-function HeadingDrawerHOC(props) {
-  const { showHeadingDrawer, toggleHeadingDrawer } = props
+function HeadingDrawerContainer() {
+  const dispatch = useDispatch()
+  const { showHeadingDrawer } = useSelector(state => state.appState)
 
   return (
     <div>
       <SwipeableDrawer
         anchor='left'
         open={showHeadingDrawer}
-        onOpen={() => toggleHeadingDrawer({ showHeadingDrawer: true })}
-        onClose={() => toggleHeadingDrawer({ showHeadingDrawer: false })}
+        onOpen={() => dispatch(toggleHeadingDrawer({ showHeadingDrawer: true }))}
+        onClose={() => dispatch(toggleHeadingDrawer({ showHeadingDrawer: false }))}
       >
         <Heading />
       </SwipeableDrawer>
@@ -21,17 +22,4 @@ function HeadingDrawerHOC(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return { showHeadingDrawer: state.appState.showHeadingDrawer }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleHeadingDrawer: payload => dispatch(toggleHeadingDrawer(payload))
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HeadingDrawerHOC)
+export default HeadingDrawerContainer
