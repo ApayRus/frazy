@@ -44,7 +44,7 @@ export function makePhrasesArray(phrasesObject, mode = 'forView') {
 export function addTranslation(phrases, translation, mode = 'forView') {
   const { phrases: trPhrases, lang: trLang } = translation
   return phrases.map(elem => {
-    const tr = trPhrases[elem.id]
+    const tr = trPhrases[elem.id] || {}
     const trText = tr.text || ''
     const phraseObjectFromText = mode === 'forView' ? phraseTextToObject(trText) : { text: trText }
 
