@@ -18,6 +18,10 @@ region.wavesurfer-region:after {
   color: rgb(71, 71, 71);
 }
 
+handle.wavesurfer-handle {
+  background: none !important;
+}
+
 .waveform {
   margin-bottom: 10px;
 }
