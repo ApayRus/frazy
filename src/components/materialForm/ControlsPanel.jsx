@@ -12,7 +12,7 @@ import InputsViewSwitcher from './InputsViewSwitcher'
 import WaveformZoom from '../WaveformZoom'
 
 function ControlsPanel(props) {
-  const { selectedPhrases } = useSelector(state => state.pageContent)
+  const { selectedPhrases, waveformRenderProgress } = useSelector(state => state.pageContent)
   const { editMode } = props
   const dispatch = useDispatch()
   const deltaInput = useRef()
@@ -69,7 +69,7 @@ function ControlsPanel(props) {
 
   const Zoom = (
     <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-      <WaveformZoom />
+      {waveformRenderProgress === 100 && <WaveformZoom />}
     </div>
   )
 
