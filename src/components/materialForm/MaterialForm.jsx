@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography'
 import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
 import Waveform from '../Waveform'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { setPageParameter, fillPageContent } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
@@ -38,6 +38,7 @@ const MaterialForm = props => {
   const [prevTranslation, setPrevTranslation] = useState({})
   const [materialAction, setMaterialAction] = useState('')
   const dispatch = useDispatch()
+  const { sticked: playerSticked } = useSelector(state => state.playerSettings)
 
   // we get initial data snapshots for compare them with user input
   // and detect what has changed
@@ -243,7 +244,14 @@ const MaterialForm = props => {
           <CircularProgress value={uploadProgress} variant='static' />
         </div>
       ) : null}
-      <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 2 }}>
+      <div
+        style={{
+          position: playerSticked ? 'sticky' : 'unset',
+          top: 0,
+          backgroundColor: 'white',
+          zIndex: 2
+        }}
+      >
         {youtubeId && (
           <div>
             <YoutubePlayer videoId={youtubeId} />

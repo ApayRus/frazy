@@ -10,7 +10,8 @@ const initState = {
   /*dictation*/
   dictationRepeats: 2,
   dictationDelay: 2,
-  waveformZoom: 20
+  waveformZoom: 20,
+  sticked: false
 }
 
 const playerSettingsReducer = (state = initState, action) => {

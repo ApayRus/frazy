@@ -2,20 +2,43 @@ import React, { useRef } from 'react'
 import PlayPauseButton from '../PlayPauseButton'
 import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/styles'
 import CopyIcon from '@material-ui/icons/FileCopy'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import Icon from '@material-ui/core/Icon'
 import { useSelector, useDispatch } from 'react-redux'
 import { clonePhrases, movePhrases, deletePhrases } from '../../store/pageContentActions'
 import InputsViewSwitcher from './InputsViewSwitcher'
 import WaveformZoom from '../WaveformZoom'
+import PushPinIcon from './pushPin.svg'
+import { setPlayerSettings } from '../../store/playerSettingsActions'
+import clsx from 'clsx'
+
+const useStyles = makeStyles(theme => ({
+  pinSticked: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  pinUnSticked: {
+    transform: 'rotate(45deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest
+    })
+  }
+}))
 
 function ControlsPanel(props) {
   const { selectedPhrases, waveformRenderProgress } = useSelector(state => state.pageContent)
+  const { sticked: playerSticked } = useSelector(state => state.playerSettings)
   const { editMode } = props
   const dispatch = useDispatch()
   const deltaInput = useRef()
+
+  const classes = useStyles()
 
   const handleMovePhrases = direction => event => {
     const deltaValue = deltaInput.current.value
@@ -23,16 +46,39 @@ function ControlsPanel(props) {
     dispatch(movePhrases({ delta, selectedPhrases }))
   }
 
+  const togglePlayerSticked = () => {
+    dispatch(setPlayerSettings(['sticked', !playerSticked]))
+  }
+
   const PlayPause = (
     <div style={{ display: 'inline-block' }}>
       <PlayPauseButton />
     </div>
   )
+
+  const StickUnstickPlayer = (
+    <IconButton title='Stick/unstick player' onClick={togglePlayerSticked}>
+      <Icon>
+        <img
+          className={clsx(
+            { [classes.pinSticked]: playerSticked },
+            { [classes.pinUnSticked]: !playerSticked }
+          )}
+          src={PushPinIcon}
+          alt='push-pin'
+          width={24}
+          height={24}
+        />
+      </Icon>
+    </IconButton>
+  )
+
   const ViewSwitcher = (
     <div style={{ display: 'inline-block', marginLeft: 10, marginRight: 10 }}>
       <InputsViewSwitcher />
     </div>
   )
+
   const PhrasesCloneMoveDelete =
     selectedPhrases.length > 0 ? (
       <div style={{ display: 'inline-block' }}>
@@ -85,6 +131,7 @@ function ControlsPanel(props) {
           {editMode && (
             <div>
               {PlayPause}
+              {StickUnstickPlayer}
               {ViewSwitcher}
               {PhrasesCloneMoveDelete}
             </div>
