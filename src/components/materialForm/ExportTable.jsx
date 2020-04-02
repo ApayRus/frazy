@@ -94,7 +94,7 @@ function MaterialExportTable(props) {
   )
 
   const tableBody = phrases.map(elem => {
-    const { id, start, end, text: orText, translations: { [trLang]: trText = '' } = {} } =
+    const { id, start, end, text: orText, translations: { [trLang]: { text: trText = '' } } = {} } =
       elem || {}
     return (
       <tr style={{ backgroundColor: elem.color }} key={id}>
