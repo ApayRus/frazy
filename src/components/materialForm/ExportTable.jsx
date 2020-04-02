@@ -94,8 +94,8 @@ function MaterialExportTable(props) {
   )
 
   const tableBody = phrases.map(elem => {
-    const { id, start, end, text: orText, translations: { [trLang]: { text: trText = '' } } = {} } =
-      elem || {}
+    const { id, start, end, text: orText, translations = {} } = elem || {}
+    const { text: trText } = translations[trLang] || {}
     return (
       <tr style={{ backgroundColor: elem.color }} key={id}>
         <td>{id.replace('wavesurfer_', '')}</td>
