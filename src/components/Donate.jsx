@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography'
 
 function Donate() {
   return (
-    <div style={{ marginLeft: 20 }}>
-      <Typography variant='body2'>
+    <div style={{ marginLeft: 20, marginTop: 10 }}>
+      <Typography variant='body1'>
         Please donate to us via{' '}
         <a target='_blank' rel='noopener noreferrer' href='https://www.paypal.me/aparus'>
           PayPal
@@ -19,7 +19,7 @@ function Donate() {
         </a>
         .
       </Typography>
-      <Typography variant='body2'>We are good people and deserve food for our work.</Typography>
+      <Typography variant='subtitle1'>For what we need money? </Typography>
     </div>
   )
 }

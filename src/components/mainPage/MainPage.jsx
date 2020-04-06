@@ -11,6 +11,9 @@ import LastEvents from './LastEvents'
 import local from '../../localization/en'
 import SocialMedia from '../SocialMedia'
 import Donate from '../Donate'
+import TopButtons from './TopButtons'
+import FullscreenDialog from '../FullscreenDialog'
+import Hidden from '@material-ui/core/Hidden'
 
 function MainPage(props) {
   const { lastEventsDoc } = props
@@ -49,11 +52,12 @@ function MainPage(props) {
               backgroundRepeat: 'no-repeat',
               width: 150,
               height: 94,
-              display: 'inline-block'
+              display: 'inline-block',
             }}
           />
         </a>
         <SocialMedia />
+        <TopButtons />
       </div>
       <Grid item xs={12} sm={12} md={6}>
         {isDataLoaded ? (
@@ -65,9 +69,9 @@ function MainPage(props) {
         )}
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
-        <div style={{ marginTop: 54 }}>
-          <Donate />
-        </div>
+        <Hidden smDown>
+          <div style={{ marginTop: 54 }}>{/* <Donate /> */}</div>
+        </Hidden>
       </Grid>
     </Grid>
   )
@@ -76,23 +80,24 @@ function MainPage(props) {
     <div>
       {eventList}
       {addButton}
+      <FullscreenDialog title='Donate' contentComponent={<Donate />} />
     </div>
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { lastEventsDoc: state.firestore.data.lastEventsDoc }
 }
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect(props => {
+  firestoreConnect((props) => {
     return [
       {
         collection: 'lastEvents',
         doc: 'main',
-        storeAs: 'lastEventsDoc'
-      }
+        storeAs: 'lastEventsDoc',
+      },
     ]
   })
 )(MainPage)

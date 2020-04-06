@@ -9,7 +9,7 @@ function LastEvents(props) {
   let lastEvents = map(lastEventsDoc, (elem, key) => {
     return {
       unit: key,
-      ...elem
+      ...elem,
     }
   })
 
@@ -17,10 +17,12 @@ function LastEvents(props) {
 
   return (
     <div style={{ marginTop: 20 }}>
-      <Typography align='center' color='primary' variant='h5'>
-        Latest Updates
-      </Typography>
-      {lastEvents.map(event => (
+      <div style={{ textAlign: 'center' }}>
+        <Typography align='center' style={{ marginLeft: 10 }} variant='subtitle'>
+          Latest updates
+        </Typography>
+      </div>
+      {lastEvents.map((event) => (
         <Event key={event.unit} {...event} />
       ))}
     </div>
