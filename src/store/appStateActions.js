@@ -4,27 +4,20 @@ export const clearCachedDocs = () => {
   return { type: actionTypes.CLEAR_DATA, preserve: { ordered: true } }
 }
 
-export const toggleHeadingDrawer = payload => {
+export const setAppStateParam = (payload) => {
   return {
-    type: 'TOGGLE_HEADING_DRAWER',
-    payload
-  }
-}
-
-export const toggleSettingsDrawer = payload => {
-  return {
-    type: 'TOGGLE_SETTINGS_DRAWER',
-    payload
+    type: 'SET_APP_STATE_PARAM',
+    payload,
   }
 }
 
 /* 
-const exampleToggleHeadingDrawerToTrue = {
+const examplesetAppStateParamToTrue = {
   type: 'TOGGLE_HEADING_DRAWER',
   payload: { showHeadingDrawer: true }
 }
 
-const exampleToggleHeadingDrawerToFalse = {
+const examplesetAppStateParamToFalse = {
   type: 'TOGGLE_HEADING_DRAWER',
   payload: { showHeadingDrawer: false }
 }

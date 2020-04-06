@@ -8,40 +8,36 @@ import HomeIcon from '@material-ui/icons/Home'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
-import {
-  toggleHeadingDrawer,
-  toggleSettingsDrawer,
-  clearCachedDocs
-} from '../../store/appStateActions'
+import { setAppStateParam, clearCachedDocs } from '../../store/appStateActions'
 import local from '../../localization/en'
 import { useSelector, useDispatch } from 'react-redux'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   bottom: {
     position: 'fixed',
     bottom: 2,
-    zIndex: 5
+    zIndex: 5,
   },
   menu: {
-    left: 3
+    left: 3,
   },
   home: {
-    left: 58
+    left: 58,
   },
   settings: {
-    right: 3
+    right: 3,
   },
   help: {
-    right: 55
+    right: 55,
   },
   edit: {
-    right: 110
-  }
+    right: 110,
+  },
 }))
 
 function Appbar(props) {
   const dispatch = useDispatch()
-  const { materialId, trLang } = useSelector(state => state.pageContent)
+  const { materialId, trLang } = useSelector((state) => state.pageContent)
   const classes = useStyles()
 
   const materialEditLink = materialId ? `/material/edit/${materialId}/${trLang}` : `/material/edit/`
@@ -51,7 +47,7 @@ function Appbar(props) {
       <Fab
         className={`${classes.bottom} ${classes.menu}`}
         onClick={() => {
-          dispatch(toggleHeadingDrawer({ showHeadingDrawer: true }))
+          dispatch(setAppStateParam({ showHeadingDrawer: true }))
         }}
         color='primary'
         size='medium'
@@ -86,7 +82,7 @@ function Appbar(props) {
       <Fab
         className={`${classes.bottom} ${classes.settings}`}
         onClick={() => {
-          dispatch(toggleSettingsDrawer({ showSettingsDrawer: true }))
+          dispatch(setAppStateParam({ showSettingsDrawer: true }))
         }}
         color='primary'
         size='medium'

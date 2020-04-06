@@ -2,10 +2,10 @@ import React from 'react'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import PlayerSettings from './PlayerSettings'
 import { connect } from 'react-redux'
-import { toggleSettingsDrawer } from '../store/appStateActions'
+import { setAppStateParam } from '../store/appStateActions'
 
 function DrawerHeading(props) {
-  const { showSettingsDrawer, toggleSettingsDrawer } = props
+  const { showSettingsDrawer, setAppStateParam } = props
 
   return (
     <div>
@@ -13,10 +13,10 @@ function DrawerHeading(props) {
         anchor='bottom'
         open={showSettingsDrawer}
         onOpen={() => {
-          toggleSettingsDrawer({ showSettingsDrawer: true })
+          setAppStateParam({ showSettingsDrawer: true })
         }}
         onClose={() => {
-          toggleSettingsDrawer({ showSettingsDrawer: false })
+          setAppStateParam({ showSettingsDrawer: false })
         }}
       >
         <PlayerSettings />
@@ -25,13 +25,13 @@ function DrawerHeading(props) {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { showSettingsDrawer: state.appState.showSettingsDrawer }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    toggleSettingsDrawer: payload => dispatch(toggleSettingsDrawer(payload))
+    setAppStateParam: (payload) => dispatch(setAppStateParam(payload)),
   }
 }
 

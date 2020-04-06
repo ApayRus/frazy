@@ -4,40 +4,40 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { toggleHeadingDrawer, clearCachedDocs } from '../../store/appStateActions'
+import { setAppStateParam, clearCachedDocs } from '../../store/appStateActions'
 import { Link } from 'react-router-dom'
 import orderBy from 'lodash/orderBy'
 import map from 'lodash/map'
 import { useDispatch, useSelector } from 'react-redux'
 
 function Heading(props) {
-  const { title, author, heading, logo, background } = useSelector(state => state.menu)
-  const { trLang } = useSelector(state => state.pageContent)
+  const { title, author, heading, logo, background } = useSelector((state) => state.menu)
+  const { trLang } = useSelector((state) => state.pageContent)
   const dispatch = useDispatch()
   let headingOrdered = map(heading, (elem, key) => ({ id: key, ...elem }))
   headingOrdered = orderBy(headingOrdered, ['order'], ['asc'])
 
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     header: {
       textAlign: 'center',
       padding: 20,
       backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7)), url(${background})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'round',
-      backgroundPosition: 'center center'
+      backgroundPosition: 'center center',
     },
     listItem: {
       paddingTop: 0,
       paddingBottom: 0,
       fontSize: '12px',
-      lineHeight: 1
-    }
+      lineHeight: 1,
+    },
   }))
 
   const classes = useStyles()
 
   const handleClick = () => {
-    dispatch(toggleHeadingDrawer({ showHeadingDrawer: false }))
+    dispatch(setAppStateParam({ showHeadingDrawer: false }))
     dispatch(clearCachedDocs())
   }
 
@@ -49,7 +49,7 @@ function Heading(props) {
         <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logo} />
       </div>
       <List>
-        {headingOrdered.map(elem => {
+        {headingOrdered.map((elem) => {
           return (
             <ListItem
               component={Link}
