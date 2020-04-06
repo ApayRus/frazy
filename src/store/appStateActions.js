@@ -4,21 +4,27 @@ export const clearCachedDocs = () => {
   return { type: actionTypes.CLEAR_DATA, preserve: { ordered: true } }
 }
 
+/**
+ * 
+ *@example
+ const examplesetAppStateParamToTrue = {
+  type: 'SET_APP_STATE_PARAM',
+  payload: { showHeadingDrawer: true }
+}
+
+const examplesetAppStateParamToFalse = {
+  type: 'SET_APP_STATE_PARAM',
+  payload: { showHeadingDrawer: false }
+}
+
+const examplesetAppStateParamToFalse = {
+  type: 'SET_APP_STATE_PARAM',
+  payload: { showFullscreenDialog: true }
+} 
+ */
 export const setAppStateParam = (payload) => {
   return {
     type: 'SET_APP_STATE_PARAM',
     payload,
   }
 }
-
-/* 
-const examplesetAppStateParamToTrue = {
-  type: 'TOGGLE_HEADING_DRAWER',
-  payload: { showHeadingDrawer: true }
-}
-
-const examplesetAppStateParamToFalse = {
-  type: 'TOGGLE_HEADING_DRAWER',
-  payload: { showHeadingDrawer: false }
-}
- */
