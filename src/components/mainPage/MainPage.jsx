@@ -13,7 +13,6 @@ import SocialMedia from '../layout/SocialMedia'
 import Donate from '../donate/Donate'
 import TopButtons from './TopButtons'
 import FullscreenDialog from '../layout/FullscreenDialog'
-import Hidden from '@material-ui/core/Hidden'
 
 function MainPage(props) {
   const { lastEventsDoc } = props
@@ -59,7 +58,8 @@ function MainPage(props) {
         <SocialMedia />
         <TopButtons />
       </div>
-      <Grid item xs={12} sm={12} md={6}>
+      <Grid item sm={2} md={3}></Grid>
+      <Grid item xs={12} sm={8} md={6}>
         {isDataLoaded ? (
           <LastEvents lastEventsDoc={lastEventsDoc} />
         ) : (
@@ -68,11 +68,7 @@ function MainPage(props) {
           </div>
         )}
       </Grid>
-      <Grid item xs={12} sm={12} md={6}>
-        <Hidden smDown>
-          <div style={{ marginTop: 54 }}>{/* <Donate /> */}</div>
-        </Hidden>
-      </Grid>
+      <Grid item sm={2} md={3}></Grid>
     </Grid>
   )
 
