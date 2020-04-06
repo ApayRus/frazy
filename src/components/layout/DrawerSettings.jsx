@@ -2,7 +2,7 @@ import React from 'react'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import PlayerSettings from './PlayerSettings'
 import { connect } from 'react-redux'
-import { setAppStateParam } from '../store/appStateActions'
+import { setAppStateParam } from '../../store/appStateActions'
 
 function DrawerHeading(props) {
   const { showSettingsDrawer, setAppStateParam } = props

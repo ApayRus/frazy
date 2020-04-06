@@ -10,7 +10,7 @@ import { setMenuParameter } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
-import DrawerSettings from '../DrawerSettings'
+import DrawerSettings from '../layout/DrawerSettings'
 import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
 
 /**
@@ -57,18 +57,18 @@ function MaterialPageHOC(props) {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const fs = state.firestore.data
   return { material: fs.material, translation: fs.translation }
 }
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect(props => {
+  firestoreConnect((props) => {
     const { materialId, trLang } = props.match.params
     return [
       { collection: 'material', doc: materialId, storeAs: 'material' },
-      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' }
+      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' },
     ]
   })
 )(MaterialPageHOC)

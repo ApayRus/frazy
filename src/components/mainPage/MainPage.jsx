@@ -9,10 +9,10 @@ import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import Grid from '@material-ui/core/Grid'
 import LastEvents from './LastEvents'
 import local from '../../localization/en'
-import SocialMedia from '../SocialMedia'
-import Donate from '../Donate'
+import SocialMedia from '../layout/SocialMedia'
+import Donate from '../donate/Donate'
 import TopButtons from './TopButtons'
-import FullscreenDialog from '../FullscreenDialog'
+import FullscreenDialog from '../layout/FullscreenDialog'
 import Hidden from '@material-ui/core/Hidden'
 
 function MainPage(props) {

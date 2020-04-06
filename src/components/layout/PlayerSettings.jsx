@@ -6,10 +6,10 @@ import Slider from '@material-ui/core/Slider'
 import { makeStyles } from '@material-ui/core/styles'
 /* REDUX */
 import { connect } from 'react-redux'
-import { setPlayerSettings } from '../store/playerSettingsActions'
-import wavesurferModule from '../wavesurfer/wavesurfer'
+import { setPlayerSettings } from '../../store/playerSettingsActions'
+import wavesurferModule from '../../wavesurfer/wavesurfer'
 
-import local from '../localization/en'
+import local from '../../localization/en'
 
 const useStyles = makeStyles({
   grid: {
@@ -17,8 +17,8 @@ const useStyles = makeStyles({
     gridTemplateColumns: '2fr 1fr',
     gridGap: '1px',
     justifyItems: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 function PlayerSettings(props) {
@@ -32,7 +32,7 @@ function PlayerSettings(props) {
     volume,
     playbackRate,
     dictationDelay,
-    dictationRepeats
+    dictationRepeats,
   } = props.playerSettings
 
   const { setPlayerSettings } = props
@@ -132,13 +132,13 @@ function PlayerSettings(props) {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { playerSettings: state.playerSettings }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setPlayerSettings: payload => dispatch(setPlayerSettings(payload))
+    setPlayerSettings: (payload) => dispatch(setPlayerSettings(payload)),
   }
 }
 

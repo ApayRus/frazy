@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 import { useDispatch, useSelector } from 'react-redux'
-import { setAppStateParam } from '../store/appStateActions'
+import { setAppStateParam } from '../../store/appStateActions'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
