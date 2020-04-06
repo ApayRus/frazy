@@ -18,7 +18,7 @@ function LastEvents(props) {
   return (
     <div style={{ marginTop: 20 }}>
       <div style={{ textAlign: 'center' }}>
-        <Typography align='center' style={{ marginLeft: 10 }} variant='subtitle'>
+        <Typography align='center' style={{ marginLeft: 10 }} variant='subtitle1'>
           Latest updates
         </Typography>
       </div>

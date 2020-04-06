@@ -1,4 +1,8 @@
-const initState = { showHeadingDrawer: false, showSettingsDrawer: false }
+const initState = {
+  showHeadingDrawer: false,
+  showSettingsDrawer: false,
+  showFullscreenDialog: false,
+}
 
 const appStateReducer = (state = initState, action) => {
   switch (action.type) {
