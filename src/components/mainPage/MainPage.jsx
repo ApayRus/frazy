@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import AddIcon from '@material-ui/icons/Add'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { firestoreConnect, isLoaded } from 'react-redux-firebase'
+import { useSelector } from 'react-redux'
+import { useFirestoreConnect, isLoaded } from 'react-redux-firebase'
 // import * as moment from 'moment'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import Grid from '@material-ui/core/Grid'
@@ -16,9 +15,17 @@ import FullscreenDialog from '../layout/FullscreenDialog'
 import ToolBar from './ToolBar'
 
 function MainPage(props) {
-  const { lastEventsDoc } = props
-
   const [isDataLoaded, setIsDataLoaded] = useState(false)
+
+  useFirestoreConnect(() => [
+    {
+      collection: 'lastEvents',
+      doc: 'main',
+      storeAs: 'lastEventsDoc',
+    },
+  ])
+
+  const { lastEventsDoc } = useSelector((state) => state.firestore.data)
 
   useEffect(() => {
     if (isLoaded(lastEventsDoc)) {
@@ -80,19 +87,4 @@ function MainPage(props) {
   )
 }
 
-const mapStateToProps = (state) => {
-  return { lastEventsDoc: state.firestore.data.lastEventsDoc }
-}
-
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect((props) => {
-    return [
-      {
-        collection: 'lastEvents',
-        doc: 'main',
-        storeAs: 'lastEventsDoc',
-      },
-    ]
-  })
-)(MainPage)
+export default MainPage
