@@ -16,7 +16,7 @@ function LastEvents(props) {
   lastEvents = orderBy(lastEvents, 'time').reverse()
 
   return (
-    <div style={{ marginTop: 20 }}>
+    <div style={{ marginTop: 20, marginBottom: 55 }}>
       <div style={{ textAlign: 'center' }}>
         <Typography align='center' style={{ marginLeft: 10 }} variant='subtitle1'>
           Latest updates
