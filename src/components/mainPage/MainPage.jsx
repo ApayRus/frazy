@@ -13,6 +13,7 @@ import SocialMedia from '../layout/SocialMedia'
 import Donate from '../donate/Donate'
 import TopButtons from './TopButtons'
 import FullscreenDialog from '../layout/FullscreenDialog'
+import ToolBar from './ToolBar'
 
 function MainPage(props) {
   const { lastEventsDoc } = props
@@ -30,7 +31,7 @@ function MainPage(props) {
 
   const materialAddLink = 'material/add'
 
-  const addButton = (
+  const AddButton = () => (
     <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
       <ButtonWithAuthPopover
         redirectUrl={materialAddLink}
@@ -40,30 +41,24 @@ function MainPage(props) {
     </div>
   )
 
-  const eventList = (
+  const Heading = () => (
+    <div style={{ textAlign: 'center', width: '100%', marginTop: 3 }}>
+      <a href='http://frazy.me'>
+        <img src='/logo.png' alt='main logo' style={{ width: 150, height: 94 }} />
+      </a>
+      <SocialMedia />
+      <TopButtons />
+    </div>
+  )
+
+  const LastEventsGrid = () => (
     <Grid container>
-      <div style={{ textAlign: 'center', width: '100%', marginTop: 3 }}>
-        <a href='http://frazy.me'>
-          <div
-            style={{
-              backgroundImage: 'url(/logo.png)',
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              width: 150,
-              height: 94,
-              display: 'inline-block',
-            }}
-          />
-        </a>
-        <SocialMedia />
-        <TopButtons />
-      </div>
       <Grid item sm={2} md={3}></Grid>
       <Grid item xs={12} sm={8} md={6}>
         {isDataLoaded ? (
           <LastEvents lastEventsDoc={lastEventsDoc} />
         ) : (
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', marginTop: 20 }}>
             <CircularProgress />
           </div>
         )}
@@ -74,8 +69,12 @@ function MainPage(props) {
 
   return (
     <div>
-      {eventList}
-      {addButton}
+      <Heading />
+      <div style={{ height: 20 }} />
+      <ToolBar />
+      <LastEventsGrid />
+      <div style={{ height: 55 }} />
+      <AddButton />
       <FullscreenDialog title='Donate' contentComponent={<Donate />} />
     </div>
   )
