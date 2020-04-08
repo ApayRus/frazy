@@ -14,7 +14,7 @@ import TopButtons from './TopButtons'
 import FullscreenDialog from '../layout/FullscreenDialog'
 import ToolBar from './ToolBar'
 
-function MainPage(props) {
+function MainPage() {
   const [isDataLoaded, setIsDataLoaded] = useState(false)
 
   useFirestoreConnect(() => [

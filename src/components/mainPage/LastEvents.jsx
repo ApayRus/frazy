@@ -1,8 +1,11 @@
 import React from 'react'
 import Event from './Event'
 import { orderBy, map } from 'lodash'
+import { useSelector } from 'react-redux'
 
 function LastEvents(props) {
+  const { langsUserInterestedIn = [] } = useSelector((state) => state.appState)
+
   const { lastEventsDoc } = props
 
   let lastEvents = map(lastEventsDoc, (elem, key) => {
@@ -12,6 +15,9 @@ function LastEvents(props) {
     }
   })
 
+  if (langsUserInterestedIn.length > 0) {
+    lastEvents = lastEvents.filter((elem) => langsUserInterestedIn.includes(elem.lang))
+  }
   lastEvents = orderBy(lastEvents, 'time').reverse()
 
   return (

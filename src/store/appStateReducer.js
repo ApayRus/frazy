@@ -2,6 +2,7 @@ const initState = {
   showHeadingDrawer: false,
   showSettingsDrawer: false,
   showFullscreenDialog: false,
+  langsUserInterestedIn: [],
 }
 
 const appStateReducer = (state = initState, action) => {
