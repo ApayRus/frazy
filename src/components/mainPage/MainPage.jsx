@@ -49,7 +49,7 @@ function MainPage() {
   )
 
   const Heading = () => (
-    <div style={{ textAlign: 'center', width: '100%', marginTop: 3 }}>
+    <div style={{ textAlign: 'center', width: '100%', marginTop: 10 }}>
       <a href='http://frazy.me'>
         <img src='/logo.png' alt='main logo' style={{ width: 150, height: 94 }} />
       </a>
