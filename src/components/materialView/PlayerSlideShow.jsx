@@ -5,15 +5,15 @@ import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: 150,
+  root: (props) => ({
+    height: props.hasImage ? 265 : 150,
     width: '85%',
     maxWidth: 350,
     display: 'inline-block',
     position: 'relative',
     marginTop: 10,
     padding: 20,
-  },
+  }),
   currentPhrase: {
     position: 'absolute',
     right: 2,
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#088dc2',
   },
   img: {
-    height: 80,
+    height: 200,
   },
   dictationCurrentRepeat: {
     position: 'absolute',
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function PlayerSlideShow(props) {
-  const classes = useStyles()
   const {
     currentPhraseNum,
     phrases,
@@ -48,6 +47,7 @@ function PlayerSlideShow(props) {
   } = props
   const currentPhrase = phrases[currentPhraseNum]
   const { img = {} } = currentPhrase || {}
+  const classes = useStyles({ hasImage: Boolean(img.src) })
   const phrasesCount = phrases.length
 
   return (
