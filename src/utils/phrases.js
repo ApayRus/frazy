@@ -25,8 +25,8 @@ export function makePhrasesArray(phrasesObject, mode = 'forView') {
       ...elem, //start, end
       ...phraseObjectFromText, //text, actor, dict, comment
       id: key,
-      attributes: { label1: phraseObjectFromText.text }, //for wavesurfer
-      color: randomColor(0.5) //for wavesurfer
+      attributes: { label1: phraseObjectFromText.text.replace(/<.+?>/g, '') }, //for wavesurfer
+      color: randomColor(0.5), //for wavesurfer
     }
   })
 
@@ -43,7 +43,7 @@ export function makePhrasesArray(phrasesObject, mode = 'forView') {
  */
 export function addTranslation(phrases, translation, mode = 'forView') {
   const { phrases: trPhrases, lang: trLang } = translation
-  return phrases.map(elem => {
+  return phrases.map((elem) => {
     const tr = trPhrases[elem.id] || {}
     const trText = tr.text || ''
     const phraseObjectFromText = mode === 'forView' ? phraseTextToObject(trText) : { text: trText }
@@ -52,8 +52,8 @@ export function addTranslation(phrases, translation, mode = 'forView') {
     const newTranslation = { [trLang]: { ...phraseObjectFromText } }
     return {
       ...elem,
-      attributes: { ...elem.attributes, label2: phraseObjectFromText.text },
-      translations: { ...oldTranslations, ...newTranslation }
+      attributes: { ...elem.attributes, label2: phraseObjectFromText.text.replace(/<.+?>/g, '') },
+      translations: { ...oldTranslations, ...newTranslation },
     }
   })
 }
@@ -67,7 +67,7 @@ export function addTranslation(phrases, translation, mode = 'forView') {
 export function assToPhrases(subsTiming) {
   const assRows = subsTiming.trim().split('\n')
   const phrases = {}
-  assRows.forEach(row => {
+  assRows.forEach((row) => {
     const randomId = nanoid(11)
     phrases[randomId] = assRowToPhraseObject(row)
   })
@@ -152,7 +152,7 @@ function parseFrazyExportTable(tableText) {
 
   const materialPhrases = {},
     translationPhrases = {}
-  phrasesTextArray.forEach(elem => {
+  phrasesTextArray.forEach((elem) => {
     const randomId = nanoid(11)
     const [importedId, importedStart, importedEnd, text, trText] = elem.split('\t')
     const id = importedId ? importedId : randomId
@@ -169,21 +169,21 @@ function parseFrazyExportTable(tableText) {
     unit,
     order,
     lang,
-    phrases: materialPhrases
+    phrases: materialPhrases,
   }
 
   const translation = {
     lang: trLang,
     title: trTitle,
     for: materialId,
-    phrases: translationPhrases
+    phrases: translationPhrases,
   }
   // console.log(phrasesTextArray)
   // const phrases =
   return {
     materialId,
     material,
-    translation
+    translation,
   }
 }
 
@@ -193,7 +193,7 @@ function parseWebvtt(subsText) {
   const title = subsInfoArray.join(' ')
   const lang = subsInfoArray[2].split(': ')[1]
 
-  const phrasesArray = subsArray.map(elem => {
+  const phrasesArray = subsArray.map((elem) => {
     const id = nanoid(11)
     const [timing, ...textArray] = elem.split('\n')
     const [startText, , endText] = timing.split(' ')

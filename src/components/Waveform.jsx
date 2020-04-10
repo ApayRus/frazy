@@ -13,7 +13,7 @@ function Waveform(props) {
     timelineElem = useRef()
   const [isReady, setIsReady] = useState(false)
   const { phrases, mediaLink, youtubeId, waveformRenderProgress, trLang } = useSelector(
-    state => state.pageContent
+    (state) => state.pageContent
   )
   const { readOnly } = props
 
@@ -21,7 +21,7 @@ function Waveform(props) {
   useEffect(() => {
     //component will mount
     setIsReady(false)
-    const initWaveform = url => {
+    const initWaveform = (url) => {
       wavesurferModule.wavesurfer = wavesurferModule.init(
         waveformElem.current,
         timelineElem.current,
@@ -29,7 +29,7 @@ function Waveform(props) {
         phrases,
         readOnly
       )
-      wavesurferModule.wavesurfer.on('ready', e => {
+      wavesurferModule.wavesurfer.on('ready', (e) => {
         if (youtubeId) {
           youtubeModule.initWavesurfer(wavesurferModule.wavesurfer)
         }
@@ -40,7 +40,7 @@ function Waveform(props) {
     if (mediaLink.match('http')) {
       initWaveform(mediaLink)
     } else {
-      afterFirebaseFileDownloadUrlReady(mediaLink, url => {
+      afterFirebaseFileDownloadUrlReady(mediaLink, (url) => {
         initWaveform(url)
       })
     }
@@ -58,11 +58,11 @@ function Waveform(props) {
   useEffect(() => {
     const wavesurfer = wavesurferModule.wavesurfer
     const updateRegionsInWaveform = () => {
-      phrases.forEach(elem => {
+      phrases.forEach((elem) => {
         const { id, text, start, end, translations = {} } = elem || {}
         const { text: trText = '' } = translations[trLang] || {}
-        const label1 = text || ''
-        const label2 = trText
+        const label1 = text.replace(/<.+?>/g, '') || ''
+        const label2 = trText.replace(/<.+?>/g, '') || ''
         const region = wavesurferModule.wavesurfer.regions.list[id]
         if (region) {
           region.update({ start, end, attributes: { label1, label2 } })
@@ -70,15 +70,15 @@ function Waveform(props) {
       })
     }
 
-    const deleteRegions = regionsForDelete => {
-      regionsForDelete.forEach(id => {
+    const deleteRegions = (regionsForDelete) => {
+      regionsForDelete.forEach((id) => {
         const region = wavesurferModule.wavesurfer.regions.list[id]
         region.remove()
       })
     }
 
-    const createNewRegions = newPhrases => {
-      newPhrases.forEach(elem => {
+    const createNewRegions = (newPhrases) => {
+      newPhrases.forEach((elem) => {
         wavesurfer.regions.add(elem)
       })
     }
@@ -94,12 +94,12 @@ function Waveform(props) {
         }
       } else if (newPhrasesCount > 0 && regionsCount > 0 && newPhrasesCount <= regionsCount) {
         //it is cloning of phrases
-        const newPhrases = phrases.filter(elem => !regions.includes(elem.id))
+        const newPhrases = phrases.filter((elem) => !regions.includes(elem.id))
         createNewRegions(newPhrases)
       } else if (newPhrasesCount < 0) {
         //it is deleting
         const phrasesIds = map(phrases, 'id')
-        const regionsForDelete = regions.filter(regionId => !phrasesIds.includes(regionId))
+        const regionsForDelete = regions.filter((regionId) => !phrasesIds.includes(regionId))
         deleteRegions(regionsForDelete)
       } else {
         //textarea changed
