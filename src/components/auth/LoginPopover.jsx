@@ -4,14 +4,14 @@ import Popover from '@material-ui/core/Popover'
 import Typography from '@material-ui/core/Typography'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   popoverContainer: {
     padding: theme.spacing(2),
-    height: 100
-  }
+    height: 100,
+  },
 }))
 
-export default function SimplePopover(props) {
+export default function LoginPopover(props) {
   const {
     loginPopoverId,
     loginPopoverOpen,
@@ -20,7 +20,7 @@ export default function SimplePopover(props) {
     firebase,
     history,
     redirectUrl,
-    message
+    message,
   } = props
   const classes = useStyles()
 
@@ -33,11 +33,11 @@ export default function SimplePopover(props) {
         onClose={handleCloseLoginPopover}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'bottom',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
       >
         <div className={classes.popoverContainer}>
@@ -48,14 +48,14 @@ export default function SimplePopover(props) {
               signInSuccessUrl: '/signedIn',
               signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
               callbacks: {
-                signInSuccessWithAuthResult: authResult => {
+                signInSuccessWithAuthResult: (authResult) => {
                   firebase.handleRedirectResult(authResult).then(() => {
                     if (redirectUrl) history.push(redirectUrl) //if you use react router to redirect
                     handleCloseLoginPopover()
                   })
                   return false
-                }
-              }
+                },
+              },
             }}
             firebaseAuth={firebase.auth()}
           />

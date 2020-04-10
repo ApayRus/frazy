@@ -5,26 +5,26 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { useSelector } from 'react-redux'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   popoverContainer: {
     padding: theme.spacing(2),
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 }))
 
-export default function SimplePopover(props) {
+export default function LogoutPopover(props) {
   const {
     loginPopoverId,
     loginPopoverOpen,
     anchorEl,
     handleCloseLoginPopover,
-    firebase
+    firebase,
     /*     history,
     redirectUrl */
   } = props
   const classes = useStyles()
 
-  const { profile } = useSelector(state => state.firebase)
+  const { profile } = useSelector((state) => state.firebase)
 
   const handleLogout = () => {
     firebase.logout()
@@ -40,11 +40,11 @@ export default function SimplePopover(props) {
         onClose={handleCloseLoginPopover}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
       >
         <div className={classes.popoverContainer}>
