@@ -75,7 +75,7 @@ At this stage, we are limited by a number of factors such as the lack of the Str
     },
     {
       title: `If there is no money`,
-      content: `If we cannot raise the right amount of money to support the project, the site will work randomly with no guarantees and might even be closed.
+      content: `If we cannot raise the right amount of money to support the project, the site will work randomly with no guarantees and might even be closed.`,
     },
   ],
 }
