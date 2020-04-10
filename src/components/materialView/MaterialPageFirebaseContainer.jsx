@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import { connect, useDispatch } from 'react-redux'
-import { compose } from 'redux'
-import { firestoreConnect, isLoaded } from 'react-redux-firebase'
+import { useDispatch, useSelector } from 'react-redux'
+import { useFirestoreConnect, isLoaded } from 'react-redux-firebase'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
 import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
@@ -17,10 +16,17 @@ import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
  * this component loads data from Firebase:  material and translation, join them and pass for display
  * @param {} props
  */
-function MaterialPageHOC(props) {
-  const { material, translation } = props
+function MaterialPageFirebaseContainer(props) {
+  const { material, translation } = useSelector((state) => state.firestore.data)
   const dispatch = useDispatch()
-  const { materialId } = props.match.params
+  const { materialId, trLang } = props.match.params
+
+  useFirestoreConnect(() => {
+    return [
+      { collection: 'material', doc: materialId, storeAs: 'material' },
+      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' },
+    ]
+  })
 
   useEffect(() => {
     return () => {
@@ -57,18 +63,4 @@ function MaterialPageHOC(props) {
   }
 }
 
-const mapStateToProps = (state) => {
-  const fs = state.firestore.data
-  return { material: fs.material, translation: fs.translation }
-}
-
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect((props) => {
-    const { materialId, trLang } = props.match.params
-    return [
-      { collection: 'material', doc: materialId, storeAs: 'material' },
-      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' },
-    ]
-  })
-)(MaterialPageHOC)
+export default MaterialPageFirebaseContainer
