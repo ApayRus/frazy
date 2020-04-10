@@ -8,18 +8,18 @@ import { ButtonBase, Collapse } from '@material-ui/core'
 import { langDirection } from '../../theme/functions'
 import PhraseWords from './PhraseWords'
 
-const useStyles = makeStyles(theme => ({
-  phrase: props => ({
+const useStyles = makeStyles((theme) => ({
+  phrase: (props) => ({
     boxShadow: `0px 1px 5px ${props.isCurrentPhrase ? theme.palette.primary.main : 'lightgrey'}`,
     textAlign: 'left',
     padding: '10px 10px 10px 10px',
     position: 'relative',
-    margin: 5
+    margin: 5,
   }),
   translation: {
-    color: 'gray'
+    color: 'gray',
   },
-  id: props => {
+  id: (props) => {
     const { direction } = props
     const endElementsStyle =
       direction === 'rtl' ? { left: 1, paddingRight: 15 } : { right: 1, paddingLeft: 15 }
@@ -31,10 +31,13 @@ const useStyles = makeStyles(theme => ({
 
       fontSize: 9,
       color: 'gray',
-      paddingTop: 15
+      paddingTop: 15,
     }
   },
-  expandButton: props => {
+  img: {
+    width: 200,
+  },
+  expandButton: (props) => {
     const { direction } = props
     const endElementsStyle = direction === 'rtl' ? { left: 1 } : { right: 1 }
     return {
@@ -45,24 +48,24 @@ const useStyles = makeStyles(theme => ({
 
       fontSize: 20,
       color: 'gray',
-      paddingBottom: 15
+      paddingBottom: 15,
     }
   },
   closed: {
     transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
+      duration: theme.transitions.duration.shortest,
+    }),
   },
   opened: {
-    transform: 'rotate(180deg)'
+    transform: 'rotate(180deg)',
   },
   detailedInfo: {
     marginTop: 10,
     backgroundColor: theme.palette.grey[100],
     padding: 20,
-    borderRadius: 5
-  }
+    borderRadius: 5,
+  },
 }))
 
 function Phrases(props) {
@@ -74,7 +77,7 @@ function Phrases(props) {
     lang,
     num,
     phrase,
-    playPhrase
+    playPhrase,
   } = props
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -86,13 +89,13 @@ function Phrases(props) {
     setIsExpanded(!isExpanded)
   }
 
-  const { dict = [], actor, comment, translations = {} } = phrase
+  const { dict = [], actor, comment, translations = {}, img = {} } = phrase
 
   const { dict: trDict = [], actor: trActor, comment: trComment } = translations[trLang] || {}
 
   const phraseHasHiddenParts = Boolean(dict.length || trDict.length || comment || trComment)
 
-  const dictBlock = dictArray => (
+  const dictBlock = (dictArray) => (
     <div>
       {dictArray.map((elem, index) => {
         const { wordOrder, wordForms, wordTranslations } = elem
@@ -118,21 +121,26 @@ function Phrases(props) {
     <div>
       {phrase.actor && <Actor actor={actor} trActor={trActor} />}
       <div className={classes.phrase}>
-        <ButtonBase onClick={playPhrase(phrase.id)} className={classes.id}>
-          {num}
-          <PlayArrow fontSize='inherit' />{' '}
-        </ButtonBase>
         {phraseHasHiddenParts && (
           <ButtonBase className={clsx(classes.expandButton)} onClick={handleExpand}>
             <ExpandMore
               className={clsx({
                 [classes.closed]: !isExpanded,
-                [classes.opened]: isExpanded
+                [classes.opened]: isExpanded,
               })}
               fontSize='inherit'
             />
           </ButtonBase>
         )}
+
+        {img.src && (
+          <div>
+            <ButtonBase onClick={playPhrase(phrase.id)} className={classes.img}>
+              <img style={{ width: '100%' }} src={img.src} alt={phrase.text} />
+            </ButtonBase>
+          </div>
+        )}
+
         {showOriginalText ? (
           <div>
             <PhraseWords phrase={phrase} trLang={trLang} />
@@ -155,6 +163,10 @@ function Phrases(props) {
             </div>
           </Collapse>
         )}
+        <ButtonBase onClick={playPhrase(phrase.id)} className={classes.id}>
+          {num}
+          <PlayArrow fontSize='inherit' />{' '}
+        </ButtonBase>
       </div>
     </div>
   )

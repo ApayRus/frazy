@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: 150,
     width: '85%',
@@ -12,22 +12,25 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     position: 'relative',
     marginTop: 10,
-    padding: 20
+    padding: 20,
   },
   currentPhrase: {
     position: 'absolute',
     right: 2,
     bottom: 1,
     fontSize: 10,
-    color: '#088dc2'
+    color: '#088dc2',
+  },
+  img: {
+    height: 80,
   },
   dictationCurrentRepeat: {
     position: 'absolute',
     left: 2,
     bottom: 1,
     fontSize: 10,
-    color: 'red'
-  }
+    color: 'red',
+  },
 }))
 
 function PlayerSlideShow(props) {
@@ -41,15 +44,21 @@ function PlayerSlideShow(props) {
     dictationDelay,
     showOriginalText,
     showTranslation,
-    trLang
+    trLang,
   } = props
   const currentPhrase = phrases[currentPhraseNum]
+  const { img = {} } = currentPhrase || {}
   const phrasesCount = phrases.length
 
   return (
     <Paper className={classes.root}>
       {currentPhrase ? (
         <div>
+          {img.src && (
+            <div>
+              <img src={img.src} className={classes.img} alt={currentPhrase.text} />
+            </div>
+          )}
           {showOriginalText ? (
             <Typography variant='subtitle1'>{currentPhrase.text}</Typography>
           ) : null}
@@ -74,12 +83,12 @@ function PlayerSlideShow(props) {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
     showTranslation,
     showOriginalText,
     dictationDelay,
-    dictationRepeats
+    dictationRepeats,
   } = state.playerSettings
 
   const { dictationTimerId, dictationCurrentRepeat } = state.playerState
@@ -94,7 +103,7 @@ const mapStateToProps = state => {
     dictationRepeats,
     dictationTimerId,
     dictationCurrentRepeat,
-    trLang
+    trLang,
   }
 }
 
