@@ -1,94 +1,81 @@
 export default {
-  message: `Пожалуйста, поддержите нас деньгами через  
+  message: `Please support us by donating through
 <a target='_blank' rel='noopener noreferrer' href='https://www.paypal.me/aparus'>
-PayPal</a> или <a target='_blank' rel='noopener noreferrer' href='https://money.yandex.ru/to/41001512310147'>
+PayPal</a> or <a target='_blank' rel='noopener noreferrer' href='https://money.yandex.ru/to/41001512310147'>
 YandexMoney</a>. 
 
-На что нам нужны деньги? 
+What do we need money for?
 `,
   expansionPanel: [
     {
-      title: `Программный продукт`,
-      content: `В первую очередь наш проект - это программный продукт, доступный для всех как в виде исходного кода, 
-так и онлайн сервиса.
+      title: `Software Product`,
+      content: `First of all, our project is a software product that is available to everyone both as a source code and an online service.
 
-Написанию кода предшествуют исследования, проектирование и эксперименты. 
+Coding is preceded by research, design and experiments.
 
 <a target="_blank" rel='noopener noreferrer' href="https://github.com/aparus/frazy">
-Код открытый</a> 
-и вы можете проследить всю историю его создания от первой буквы и оценить объем. 
-Также мы публикуем на 
+The code is open</a>
+and you can trace the entire history of its creation from the first letter and estimate the volume.
+We also publish future plans, current tasks and work process at
 <a target="_blank" rel='noopener noreferrer' href="https://github.com/Aparus/frazy/projects/1">
-Гитхаб-проектах</a> 
-планы на будущее, 
-текущие задачи и процесс работы. Вы можете оценить их объем и полезность. 
+Github projects</a>.
+You can estimate their volume and usefulness.
 `,
     },
     {
-      title: `Технические расходы`,
-      content: `Сервис находится на хостинге Google Firebase и пока что укладывается в бесплатный тариф 'Spark': 
-2 ГБ файлового хранилища и 1 ГБ для БД. Но как только мы преодолеем этот порог, 
-возникнут ежемесячные расходы исходя из этого 
+      title: `Technical costs`,
+      content: `The service is hosted by Google Firebase and so far fits into the free 'Spark' tariff: 2 GB of file storage and 1 GB for the database. But as soon as we reach this limit, there will be monthly expenses based on this
 <a target="_blank" rel='noopener noreferrer' href="https://firebase.google.com/pricing">
-прайса</a>. 
+price list</a>.
 `,
     },
     {
-      title: `Контент`,
-      content: `Чтобы показать суть идеи и её универсальность, 
-мы добавили как минимум по 1 материалу из 6 официальных языков ООН с английским переводом. 
+      title: `Content`,
+      content: `In order to show the essence of the idea and its universality, we have added at least one material for each of the six official UN languages ​​with an English translation.
 
-Хотя мы рассчитываем, что пользователи сами будут добавлять материалы, 
-мы берем на себя работу по модерации. 
+Although we expect users to add content themselves, we commit ourselves to moderation work.
 
-Иногда нам придется показывать пример, задавать темп.  
-Приоритеты по контенту и процесс работ мы тоже публикуем на 
+Sometimes we will have to show an example, set the pace.
+Content priorities and the work process are also published at
 <a target="_blank" rel='noopener noreferrer' href="https://github.com/Aparus/frazy/projects/1">
-Гитхаб-проектах</a>. Пока это первые шаги и мы ищем оптимальную стратегию в отношении контента. 
+Github projects</a>. These are only the first steps and we are looking for the best strategy for content.
 
-Проект включает немало концептуальных вещей, которые надо детально проработать и описать в виде текста и видео.
-Это работа по созданию документации, уроков и статей: как что работает, как что делать, почему принято то или иное решение. 
+The project includes many conceptual things that need to be worked out in detail and described in the form of text and video.
+This implies creating documentation, lessons and articles on how things work, how to do this or that and why this or that decision is made.
 `,
     },
     {
-      title: `Приоритеты`,
-      content: `1) Технические расходы (без них сайт не сможет полноценно функционировать)
+      title: `Priorities`,
+      content: `1) Technical costs (without them, the site will not be able to function properly)
 
-2) Завершение запланированных работ по веб-платформе. Это ещё $5k (из расчёта $1k за месяц работы).
+2) Completing planned work on the web platform. This is another $5k (based on $1k per month of work).
 
-3) Контент. Исходя из предпочтений пользователей мы будем добавлять аудиокниги, подкасты и другие доступные материалы.
+3) Content. We will add audiobooks, podcasts and other available materials based on user preferences.
 
-4) SMM, создание и распространение информации о нас,  активный поиск партнеров - в университетах, школах, диаспорах, на языковых форумах.
+4) SMM, creating and spreading information about us, searching for partners in universities, schools, diasporas and language forums.
 
-5) Дизайн. 
+5) Design.
 
-6) Также мы хотим равномерно закрыть наши затраты на создание первой версии программы и запуска сервиса. 
-Со всем его кодом, демо материалами и статьями это $5k. (4 месяца плотной работы программиста и переводчика)
+6) We also want to cover our expenses for creating the first version of the program and launching the service.
+    With all the code, demos and articles, it's $5k. (4 months of hard work of a programmer and a translator)
 `,
     },
     {
-      title: `Отчетность`,
-      content: `Чтобы вы случайно не отправили нам лишние или незаслуженные деньги, 
-      мы публикуем каждое пожертвование в формате: 
+      title: `Reporting`,
+      content: `So that you don't accidentally send us extra or undeserved money, each donation will be reported in the following format:
 
-      Дата | Сумма | Комментарий
+      Date | Amount | Comment
 
-В конце месяца мы подводим итоги. Вся наша работа открыта. 
-За кодом вы можете следить на гитхабе, за контентом - на сайте, за медиа - в соцсетях. 
-Так что вы всегда сможете оценить объем поступивших к нам средств и то, как мы ими распорядились. 
+A summary report will be published at the end of a month. All our work is open and can be followed on Github (for code), the site (for content), and social media (for news).
+So, you can always estimate the amount of funds received by us and how we spent them.
 
-
-По мере роста проекта мы будем оставлять заявки на спонсорство на платформах, 
-поддерживающих образовательные и опенсорс проекты. 
-На данном этапе мы ограничены рядом факторов, например: 
-отсутствием у нас системы платежей Stripe и даже малым количеством звёзд на Гитхабе.
+As the project grows, we will apply for sponsorship to platforms supporting educational and open source projects.
+At this stage, we are limited by a number of factors such as the lack of the Stripe payment system in our country and even a small number of stars on Github.
   `,
     },
     {
-      title: `Если не будет денег`,
-      content: `Если мы не сможем собрать нужное количество денег для поддержки проекта, 
-      то его доработка будет происходить в случайном порядке без всяческих гарантий 
-      и возможно даже мы закроем его.`,
+      title: `If there is no money`,
+      content: `If we cannot raise the right amount of money to support the project, the site will work randomly with no guarantees and might even be closed.
     },
   ],
 }
