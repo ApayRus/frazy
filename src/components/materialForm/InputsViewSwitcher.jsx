@@ -6,13 +6,13 @@ import clsx from 'clsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPageParameter } from '../../store/pageContentActions'
 
-const useStyles = makeStyles(theme => ({
-  button: { fontWeight: 100, textTransform: 'none', padding: '0px 10px' }
+const useStyles = makeStyles((theme) => ({
+  button: { fontWeight: 100, textTransform: 'none', padding: '0px 10px' },
 }))
 
-export default function BasicButtonGroup() {
+export default function InputsViewSwitcher() {
   const classes = useStyles()
-  const { showOriginalInputs, showTranslationInputs } = useSelector(state => state.pageContent)
+  const { showOriginalInputs, showTranslationInputs } = useSelector((state) => state.pageContent)
   const dispatch = useDispatch()
 
   const handleClickOriginal = () => {
@@ -38,6 +38,7 @@ export default function BasicButtonGroup() {
           onClick={handleClickOriginal}
           className={classes.button}
           variant={clsx({ contained: showOriginalInputs })}
+          title='show/hide original text'
         >
           Original
         </Button>
@@ -45,6 +46,7 @@ export default function BasicButtonGroup() {
           onClick={handleClickTranslation}
           className={classes.button}
           variant={clsx({ contained: showTranslationInputs })}
+          title='show/hide translation text'
         >
           Translation
         </Button>

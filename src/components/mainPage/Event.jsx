@@ -12,30 +12,30 @@ import Translations from '../translations/RoundButtonsBlock'
 // import Collapse from '@material-ui/core/Collapse'
 // import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   materialEvent: {
     boxShadow: '0px 1px 5px lightgrey',
     margin: 5,
     padding: 5,
     position: 'relative',
-    display: 'block'
+    display: 'block',
   },
   firstLine: {
-    position: 'relative'
+    position: 'relative',
   },
   secondLine: {
     position: 'relative',
-    paddingLeft: 36
+    paddingLeft: 36,
   },
   translations: {
     position: 'absolute',
     right: 5,
-    bottom: 1
+    bottom: 1,
   },
 
   title: {
     display: 'inline',
-    marginLeft: 5
+    marginLeft: 5,
   },
   actions: {
     position: 'absolute',
@@ -43,8 +43,8 @@ const useStyles = makeStyles(theme => ({
     // right: 20,
     right: 8,
     color: theme.palette.grey[400],
-    fontSize: 10
-  }
+    fontSize: 10,
+  },
   /* 
   detailedInfoExpand: {
     position: 'absolute',
@@ -73,16 +73,16 @@ const useStyles = makeStyles(theme => ({
    */
 }))
 
-const Event = props => {
+const Event = (props) => {
   const history = useHistory()
   const classes = useStyles()
   // const [expanded, setExpanded] = useState(false)
 
-  const onTranslationClick = (materialId, trLang) => event => {
+  const onTranslationClick = (materialId, trLang) => (event) => {
     history.push(`material/${materialId}/${trLang}`)
   }
 
-  const onEventClick = event => {
+  const onEventClick = (event) => {
     history.push(`material/${props.materialId}`)
   }
 
@@ -141,6 +141,7 @@ const Event = props => {
           activeLang={props.trLang}
           langs={props.translations}
           size={20}
+          title='available translation'
         />
       </div>
     </div>

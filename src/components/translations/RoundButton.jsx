@@ -9,13 +9,14 @@ function RoundButton(props) {
       edge='start'
       style={{ padding: 2, marginRight: 0, display: 'inline' }}
       onClick={props.onClick(props.materialId, props.trLang)}
+      title={props.title}
     >
       <Avatar
         style={{
           width: props.size,
           height: props.size,
           fontSize: 12,
-          background: props.color
+          background: props.color,
         }}
       >
         {props.lang}

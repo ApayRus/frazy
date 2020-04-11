@@ -8,7 +8,7 @@ import wavesurferModule from '../wavesurfer/wavesurfer'
 
 function Zoom(props) {
   const { wavesurfer } = wavesurferModule
-  const { play } = useSelector(state => state.playerState)
+  const { play } = useSelector((state) => state.playerState)
   const dispatch = useDispatch()
 
   const playClick = () => {
@@ -24,11 +24,11 @@ function Zoom(props) {
   return (
     <div>
       {!play ? (
-        <IconButton onClick={playClick}>
+        <IconButton title='play' onClick={playClick}>
           <PlayIcon />
         </IconButton>
       ) : (
-        <IconButton onClick={pauseClick}>
+        <IconButton title='pause' onClick={pauseClick}>
           <PauseIcon />
         </IconButton>
       )}
