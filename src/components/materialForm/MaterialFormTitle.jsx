@@ -5,12 +5,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import { setPageParameter } from '../../store/pageContentActions'
 import { useDispatch, useSelector } from 'react-redux'
 import switchTranslation from '../translations/switchTranslation'
+import HelperTooltip from './HelperIconTooltip'
+import { materialEditHelpers as local } from '../../localization/en'
+import htmlParser from 'html-react-parser'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   textField: {
     marginRight: 10,
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 }))
 
 /**
@@ -23,10 +26,10 @@ const useStyles = makeStyles(theme => ({
 function MaterialFormTitle(props) {
   const { lang, title, langId, langLabel, titleId, titleLabel } = props
   const dispatch = useDispatch()
-  const { translations, materialId } = useSelector(state => state.pageContent)
+  const { translations, materialId } = useSelector((state) => state.pageContent)
   const classes = useStyles()
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const { id, value } = event.target
     dispatch(setPageParameter([id, value]))
     if (id === 'trLang') {
@@ -39,6 +42,7 @@ function MaterialFormTitle(props) {
 
   return (
     <div>
+      <HelperTooltip title={htmlParser(local.langInput)} />
       <TextField
         onChange={handleChange}
         className={classes.textField}
@@ -51,7 +55,7 @@ function MaterialFormTitle(props) {
         onChange={handleChange}
         className={classes.textField}
         value={title}
-        style={{ width: 'calc(100% - 80px)' }}
+        style={{ width: 'calc(100% - 100px)' }}
         id={titleId}
         label={titleLabel}
       />

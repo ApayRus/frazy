@@ -100,3 +100,43 @@ At this stage, we are limited by a number of factors such as the lack of the Str
     },
   ],
 }
+
+export const materialEditHelpers = {
+  mediaAddDelete: `<div>
+  Required. <br />
+  If you are uploading a file, <br />
+  it should be less than 10 MB. <br />
+  If you are pointing to an external link, <br />
+  it's better to be https, otherwise player can block it.
+</div>`,
+  unitInput: `<div>
+Optional. <br />
+<strong>Unique, without spaces.</strong> <br />
+Unit is an ID for set of materials. <br />
+If you are adding piece of book, <br />
+then book name will be a Unit. <br />
+Materials with the same Unit will be joined <br />
+in the Menu at left-bottom corner.
+</div>`,
+  orderInput: `<div>
+Optional. <br />
+The order of the material <br />
+among other materials of the same Unit.
+</div>`,
+  langInput: `<div>
+Required. <br />
+Official ISO 639-1 code of language. <br />
+ar - Arabic <br />
+ch - Chinese <br />
+en - English <br />
+es - Spanish <br />
+fr - French <br />
+ru - Russian <br />
+You can use 
+<a   target='_blank'   rel='noopener noreferrer'
+  href='https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes'
+>
+  this table</a> 
+  for choose right one.
+</div>`,
+}
