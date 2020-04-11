@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { setPlayerSettings } from '../../store/playerSettingsActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 
-import local from '../../localization/en'
+import { playerSettings as local } from '../../localization/en'
 
 const useStyles = makeStyles({
   grid: {

@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import { setAppStateParam, clearCachedDocs } from '../../store/appStateActions'
-import local from '../../localization/en'
+import { loginDialog as local } from '../../localization/en'
 import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({

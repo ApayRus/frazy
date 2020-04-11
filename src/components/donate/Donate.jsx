@@ -1,6 +1,6 @@
 import React from 'react'
 import ExpansionPanel from '../layout/ExpansionPanel'
-import content from './content_en'
+import { donate as content } from '../../localization/en'
 import PlainTextToParagraphs from '../layout/PlainTextToParagraphs'
 import Grid from '@material-ui/core/Grid'
 
