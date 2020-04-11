@@ -17,7 +17,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   let dragSelection = true
 
   if (readOnly) {
-    phrasesArray = phrasesArray0.map(elem => ({ ...elem, ...readModeRegionOptions }))
+    phrasesArray = phrasesArray0.map((elem) => ({ ...elem, ...readModeRegionOptions }))
     dragSelection = false
   }
 
@@ -28,12 +28,12 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     plugins: [
       RegionsPlugin.create({
         regions: phrasesArray,
-        dragSelection
+        dragSelection,
       }),
       TimelinePlugin.create({
-        container: timelineContainer
-      })
-    ]
+        container: timelineContainer,
+      }),
+    ],
   })
 
   wavesurfer.load(mediaLink)
@@ -45,12 +45,12 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     region.play()
   })
 
-  wavesurfer.on('region-in', region => {
+  wavesurfer.on('region-in', (region) => {
     const { id } = region
     store.dispatch(setPlayerState(['currentPhraseId', id]))
   })
 
-  wavesurfer.on('region-out', region => {
+  wavesurfer.on('region-out', (region) => {
     //console.log('region out', region.id)
   })
 
@@ -60,56 +60,52 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
   wavesurfer.on('pause', () => {
     store.dispatch(setPlayerState(['play', false]))
   })
-  wavesurfer.on('loading', progress => {
+  wavesurfer.on('loading', (progress) => {
     store.dispatch(setPageParameter(['waveformRenderProgress', progress]))
   })
 
   // edit mode
 
   const regionsToPhrasesArray = () => {
-    const { trLang } = store.getState().pageContent
+    const { phrases: oldPhrases } = store.getState().pageContent
     let phrases = map(wavesurfer.regions.list, (elem, key) => {
-      const {
-        start,
-        end,
-        color,
-        attributes: { label1: text, label2: trText }
-      } = elem
+      const { start, end, color } = elem
       const id = key
       /*       console.log('text', text)
       console.log('trText', trText) */
-      return { id, start, end, color, text, translations: { [trLang]: { text: trText } } }
+      const oldPhrase = oldPhrases.find((elem) => id === elem.id)
+      return { ...oldPhrase, id, start, end, color }
     })
     phrases = orderBy(phrases, 'start')
     store.dispatch(setPageParameter(['phrases', phrases]))
   }
 
-  wavesurfer.on('region-update-end', region => {
+  wavesurfer.on('region-update-end', (region) => {
     console.log('region-update-end')
     regionsToPhrasesArray()
   })
 
-  wavesurfer.on('region-created', region => {
+  wavesurfer.on('region-created', (region) => {
     region.update({ color: randomColor(0.5) })
   })
 
-  wavesurfer.on('region-dblclick', region => {
+  wavesurfer.on('region-dblclick', (region) => {
     // region.remove()
     let { selectedPhrases } = store.getState().pageContent
     if (selectedPhrases.includes(region.id)) {
-      selectedPhrases = selectedPhrases.filter(elem => elem !== region.id)
+      selectedPhrases = selectedPhrases.filter((elem) => elem !== region.id)
     } else {
       selectedPhrases = selectedPhrases.concat(region.id)
     }
     store.dispatch(setPageParameter(['selectedPhrases', selectedPhrases]))
   })
 
-  wavesurfer.on('region-removed', region => {
+  wavesurfer.on('region-removed', (region) => {
     regionsToPhrasesArray()
   })
 
   // Time stretcher (preserve pitch on speeds != 1 )
-  wavesurfer.on('ready', function() {
+  wavesurfer.on('ready', function () {
     store.dispatch(setPageParameter(['duration', +wavesurfer.getDuration().toFixed(3)]))
     var st = new soundtouch.SoundTouch(wavesurfer.backend.ac.sampleRate)
     var buffer = wavesurfer.backend.buffer
@@ -121,7 +117,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     var seekingDiff = 0
 
     var source = {
-      extract: function(target, numFrames, position) {
+      extract: function (target, numFrames, position) {
         if (seekingPos != null) {
           seekingDiff = seekingPos - position
           seekingPos = null
@@ -135,12 +131,12 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
         }
 
         return Math.min(numFrames, length - position)
-      }
+      },
     }
 
     var soundtouchNode
 
-    wavesurfer.on('play', function() {
+    wavesurfer.on('play', function () {
       seekingPos = ~~(wavesurfer.backend.getPlayedPercents() * length)
       st.tempo = wavesurfer.getPlaybackRate()
 
@@ -155,11 +151,11 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
       }
     })
 
-    wavesurfer.on('pause', function() {
+    wavesurfer.on('pause', function () {
       soundtouchNode && soundtouchNode.disconnect()
     })
 
-    wavesurfer.on('seek', function() {
+    wavesurfer.on('seek', function () {
       seekingPos = ~~(wavesurfer.backend.getPlayedPercents() * length)
     })
   })
