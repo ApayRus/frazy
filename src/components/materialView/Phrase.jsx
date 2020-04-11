@@ -134,9 +134,9 @@ function Phrases(props) {
         )}
 
         {img.src && (
-          <div>
-            <ButtonBase onClick={playPhrase(phrase.id)} className={classes.img}>
-              <img style={{ width: '100%' }} src={img.src} alt={phrase.text} />
+          <div style={{ textAlign: 'center', marginBottom: 5 }}>
+            <ButtonBase onClick={playPhrase(phrase.id)}>
+              <img className={classes.img} src={img.src} alt={phrase.text} />
             </ButtonBase>
           </div>
         )}
