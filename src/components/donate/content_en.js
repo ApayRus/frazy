@@ -1,5 +1,5 @@
 export default {
-  message: `Please support us by donating through
+  message: `Please donate to us via 
 <a target='_blank' rel='noopener noreferrer' href='https://www.paypal.me/aparus'>
 PayPal</a> or <a target='_blank' rel='noopener noreferrer' href='https://money.yandex.ru/to/41001512310147'>
 YandexMoney</a>. 
