@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   img: {
-    width: 200,
+    height: 200,
   },
   expandButton: (props) => {
     const { direction } = props
