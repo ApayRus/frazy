@@ -6,14 +6,16 @@ import { blue } from '@material-ui/core/colors'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 
 const useStyles = makeStyles((theme) => ({
+  icon: (props) => ({
+    fontSize: props.iconSize,
+    color: props.color,
+  }),
+}))
+
+const useStylesTooltip = makeStyles((theme) => ({
   tooltip: (props) => ({
     fontSize: props.fontSize,
     maxWidth: 'none',
-  }),
-
-  iconStyle: (props) => ({
-    fontSize: props.iconSize,
-    color: props.color,
   }),
 }))
 
@@ -29,13 +31,14 @@ function HelperIconTooltip(props) {
   const toggleTooltip = () => setOpen(!open)
   const closeTooltip = () => setOpen(false)
   const { color = blue[100], fontSize = 14, buttonSize = 'small', iconSize = 14 } = props
-  const classes = useStyles({ fontSize, color, iconSize })
+  const classes = useStyles({ color, iconSize })
+  const classesTooltip = useStylesTooltip({ fontSize })
   return (
     <ClickAwayListener onClickAway={closeTooltip}>
       <Tooltip
         open={open}
         onClose={toggleTooltip}
-        classes={classes}
+        classes={classesTooltip}
         interactive
         title={props.title}
         disableFocusListener
@@ -43,7 +46,7 @@ function HelperIconTooltip(props) {
         disableTouchListener
       >
         <IconButton onClick={toggleTooltip} size={buttonSize}>
-          <QuestionIcon className={classes.iconStyle} />
+          <QuestionIcon className={classes.icon} />
         </IconButton>
       </Tooltip>
     </ClickAwayListener>
