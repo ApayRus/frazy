@@ -48,7 +48,7 @@ function MaterialPageFirebaseContainer(props) {
         <MuiThemeProvider theme={theme}>
           <MaterialPage />
           <MaterialBar />
-          {unit ? <HeadingFirebaseHOC unitId={unit} /> : null}
+          {unit ? <HeadingFirebaseHOC unitId={unit} displayMode='drawer' /> : null}
           <DrawerSettings />
           <LangFonts lang={lang} />
         </MuiThemeProvider>

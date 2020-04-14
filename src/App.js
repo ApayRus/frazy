@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './App.css'
-import UnitPage from './components/UnitPage'
+import HeadingPage from './components/materialHeading/HeadingPage'
 import MaterialPageHOC from './components/materialView/MaterialPageFirebaseContainer'
 import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseContainer'
@@ -22,7 +22,7 @@ function App(props) {
           <Route path='/material/edit/:materialId/' component={MaterialFormHOC} />
           <Route path='/material/:materialId/:trLang' component={MaterialPageHOC} />
           <Route path='/material/:materialId' component={MaterialPageHOC} />
-          <Route path='/unit/:unitId' component={UnitPage} />
+          <Route path='/unit/:unitId' component={HeadingPage} />
           <Route path='/admin-custom-material-list' component={AdminMaterialList} />
         </Switch>
       </div>
