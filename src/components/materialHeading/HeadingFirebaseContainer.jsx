@@ -66,7 +66,9 @@ function HeadingFirebaseContainer(props) {
       <Heading />
     )
   ) : (
-    <CircularProgress />
+    <div style={{ marginTop: 20, textAlign: 'center' }}>
+      <CircularProgress />
+    </div>
   )
 }
 
