@@ -22,6 +22,7 @@ function Heading(props) {
       textAlign: 'center',
       padding: 20,
       backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7)), url(${background})`,
+
       backgroundSize: 'cover',
       backgroundRepeat: 'round',
       backgroundPosition: 'center center',
@@ -46,7 +47,7 @@ function Heading(props) {
       <div className={classes.header}>
         <Typography variant='h6'>{title}</Typography>
         <Typography variant='subtitle1'>{author}</Typography>
-        <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logo} />
+        {logo && <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logo} />}
       </div>
       <List>
         {headingOrdered.map((elem) => {
