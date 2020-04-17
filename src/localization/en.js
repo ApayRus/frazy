@@ -123,6 +123,13 @@ Optional. <br />
 The order of the material <br />
 among other materials of the same Unit.
 </div>`,
+  youtubeIdInput: `<div>
+Optional. <br />
+Video Id from youtube (if it exists there). <br />
+But you still need to have an audio file.  <br />
+Video and audio work in parallel. <br /> 
+Be aware, that at the moment they are not good synced. 
+</div>`,
   langInput: `<div>
 Required. <br />
 Official ISO 639-1 code of language. <br />

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function MaterialInfo(props) {
-  const { unit, order } = useSelector((state) => state.pageContent)
+  const { unit, order, youtubeId } = useSelector((state) => state.pageContent)
   const dispatch = useDispatch()
   const classes = useStyles()
 
@@ -45,6 +45,15 @@ function MaterialInfo(props) {
         style={{ width: 60 }}
         id='order'
         label='Order'
+      />
+      <HelperTooltip title={htmlParser(local.youtubeIdInput)} />
+      <TextField
+        value={youtubeId}
+        onChange={handleChange}
+        className={classes.textField}
+        style={{ width: 105 }}
+        id='youtubeId'
+        label='youtubeId'
       />
     </div>
   )
