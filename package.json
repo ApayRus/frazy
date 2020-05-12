@@ -4,25 +4,25 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@material-ui/core": "^4.9.8",
+    "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
     "clsx": "^1.1.0",
     "deep-object-diff": "^1.1.0",
     "firebase": "^6.6.2",
     "html-react-parser": "^0.10.3",
-    "moment": "^2.24.0",
+    "moment": "^2.25.3",
     "nanoid": "^2.1.11",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-firebaseui": "^4.1.0",
     "react-redux": "^7.2.0",
-    "react-redux-firebase": "^3.3.0",
-    "react-router-dom": "^5.1.2",
+    "react-redux-firebase": "^3.4.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "react-youtube": "^7.9.0",
+    "react-youtube": "^7.11.2",
     "redux": "^4.0.5",
     "redux-firestore": "^0.8.0",
-    "wavesurfer.js": "^3.3.1"
+    "wavesurfer.js": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,6 +47,6 @@
   },
   "devDependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "firebase-admin": "^8.10.0"
+    "firebase-admin": "^8.12.1"
   }
 }
