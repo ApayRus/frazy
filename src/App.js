@@ -9,6 +9,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import MainPage from './components/mainPage/MainPage'
 import AuthAvatarLoginLogout from './components/auth/AuthAvatarLoginLogout'
 import AdminMaterialList from './components/admin/MaterialList'
+import Testnetworking from './components/admin/Testnetworking'
 
 function App(props) {
   return (
@@ -24,6 +25,7 @@ function App(props) {
           <Route path='/material/:materialId' component={MaterialPageHOC} />
           <Route path='/unit/:unitId' component={HeadingPage} />
           <Route path='/admin-custom-material-list' component={AdminMaterialList} />
+          <Route path='/testnetworking' component={Testnetworking} />
         </Switch>
       </div>
     </BrowserRouter>
