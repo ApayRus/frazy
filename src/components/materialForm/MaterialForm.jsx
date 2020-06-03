@@ -30,13 +30,43 @@ import ControlsPanel from './ControlsPanel'
 import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
 import PhrasesForTextArea from './MaterialFormPhrases'
 import YoutubePlayer from '../YoutubePlayer'
+import firebase from '../../firebase/firebase'
+import nanoid from 'nanoid'
 
-const MaterialForm = props => {
-  const { mediaLink, youtubeId, uploadProgress } = props
+export default function MaterialForm(props) {
+  const {
+    //from Material
+    materialId,
+    title,
+    mediaLink,
+    youtubeId,
+    lang,
+    unit,
+    order,
+    materialPhrases,
+    duration,
+    translations,
+    materialCreated,
+    //from Translation (MaterialTr)
+    translationId,
+    trTitle,
+    trLang,
+    for: forMaterial,
+    translationPhrases,
+    translationRevisions,
+    translationCreated,
+    //combined phrases Material+Translation
+    phrases,
+    //temporary values
+    uploadProgress,
+    textareaOriginal
+  } = useSelector(state => state.pageContent)
+
   const history = useHistory()
   const [prevMaterial, setPrevMaterial] = useState({})
   const [prevTranslation, setPrevTranslation] = useState({})
   const [materialAction, setMaterialAction] = useState('')
+  const [translationAction, setTranslationAction] = useState('')
   const dispatch = useDispatch()
   const { sticked: playerSticked } = useSelector(state => state.playerSettings)
 
@@ -46,25 +76,42 @@ const MaterialForm = props => {
     //onMount
     // snapshot from material
     {
-      const { title, mediaLink, lang, unit, order, materialPhrases: phrases } = props
-      const materialData = { title, mediaLink, lang, unit, order, phrases, youtubeId }
+      const materialData = {
+        title,
+        mediaLink,
+        lang,
+        unit,
+        order,
+        phrases: materialPhrases,
+        youtubeId
+      }
       setPrevMaterial(materialData)
     }
     // snapshot from translation
     {
-      const { trTitle: title, trLang: lang, translationPhrases: phrases, for: forMaterial } = props
-      const translationData = { title, lang, phrases, for: forMaterial }
+      const translationData = {
+        title: trTitle,
+        lang: trLang,
+        phrases: translationPhrases,
+        for: forMaterial
+      }
       setPrevTranslation(translationData)
     }
-    //if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
-    if (props.materialId) {
-      setMaterialAction('material updated')
+    // if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
+    // add or update is needed for Event
+    if (materialId) {
+      setMaterialAction('update')
     } else {
-      setMaterialAction('material added')
+      setMaterialAction('create')
+      setTranslationAction('create')
       //we'll use this id where create translationId (+_trLang) and fileId (the same)
-      dispatch(setPageParameter(['materialId', getNewDocId('material')]))
+      dispatch(setPageParameter(['materialId', nanoid(24)]))
     }
-
+    if (translationId) {
+      setTranslationAction('update')
+    } else {
+      dispatch(setPageParameter(['translationId', nanoid(24)]))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -81,156 +128,80 @@ const MaterialForm = props => {
     wavesurferModule.wavesurfer.clearRegions()
   }
 
-  const handleSubmit = () => {
-    const waitPromisesBeforeRedirect = []
-
+  const handleSubmit = async () => {
     // MATERIAL data for submit
-    const {
-      title,
-      mediaLink,
-      lang,
-      unit,
-      order,
-      phrases,
-      translations: oldTranslations = [],
-      duration,
-      profile,
-      materialId,
-      materialCreated = {},
-      translationCreated = {}
-    } = props
 
     let actions = [] // materialAction and translationAction both, or one of them.
 
-    const materialPhrases = localPhrasesToDBphrases(phrases)
-
-    // TRANSLATION data for submit
-    const { trLang, trTitle } = props
-    let translationContent = {}
-    const translationAction = oldTranslations.includes(trLang)
-      ? 'translation updated'
-      : 'translation added'
-
-    const translationId = `${materialId}_${trLang}`
-    if (trLang && trTitle) {
-      const translationPhrases = localPhrasesToDBtranslations(phrases, trLang)
-      translationContent = {
-        title: trTitle,
-        lang: trLang,
-        for: materialId,
-        phrases: translationPhrases
-      }
+    const translationContent = {
+      _id: translationId,
+      title: trTitle,
+      lang: trLang,
+      for: materialId,
+      phrases: localPhrasesToDBtranslations(phrases, trLang),
+      action: translationAction
     }
 
     //new material after user input:
     const materialContent = {
+      _id: materialId,
       title,
       mediaLink,
       youtubeId,
       lang,
       unit,
       order,
-      phrases: materialPhrases
-    }
-    if (!youtubeId) {
-      delete materialContent.youtubeId
+      phrases: localPhrasesToDBphrases(phrases),
+      action: materialAction
     }
 
-    const newTranslations =
-      oldTranslations.includes(trLang) || trLang === ''
-        ? oldTranslations
-        : oldTranslations.concat(trLang)
-
+    const event = {
+      _id: nanoid(24),
+      title,
+      lang,
+      materialId,
+      translationId,
+      trTitle,
+      trLang,
+      actions: ['added material', 'added translation'],
+      time: Date.now(),
+      action: 'create'
+    }
     const diffMaterial = diff(prevMaterial, materialContent) //diff object after user input
     const diffTranslation = diff(prevTranslation, translationContent) //diff object after user input
 
-    //material has created or changed
-    if (Object.entries(diffMaterial).length) {
-      actions.push(materialAction)
-      const materialCreateUpdateInfo =
-        materialAction === 'material added'
-          ? {
-              created: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
-            }
-          : {
-              created: materialCreated,
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
-            }
+    console.log('diffMaterial', diffMaterial)
+    console.log('diffTranslation', diffTranslation)
+    console.log('material', materialContent)
+    console.log('translation', translationContent)
 
-      const materialMeta = {
-        ...materialCreateUpdateInfo,
-        duration,
-        translations: newTranslations
-      }
+    const currentUser = firebase.auth().currentUser
+    const authtoken = await currentUser.getIdToken(true)
 
-      const uploadMaterialTask = dbSet(
-        'material',
-        materialId,
-        {
-          ...materialContent,
-          meta: materialMeta
-        },
-        { merge: false }
-      )
-
-      waitPromisesBeforeRedirect.push(uploadMaterialTask)
-    }
-
-    //translation is not empty, has created or changed
-    if (Object.keys(translationContent).length && Object.entries(diffTranslation).length) {
-      actions.push(translationAction)
-      const translationCreateUpdateInfo =
-        translationAction === 'translation added'
-          ? {
-              created: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
-            }
-          : {
-              created: materialCreated,
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
-            }
-
-      const translationMeta = { ...translationCreateUpdateInfo, created: translationCreated }
-
-      const uploadTranslationTask = dbSet(
-        'materialTr',
-        translationId,
-        {
-          ...translationContent,
-          meta: translationMeta
-        },
-        { merge: false }
-      )
-
-      //if translation added we need update material too
-      const uploadMaterialTask =
-        translationAction === 'translation added'
-          ? dbSet('material', materialId, {
-              meta: { translations: newTranslations }
-            })
-          : null
-
-      waitPromisesBeforeRedirect.push(uploadTranslationTask, uploadMaterialTask)
-    }
-
-    Promise.all([waitPromisesBeforeRedirect]).then(values => {
-      const addEventToMainPage = () => {
-        const event = {
-          title,
-          lang,
-          materialId,
-          translations: newTranslations,
-          trTitle,
-          trLang,
-          actions,
-          time: Date.now()
-        }
-        dbUpdate('lastEvents', 'main', { [unit]: event })
-      }
-      addEventToMainPage()
-      history.push(`/material/${materialId}/${trLang}`)
+    const materialTask = fetch('/api/material', {
+      method: 'PATCH',
+      headers: { authtoken, 'Content-Type': 'application/json' },
+      body: JSON.stringify(materialContent)
     })
+    const translationTask = fetch('/api/material-tr', {
+      method: 'PATCH',
+      headers: { authtoken, 'Content-Type': 'application/json' },
+      body: JSON.stringify(translationContent)
+    })
+    const eventTask = fetch('/api/event', {
+      method: 'PATCH',
+      headers: { authtoken, 'Content-Type': 'application/json' },
+      body: JSON.stringify(event)
+    })
+
+    await Promise.all([materialTask, translationTask, eventTask])
+
+    history.push(`/material/${materialId}/${trLang}`)
+    // console.log('materialTask', materialTask.json())
+    // console.log('translationTask', translationTask.json())
+    // console.log('event', event)
+    // console.log('eventTask', eventTask.json())
+    // materialTask.then((result) => console.log('result', result))
   }
 
   return (
@@ -284,37 +255,3 @@ const MaterialForm = props => {
     </div>
   )
 }
-
-const mapStateToProps = state => {
-  const pc = state.pageContent
-  return {
-    //from Material
-    materialId: pc.materialId,
-    title: pc.title,
-    mediaLink: pc.mediaLink,
-    youtubeId: pc.youtubeId,
-    lang: pc.lang,
-    unit: pc.unit,
-    order: pc.order,
-    materialPhrases: pc.materialPhrases,
-    duration: pc.duration,
-    translations: pc.translations,
-    materialCreated: pc.materialCreated,
-    //from Translation (MaterialTr)
-    trTitle: pc.trTitle,
-    trLang: pc.trLang,
-    for: pc.for,
-    translationPhrases: pc.translationPhrases,
-    translationRevisions: pc.translationRevisions,
-    translationCreated: pc.translationCreated,
-    //combined phrases Material+Translation
-    phrases: pc.phrases,
-    //temporary values
-    uploadProgress: pc.uploadProgress,
-    textareaOriginal: pc.textareaOriginal,
-    //auth, profile
-    profile: state.firebase.profile
-  }
-}
-
-export default connect(mapStateToProps)(MaterialForm)

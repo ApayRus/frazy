@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useFirestoreConnect, isLoaded } from 'react-redux-firebase'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
 import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
@@ -17,18 +16,29 @@ import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
  * @param {} props
  */
 function MaterialPageFirebaseContainer(props) {
-  const { material, translation } = useSelector((state) => state.firestore.data)
+  const { material } = useSelector((state) => state.firestore.data)
   const dispatch = useDispatch()
   const { materialId, trLang } = props.match.params
-
-  useFirestoreConnect(() => {
-    return [
-      { collection: 'material', doc: materialId, storeAs: 'material' },
-      { collection: 'materialTr', doc: `${materialId}_${trLang}`, storeAs: 'translation' },
-    ]
-  })
+  const [allDataIsLoaded, setAllDataIsLoaded] = useState(false)
 
   useEffect(() => {
+    const fetchData = async () => {
+      const material0 = await fetch(`/api/material?_id=${materialId}`)
+      const material = await material0.json()
+      const translation0 = await fetch(`/api/material-tr?for=${materialId}&lang=${trLang}`)
+      const translation = await translation0.json()
+      dispatch(
+        fillPageContent({
+          materialId,
+          material: material.data[0],
+          translation: translation.data[0],
+          mode: 'forEdit'
+        })
+      )
+      // dispatch(setMenuParameter(['unit', unit]))
+      setAllDataIsLoaded(true)
+    }
+    fetchData()
     return () => {
       dispatch(clearPageContent())
       dispatch(clearCachedDocs())
@@ -36,31 +46,23 @@ function MaterialPageFirebaseContainer(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (isLoaded(material, translation)) {
-    const { lang, unit } = material
-    dispatch(fillPageContent({ materialId, material, translation }))
-    dispatch(setMenuParameter(['unit', unit]))
+  const { lang = '' } = material || {}
 
-    const theme = langTheme(material.lang)
-
-    return (
-      <div style={{ textAlign: 'center' }}>
-        <MuiThemeProvider theme={theme}>
-          <MaterialPage />
-          <MaterialBar />
-          {unit ? <HeadingFirebaseHOC unitId={unit} displayMode='drawer' /> : null}
-          <DrawerSettings />
-          <LangFonts lang={lang} />
-        </MuiThemeProvider>
-      </div>
-    )
-  } else {
-    return (
-      <div style={{ textAlign: 'center' }}>
-        <CircularProgress size={100} />
-      </div>
-    )
-  }
+  return allDataIsLoaded ? (
+    <div style={{ textAlign: 'center' }}>
+      <MuiThemeProvider theme={langTheme(lang)}>
+        <MaterialPage />
+        <MaterialBar />
+        {/* {unit ? <HeadingFirebaseHOC unitId={unit} displayMode='drawer' /> : null} */}
+        <DrawerSettings />
+        <LangFonts lang={lang} />
+      </MuiThemeProvider>
+    </div>
+  ) : (
+    <div style={{ textAlign: 'center' }}>
+      <CircularProgress size={100} />
+    </div>
+  )
 }
 
 export default MaterialPageFirebaseContainer
