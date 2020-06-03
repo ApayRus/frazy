@@ -41,15 +41,11 @@ function Phrases(props) {
   const dispatch = useDispatch()
   const classes = useStyles()
   const text = phrases.length
-    ? map(phrases, 'text')
-        .join('\n')
-        .trim()
+    ? map(phrases, 'text').join('\n').trim()
     : //if phrases exists, we use textarea for display their text
       textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
 
-  const trText = map(phrases, `translations.${trLang}.text`)
-    .join('\n')
-    .trim() //textarea content translation text
+  const trText = map(phrases, `translations.${trLang}.text`).join('\n').trim() //textarea content translation text
 
   const handleTextChanged = event => {
     const textareaOriginal = event.target.value
@@ -63,7 +59,6 @@ function Phrases(props) {
       newPhrases = phrases.map((elem, index) => {
         return { ...elem, text: newText[index] }
       })
-      console.log('newPhrases', newPhrases)
       dispatch(setPageParameter(['phrases', newPhrases]))
     }
   }
@@ -72,7 +67,13 @@ function Phrases(props) {
     const newText = event.target.value.split('\n')
     let newPhrases = [...phrases]
     newPhrases = phrases.map((elem, index) => {
-      return { ...elem, translations: { ...elem.translations, [trLang]: { text: newText[index] } } }
+      return {
+        ...elem,
+        translations: {
+          ...elem.translations,
+          [trLang]: { text: newText[index] }
+        }
+      }
     })
     dispatch(setPageParameter(['phrases', newPhrases]))
   }
@@ -129,7 +130,9 @@ function Phrases(props) {
             <PhrasesColumn />
             {TextareaOriginal('calc(100% - 46px)')}
             <div style={{ marginLeft: 40, marginRight: 1 }}>
-              {materialId && <Revisions docId={materialId} collection='material' />}
+              {materialId && (
+                <Revisions docId={materialId} collection='material' />
+              )}
             </div>
           </Grid>
           <Grid item sm={5} xs={12}>
@@ -138,7 +141,12 @@ function Phrases(props) {
             </div>
             {TitleTranslation}
             {TextareaTranslation('100%')}
-            {materialId && <Revisions docId={`${materialId}_${trLang}`} collection='materialTr' />}
+            {materialId && (
+              <Revisions
+                docId={`${materialId}_${trLang}`}
+                collection='materialTr'
+              />
+            )}
           </Grid>
         </Grid>
       )
@@ -152,7 +160,9 @@ function Phrases(props) {
             <PhrasesColumn />
             {TextareaOriginal('calc(100% - 46px)')}
             <div style={{ marginLeft: 40, marginRight: 1 }}>
-              {materialId && <Revisions docId={materialId} collection='material' />}
+              {materialId && (
+                <Revisions docId={materialId} collection='material' />
+              )}
             </div>
           </Grid>
         </Grid>
@@ -171,7 +181,10 @@ function Phrases(props) {
             {TextareaTranslation('calc(100% - 46px)')}
             <div style={{ marginLeft: 40, marginRight: 1 }}>
               {materialId && (
-                <Revisions docId={`${materialId}_${trLang}`} collection='materialTr' />
+                <Revisions
+                  docId={`${materialId}_${trLang}`}
+                  collection='materialTr'
+                />
               )}
             </div>
           </Grid>
