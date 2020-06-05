@@ -18,13 +18,12 @@ import Typography from '@material-ui/core/Typography'
 import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
 import Waveform from '../Waveform'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setPageParameter, fillPageContent } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
 import MaterialExportTable from './ExportTable'
 import { parseImportedSubs } from '../../utils/phrases'
-import { dbSet, dbUpdate, getNewDocId } from '../../utils/firebase'
 import { diff } from 'deep-object-diff'
 import ControlsPanel from './ControlsPanel'
 import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
@@ -32,6 +31,7 @@ import PhrasesForTextArea from './MaterialFormPhrases'
 import YoutubePlayer from '../YoutubePlayer'
 import firebase from '../../firebase/firebase'
 import nanoid from 'nanoid'
+import { fetchRequest } from '../../utils/fetch'
 
 export default function MaterialForm(props) {
   const {
@@ -43,7 +43,6 @@ export default function MaterialForm(props) {
     lang,
     unit,
     order,
-    materialPhrases,
     duration,
     translations,
     materialCreated,
@@ -52,7 +51,6 @@ export default function MaterialForm(props) {
     trTitle,
     trLang,
     for: forMaterial,
-    translationPhrases,
     translationRevisions,
     translationCreated,
     //combined phrases Material+Translation
@@ -63,47 +61,46 @@ export default function MaterialForm(props) {
   } = useSelector(state => state.pageContent)
 
   const history = useHistory()
-  const [prevMaterial, setPrevMaterial] = useState({})
-  const [prevTranslation, setPrevTranslation] = useState({})
-  const [materialAction, setMaterialAction] = useState('')
-  const [translationAction, setTranslationAction] = useState('')
+  const [initMaterial, setInitMaterial] = useState({})
+  const [initTranslation, setInitTranslation] = useState({})
+  const [materialAction, setMaterialAction] = useState('create')
+  const [translationAction, setTranslationAction] = useState('create')
   const dispatch = useDispatch()
   const { sticked: playerSticked } = useSelector(state => state.playerSettings)
 
-  // we get initial data snapshots for compare them with user input
-  // and detect what has changed
-  useEffect(() => {
-    //onMount
-    // snapshot from material
-    {
-      const materialData = {
-        title,
-        mediaLink,
-        lang,
-        unit,
-        order,
-        phrases: materialPhrases,
-        youtubeId
-      }
-      setPrevMaterial(materialData)
+  // get actual data from redux, related to data-model
+  // we'll make spapshots twice -
+  // 1) on mount component 2) on submit
+  // and will compare them
+  // with inputed by user new data and detect what has changed
+  const getSnapshotFromMaterial = () => {
+    return {
+      _id: materialId,
+      title,
+      mediaLink,
+      youtubeId,
+      lang,
+      unit,
+      order,
+      phrases: localPhrasesToDBphrases(phrases),
+      duration
     }
-    // snapshot from translation
-    {
-      const translationData = {
-        title: trTitle,
-        lang: trLang,
-        phrases: translationPhrases,
-        for: forMaterial
-      }
-      setPrevTranslation(translationData)
+  }
+  const getSnapshotFromTranslation = () => {
+    return {
+      _id: translationId,
+      title: trTitle,
+      lang: trLang,
+      for: materialId,
+      phrases: localPhrasesToDBtranslations(phrases, trLang)
     }
+  }
+  const checkMaterialTranslationIds = () => {
     // if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     // add or update is needed for Event
     if (materialId) {
       setMaterialAction('update')
     } else {
-      setMaterialAction('create')
-      setTranslationAction('create')
       //we'll use this id where create translationId (+_trLang) and fileId (the same)
       dispatch(setPageParameter(['materialId', nanoid(24)]))
     }
@@ -112,6 +109,13 @@ export default function MaterialForm(props) {
     } else {
       dispatch(setPageParameter(['translationId', nanoid(24)]))
     }
+  }
+
+  useEffect(() => {
+    //onMount
+    checkMaterialTranslationIds()
+    setInitMaterial(getSnapshotFromMaterial())
+    setInitTranslation(getSnapshotFromTranslation())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -133,75 +137,52 @@ export default function MaterialForm(props) {
 
     let actions = [] // materialAction and translationAction both, or one of them.
 
-    const translationContent = {
-      _id: translationId,
-      title: trTitle,
-      lang: trLang,
-      for: materialId,
-      phrases: localPhrasesToDBtranslations(phrases, trLang),
-      action: translationAction
+    // answers what finally has happend after user input
+    const getEvent = () => {
+      return {
+        _id: nanoid(24),
+        title,
+        lang,
+        materialId,
+        translationId,
+        trTitle,
+        trLang,
+        actions: ['added material', 'added translation'],
+        time: Date.now(),
+        action: 'create'
+      }
     }
 
-    //new material after user input:
-    const materialContent = {
-      _id: materialId,
-      title,
-      mediaLink,
-      youtubeId,
-      lang,
-      unit,
-      order,
-      phrases: localPhrasesToDBphrases(phrases),
-      action: materialAction
+    const finalMaterial = getSnapshotFromMaterial()
+    const finalTranslation = getSnapshotFromTranslation()
+
+    const diffMaterial = diff(initMaterial, finalMaterial) //diff object after user input
+    const diffTranslation = diff(initTranslation, finalTranslation) //diff object after user input
+
+    const authtoken = await firebase.auth().currentUser.getIdToken(true)
+
+    console.log('initMaterial', initMaterial)
+    console.log('finalMaterial', finalMaterial)
+    console.log('initTranslation', initTranslation)
+    console.log('finalTranslation', finalTranslation)
+
+    const materialToSend = { ...finalMaterial, action: materialAction }
+
+    const translationToSend = { ...finalTranslation, action: translationAction }
+
+    const materialRes = fetchRequest('/api/material', 'PATCH', authtoken, materialToSend)
+    const translationRes = fetchRequest('/api/material-tr', 'PATCH', authtoken, translationToSend)
+
+    const response = await Promise.all([materialRes, translationRes])
+    console.log('response', response)
+    const [materialResponse, translationResponse] = response
+    if (materialResponse.success && translationResponse.success) {
+      history.push(`/material/${materialId}/${trLang}`)
     }
 
-    const event = {
-      _id: nanoid(24),
-      title,
-      lang,
-      materialId,
-      translationId,
-      trTitle,
-      trLang,
-      actions: ['added material', 'added translation'],
-      time: Date.now(),
-      action: 'create'
-    }
-    const diffMaterial = diff(prevMaterial, materialContent) //diff object after user input
-    const diffTranslation = diff(prevTranslation, translationContent) //diff object after user input
+    // const eventTask = sendToServer('/api/event', 'PATCH', authtoken, getEvent())
 
-    console.log('diffMaterial', diffMaterial)
-    console.log('diffTranslation', diffTranslation)
-    console.log('material', materialContent)
-    console.log('translation', translationContent)
-
-    const currentUser = firebase.auth().currentUser
-    const authtoken = await currentUser.getIdToken(true)
-
-    const materialTask = fetch('/api/material', {
-      method: 'PATCH',
-      headers: { authtoken, 'Content-Type': 'application/json' },
-      body: JSON.stringify(materialContent)
-    })
-    const translationTask = fetch('/api/material-tr', {
-      method: 'PATCH',
-      headers: { authtoken, 'Content-Type': 'application/json' },
-      body: JSON.stringify(translationContent)
-    })
-    const eventTask = fetch('/api/event', {
-      method: 'PATCH',
-      headers: { authtoken, 'Content-Type': 'application/json' },
-      body: JSON.stringify(event)
-    })
-
-    await Promise.all([materialTask, translationTask, eventTask])
-
-    history.push(`/material/${materialId}/${trLang}`)
-    // console.log('materialTask', materialTask.json())
-    // console.log('translationTask', translationTask.json())
-    // console.log('event', event)
-    // console.log('eventTask', eventTask.json())
-    // materialTask.then((result) => console.log('result', result))
+    // history.push(`/material/${materialId}/${trLang}`)
   }
 
   return (
