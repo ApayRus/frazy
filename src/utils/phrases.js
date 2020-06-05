@@ -16,23 +16,23 @@ import { phraseTextToObject } from './phrasesXmlParser'
  * @param {*} phrasesObject
  */
 export function makePhrasesArray(phrasesObject, mode = 'forView') {
-  let phrasesArray = []
+    let phrasesArray = []
 
-  phrasesArray = map(phrasesObject, (elem, key) => {
-    const phraseObjectFromText =
-      mode === 'forView' ? phraseTextToObject(elem.text) : { text: elem.text }
-    return {
-      ...elem, //start, end
-      ...phraseObjectFromText, //text, actor, dict, comment
-      id: key,
-      attributes: { label1: phraseObjectFromText.text.replace(/<.+?>/g, '') }, //for wavesurfer
-      color: randomColor(0.5), //for wavesurfer
-    }
-  })
+    phrasesArray = map(phrasesObject, (elem, key) => {
+        const phraseObjectFromText =
+            mode === 'forView' ? phraseTextToObject(elem.text) : { text: elem.text }
+        return {
+            ...elem, //start, end
+            ...phraseObjectFromText, //text, actor, dict, comment
+            id: key,
+            attributes: { label1: phraseObjectFromText.text.replace(/<.+?>/g, '') }, //for wavesurfer
+            color: randomColor(0.5) //for wavesurfer
+        }
+    })
 
-  phrasesArray = orderBy(phrasesArray, 'start')
+    phrasesArray = orderBy(phrasesArray, 'start')
 
-  return phrasesArray
+    return phrasesArray
 }
 
 /**
@@ -42,20 +42,21 @@ export function makePhrasesArray(phrasesObject, mode = 'forView') {
  * @param {string} trLang - ru, en, ch, es
  */
 export function addTranslation(phrases, translation, mode = 'forView') {
-  const { phrases: trPhrases, lang: trLang } = translation
-  return phrases.map((elem) => {
-    const tr = trPhrases[elem.id] || {}
-    const trText = tr.text || ''
-    const phraseObjectFromText = mode === 'forView' ? phraseTextToObject(trText) : { text: trText }
+    const { phrases: trPhrases, lang: trLang } = translation
+    return phrases.map(elem => {
+        const tr = trPhrases[elem.id] || {}
+        const trText = tr.text || ''
+        const phraseObjectFromText = mode === 'forView' ? phraseTextToObject(trText) : { text: trText }
 
-    const oldTranslations = elem.translations
-    const newTranslation = { [trLang]: { ...phraseObjectFromText } }
-    return {
-      ...elem,
-      attributes: { ...elem.attributes, label2: phraseObjectFromText.text.replace(/<.+?>/g, '') },
-      translations: { ...oldTranslations, ...newTranslation },
-    }
-  })
+        const oldTranslations = elem.translations
+        const newTranslation = {
+            [trLang]: {...phraseObjectFromText } }
+        return {
+            ...elem,
+            attributes: {...elem.attributes, label2: phraseObjectFromText.text.replace(/<.+?>/g, '') },
+            translations: {...oldTranslations, ...newTranslation }
+        }
+    })
 }
 
 /**
@@ -65,28 +66,28 @@ export function addTranslation(phrases, translation, mode = 'forView') {
  *
  */
 export function assToPhrases(subsTiming) {
-  const assRows = subsTiming.trim().split('\n')
-  const phrases = {}
-  assRows.forEach((row) => {
-    const randomId = nanoid(11)
-    phrases[randomId] = assRowToPhraseObject(row)
-  })
-  return phrases
+    const assRows = subsTiming.trim().split('\n')
+    const phrases = {}
+    assRows.forEach(row => {
+        const randomId = nanoid(11)
+        phrases[randomId] = assRowToPhraseObject(row)
+    })
+    return phrases
 }
 
 // array to object, format for DB
 export function localPhrasesToDBphrases(phrases) {
-  return phrases.reduce((obj, item) => {
-    let { id, start, end, text } = item
+    return phrases.reduce((obj, item) => {
+        let { id, start, end, text } = item
 
-    id = id.replace('wavesurfer_', '')
-    start = +start.toFixed(2)
-    end = +end.toFixed(2)
-    text = text || ''
+        id = id.replace('wavesurfer_', '')
+        start = +start.toFixed(2)
+        end = +end.toFixed(2)
+        text = text || ''
 
-    obj[id] = { start, end, text }
-    return obj
-  }, {})
+        obj[id] = { start, end, text }
+        return obj
+    }, {})
 }
 
 /**
@@ -95,13 +96,16 @@ export function localPhrasesToDBphrases(phrases) {
  * returns [{id, text}]
  */
 export function localPhrasesToDBtranslations(phrases, trLang) {
-  return phrases.reduce((obj, item) => {
-    let { id, translations } = item
-    const text = translations[trLang].text || ''
-    id = id.replace('wavesurfer_', '')
-    obj[id] = { text }
-    return obj
-  }, {})
+    if (!trLang) {
+        return {}
+    }
+    return phrases.reduce((obj, item) => {
+        let { id, translations } = item
+        const text = translations[trLang].text || ''
+        id = id.replace('wavesurfer_', '')
+        obj[id] = { text }
+        return obj
+    }, {})
 }
 
 /**
@@ -109,20 +113,19 @@ export function localPhrasesToDBtranslations(phrases, trLang) {
  *makes text array from phrases
  */
 export function localPhrasesToText(phrases) {
-  return map(phrases, 'text')
+    return map(phrases, 'text')
 }
 
 export function localPhrasesToTrText(phrases, trLang) {
-  const pathToValue = `translations.${trLang}`
-  return map(phrases, pathToValue)
+    const pathToValue = `translations.${trLang}`
+    return map(phrases, pathToValue)
 }
 
 export function randomColor(alpha) {
-  return (
-    'rgba(' +
-    [~~(Math.random() * 255), ~~(Math.random() * 255), ~~(Math.random() * 255), alpha || 1] +
-    ')'
-  )
+    return (
+        'rgba(' + [~~(Math.random() * 255), ~~(Math.random() * 255), ~~(Math.random() * 255), alpha || 1] +
+        ')'
+    )
 }
 
 /**
@@ -138,100 +141,100 @@ export function randomColor(alpha) {
  * @param {string} tableText, multiline text. rows separated by \n, columns by \t
  */
 function parseFrazyExportTable(tableText) {
-  const tableTextArray = tableText.split('\n')
-  const materialInfo1Array = tableTextArray[1].split('\t')
-  const [, materialId, mediaLink, unit, order] = materialInfo1Array
-  const materialInfo2Array = tableTextArray[2].split('\t')
-  const [, , , langAndTitle, trLangAndTrTitle] = materialInfo2Array
-  const [lang, ...titleArray] = langAndTitle.split(':')
-  const title = titleArray.join(':').trim()
-  const [trLang, ...trTitleArray] = trLangAndTrTitle.split(':')
-  const trTitle = trTitleArray.join(':').trim()
+    const tableTextArray = tableText.split('\n')
+    const materialInfo1Array = tableTextArray[1].split('\t')
+    const [, materialId, mediaLink, unit, order] = materialInfo1Array
+    const materialInfo2Array = tableTextArray[2].split('\t')
+    const [, , , langAndTitle, trLangAndTrTitle] = materialInfo2Array
+    const [lang, ...titleArray] = langAndTitle.split(':')
+    const title = titleArray.join(':').trim()
+    const [trLang, ...trTitleArray] = trLangAndTrTitle.split(':')
+    const trTitle = trTitleArray.join(':').trim()
 
-  const phrasesTextArray = tableTextArray.slice(3)
+    const phrasesTextArray = tableTextArray.slice(3)
 
-  const materialPhrases = {},
-    translationPhrases = {}
-  phrasesTextArray.forEach((elem) => {
-    const randomId = nanoid(11)
-    const [importedId, importedStart, importedEnd, text, trText] = elem.split('\t')
-    const id = importedId ? importedId : randomId
-    // '0:03:53.52' or '233.52'
-    const start = timeStringToSeconds(importedStart)
-    const end = timeStringToSeconds(importedEnd)
-    materialPhrases[id] = { start, end, text }
-    translationPhrases[id] = { text: trText }
-  })
+    const materialPhrases = {},
+        translationPhrases = {}
+    phrasesTextArray.forEach(elem => {
+        const randomId = nanoid(11)
+        const [importedId, importedStart, importedEnd, text, trText] = elem.split('\t')
+        const id = importedId ? importedId : randomId
+            // '0:03:53.52' or '233.52'
+        const start = timeStringToSeconds(importedStart)
+        const end = timeStringToSeconds(importedEnd)
+        materialPhrases[id] = { start, end, text }
+        translationPhrases[id] = { text: trText }
+    })
 
-  const material = {
-    title,
-    mediaLink,
-    unit,
-    order,
-    lang,
-    phrases: materialPhrases,
-  }
+    const material = {
+        title,
+        mediaLink,
+        unit,
+        order,
+        lang,
+        phrases: materialPhrases
+    }
 
-  const translation = {
-    lang: trLang,
-    title: trTitle,
-    for: materialId,
-    phrases: translationPhrases,
-  }
-  // console.log(phrasesTextArray)
-  // const phrases =
-  return {
-    materialId,
-    material,
-    translation,
-  }
+    const translation = {
+            lang: trLang,
+            title: trTitle,
+            for: materialId,
+            phrases: translationPhrases
+        }
+        // console.log(phrasesTextArray)
+        // const phrases =
+    return {
+        materialId,
+        material,
+        translation
+    }
 }
 
 function parseWebvtt(subsText) {
-  const subsArray = subsText.split('\n\n')
-  const subsInfoArray = subsArray.shift().split('\n')
-  const title = subsInfoArray.join(' ')
-  const lang = subsInfoArray[2].split(': ')[1]
+    const subsArray = subsText.split('\n\n')
+    const subsInfoArray = subsArray.shift().split('\n')
+    const title = subsInfoArray.join(' ')
+    const lang = subsInfoArray[2].split(': ')[1]
 
-  const phrasesArray = subsArray.map((elem) => {
-    const id = nanoid(11)
-    const [timing, ...textArray] = elem.split('\n')
-    const [startText, , endText] = timing.split(' ')
-    const start = timeStringToSeconds(startText)
-    const end = timeStringToSeconds(endText)
-    const text = textArray.join(' ')
-    return { id, start, end, text }
-  })
+    const phrasesArray = subsArray.map(elem => {
+        const id = nanoid(11)
+        const [timing, ...textArray] = elem.split('\n')
+        const [startText, , endText] = timing.split(' ')
+        const start = timeStringToSeconds(startText)
+        const end = timeStringToSeconds(endText)
+        const text = textArray.join(' ')
+        return { id, start, end, text }
+    })
 
-  const phrases = phrasesArray.reduce((obj, item) => {
-    const { id } = item
-    delete item.id
-    obj[id] = { ...item }
-    return obj
-  }, {})
+    const phrases = phrasesArray.reduce((obj, item) => {
+        const { id } = item
+        delete item.id
+        obj[id] = {...item }
+        return obj
+    }, {})
 
-  const material = { title, lang, phrases, order: '' }
+    const material = { title, lang, phrases, order: '' }
 
-  return { material }
+    return { material }
 }
 
 function checkSubsImportType(importText) {
-  const importTextArray = importText.split('\n')
-  const firstLine = importTextArray[0]
-  if (firstLine === '\tmaterialId\tmediaLink\tunit\torder') {
-    return 'frazyTable'
-  }
-  if (firstLine === 'WEBVTT') {
-    return 'webvtt'
-  }
+    const importTextArray = importText.split('\n')
+    const firstLine = importTextArray[0]
+    if (firstLine === '\tmaterialId\tmediaLink\tunit\torder') {
+        return 'frazyTable'
+    }
+    if (firstLine === 'WEBVTT') {
+        return 'webvtt'
+    }
 }
 
 export function parseImportedSubs(text) {
-  const subsImportType = checkSubsImportType(text)
-  if (subsImportType === 'frazyTable') {
-    return parseFrazyExportTable(text)
-  }
-  if (subsImportType === 'webvtt') {
-    return parseWebvtt(text)
-  }
+    const subsImportType = checkSubsImportType(text)
+    if (subsImportType === 'frazyTable') {
+        return parseFrazyExportTable(text)
+    }
+    if (subsImportType === 'webvtt') {
+        return parseWebvtt(text)
+    }
 }

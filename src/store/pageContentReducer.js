@@ -14,6 +14,7 @@ const initState = {
     trTitle: '',
     trLang: '',
     mediaLink: '', // saved in db, folder/filename.mp3
+    youtubeId: '',
     duration: 0, // 45.035 (sec)
     translations: [], // ['ru', 'ar', 'ch']
     uploadProgress: -1,
@@ -47,8 +48,8 @@ const pageContentReducer = (state = initState, action) => {
                     mediaLink,
                     phrases: materialPhrases,
                     youtubeId,
+                    translations,
                     meta: {
-                        translations = [],
                         duration = 0,
                         created: materialCreated = {},
                         revisions: materialRevisions = {}
@@ -61,14 +62,14 @@ const pageContentReducer = (state = initState, action) => {
                 const {
                     lang: trLang = '',
                     title: trTitle = '',
-                    phrases: translationPhrases = {},
+                    phrases: translationPhrases,
                     for: forMaterial = '',
                     meta: { revisions: translationRevisions = {}, created: translationCreated = {} } = {},
                     _id: translationId = ''
                 } = translation || {}
 
                 if (translation) {
-                    if (translation.phrases) {
+                    if (translationPhrases) {
                         phrases = addTranslation(phrases, translation, mode)
                     }
                 }
@@ -83,13 +84,11 @@ const pageContentReducer = (state = initState, action) => {
                     order,
                     mediaLink,
                     youtubeId,
-                    materialPhrases,
                     translations,
                     duration,
                     materialRevisions,
                     trLang,
                     trTitle,
-                    translationPhrases,
                     for: forMaterial,
                     translationRevisions,
                     translationCreated,

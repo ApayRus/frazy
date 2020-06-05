@@ -4,12 +4,10 @@ import { useSelector } from 'react-redux'
 import switchTranslation from './switchTranslation'
 
 function TranslationSwitcher() {
-  const { trLang, translations, materialId } = useSelector((state) => state.pageContent)
+  const { trLang, translations } = useSelector(state => state.pageContent)
 
-  const updateTranslation = (lang, trLang) => (event) => {
-    const docId = `${materialId}_${trLang}`
-    console.log('docId', docId)
-    switchTranslation(docId)
+  const updateTranslation = _id => event => {
+    switchTranslation(_id)
   }
 
   return (
