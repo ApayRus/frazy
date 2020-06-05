@@ -1,21 +1,22 @@
 const initState = {
-  /*display*/
-  unit: '',
-  title: '',
-  logo: '',
-  background: '',
-  heading: []
+    /*display*/
+    title: 'title',
+    author: 'author',
+    unit: '',
+    logo: 'default-files/default-logo.png',
+    background: 'default-files/default-background.jpg',
+    heading: []
 }
 
 const menuReducer = (state = initState, action) => {
-  switch (action.type) {
-    case 'SET_MENU_PARAMETER': {
-      const [key, value] = action.payload // ['volume', 55]
-      return { ...state, [key]: value }
+    switch (action.type) {
+        case 'SET_MENU_PARAMETERS':
+            {
+                return {...state, ...action.payload }
+            }
+        default:
+            return state
     }
-    default:
-      return state
-  }
 }
 
 export default menuReducer

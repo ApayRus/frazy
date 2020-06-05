@@ -5,12 +5,12 @@
  * @example 
  * const setMenuTitleAction = {
   type: 'SET_MENU_PARAMETER',
-  ['title', "1. Comfortable hole" ]
+  {title: "1. Comfortable hole" }
 }
  */
-export const setMenuParameter = payload => {
-  return {
-    type: 'SET_MENU_PARAMETER',
-    payload
-  }
+export const setMenuParameters = payload => {
+    return {
+        type: 'SET_MENU_PARAMETERS',
+        payload
+    }
 }

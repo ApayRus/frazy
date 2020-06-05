@@ -4,7 +4,7 @@ import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
 import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
 import { clearCachedDocs } from '../../store/appStateActions'
-import { setMenuParameter } from '../../store/menuActions'
+import { setMenuParameters } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
@@ -17,7 +17,7 @@ import { fetchRequest } from '../../utils/fetch'
  * @param {} props
  */
 function MaterialPageFirebaseContainer(props) {
-  const { material } = useSelector(state => state.firestore.data)
+  const { unit, lang } = useSelector(state => state.pageContent)
   const dispatch = useDispatch()
   const { materialId, trLang } = props.match.params
   const [allDataIsLoaded, setAllDataIsLoaded] = useState(false)
@@ -36,25 +36,30 @@ function MaterialPageFirebaseContainer(props) {
           mode: 'forEdit'
         })
       )
-      // dispatch(setMenuParameter(['unit', unit]))
+      // dispatch(setMenuParameters(['unit', unit]))
       setAllDataIsLoaded(true)
     }
     fetchData()
     return () => {
-      dispatch(clearPageContent())
-      dispatch(clearCachedDocs())
+      // dispatch(clearPageContent())
+      // dispatch(clearCachedDocs())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [materialId])
 
-  const { lang = '' } = material || {}
+  useEffect(() => {
+    return () => {
+      dispatch(clearPageContent())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [materialId])
 
   return allDataIsLoaded ? (
     <div style={{ textAlign: 'center' }}>
       <MuiThemeProvider theme={langTheme(lang)}>
         <MaterialPage />
         <MaterialBar />
-        {/* {unit ? <HeadingFirebaseHOC unitId={unit} displayMode='drawer' /> : null} */}
+        {unit ? <HeadingFirebaseHOC unitId={unit} displayMode='drawer' /> : null}
         <DrawerSettings />
         <LangFonts lang={lang} />
       </MuiThemeProvider>

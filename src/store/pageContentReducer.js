@@ -17,6 +17,8 @@ const initState = {
     youtubeId: '',
     duration: 0, // 45.035 (sec)
     translations: [], // ['ru', 'ar', 'ch']
+    materialAction: 'create', // or 'update'
+    translationAction: 'create', // or 'update'
     uploadProgress: -1,
     downloadProgress: -1,
     waveformRenderProgress: -1,

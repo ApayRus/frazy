@@ -13,9 +13,8 @@ function PrevNextButtons(props) {
   const { heading } = useSelector(state => state.menu)
   const { materialId, trLang } = useSelector(state => state.pageContent)
   const dispatch = useDispatch()
-  let headingOrdered = map(heading, (elem, key) => ({ id: key, ...elem }))
-  headingOrdered = orderBy(headingOrdered, ['order'], ['asc'])
-  const materialIndex = findIndex(headingOrdered, { id: materialId })
+  const headingOrdered = orderBy(heading, ['created.time'], ['asc'])
+  const materialIndex = findIndex(headingOrdered, { _id: materialId })
   const nextMaterial = headingOrdered[materialIndex + 1]
   const prevMaterial = headingOrdered[materialIndex - 1]
 
@@ -28,7 +27,7 @@ function PrevNextButtons(props) {
       {nextMaterial && (
         <Button
           component={Link}
-          to={`/material/${nextMaterial.id}/${trLang}`}
+          to={`/material/${nextMaterial._id}/${trLang}`}
           onClick={handleClick}
           variant='contained'
           style={{ float: 'right', marginTop: 2 }}
@@ -41,7 +40,7 @@ function PrevNextButtons(props) {
       {prevMaterial && (
         <Button
           component={Link}
-          to={`/material/${prevMaterial.id}/${trLang}`}
+          to={`/material/${prevMaterial._id}/${trLang}`}
           onClick={handleClick}
           variant='contained'
           style={{ float: 'left', marginTop: 2 }}

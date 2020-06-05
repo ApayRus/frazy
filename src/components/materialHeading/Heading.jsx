@@ -11,13 +11,13 @@ import map from 'lodash/map'
 import { useDispatch, useSelector } from 'react-redux'
 
 function Heading(props) {
-  const { title, author, heading, logo, background } = useSelector((state) => state.menu)
-  const { trLang } = useSelector((state) => state.pageContent)
+  const { title, author, heading, logo, background } = useSelector(state => state.menu)
+  const { trLang } = useSelector(state => state.pageContent)
   const dispatch = useDispatch()
-  let headingOrdered = map(heading, (elem, key) => ({ id: key, ...elem }))
-  headingOrdered = orderBy(headingOrdered, ['order'], ['asc'])
 
-  const useStyles = makeStyles((theme) => ({
+  const headingOrdered = orderBy(heading, ['created.time'], ['asc'])
+
+  const useStyles = makeStyles(theme => ({
     header: {
       textAlign: 'center',
       padding: 20,
@@ -25,21 +25,21 @@ function Heading(props) {
 
       backgroundSize: 'cover',
       backgroundRepeat: 'round',
-      backgroundPosition: 'center center',
+      backgroundPosition: 'center center'
     },
     listItem: {
       paddingTop: 0,
       paddingBottom: 0,
       fontSize: '12px',
-      lineHeight: 1,
-    },
+      lineHeight: 1
+    }
   }))
 
   const classes = useStyles()
 
   const handleClick = () => {
     dispatch(setAppStateParam({ showHeadingDrawer: false }))
-    dispatch(clearCachedDocs())
+    // dispatch(clearCachedDocs())
   }
 
   return (
@@ -50,16 +50,16 @@ function Heading(props) {
         {logo && <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logo} />}
       </div>
       <List>
-        {headingOrdered.map((elem) => {
+        {headingOrdered.map(elem => {
           return (
             <ListItem
               component={Link}
-              to={`/material/${elem.id}/${trLang}`}
+              to={`/material/${elem._id}/${trLang}`}
               className={classes.listItem}
               button
               divider
               onClick={handleClick}
-              key={`heading-${elem.id}`}
+              key={`heading-${elem._id}`}
             >
               <ListItemText primary={elem.title} /* secondary={elem.title.ru} */ />
             </ListItem>

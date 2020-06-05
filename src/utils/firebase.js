@@ -3,27 +3,31 @@ import firebase from '../firebase/firebase'
 const db = firebase.firestore()
 
 export function afterFirebaseFileDownloadUrlReady(fileId, callback) {
-  firebase
-    .storage()
-    .ref(fileId)
-    .getDownloadURL()
-    .then(url => {
-      callback(url)
-    })
+    firebase
+        .storage()
+        .ref(fileId)
+        .getDownloadURL()
+        .then(url => {
+            callback(url)
+        })
+}
+
+export function getDownloadUrlById(ids = []) {
+    return Promise.all(ids.map(fileId => firebase.storage().ref(fileId).getDownloadURL()))
 }
 
 export function dbSet(colName, docId, object, options = { merge: true }) {
-  db.collection(colName)
-    .doc(docId)
-    .set(object, options)
-    .catch(error => console.log('error', error))
+    db.collection(colName)
+        .doc(docId)
+        .set(object, options)
+        .catch(error => console.log('error', error))
 }
 
 export function dbUpdate(colName, docId, object) {
-  db.collection(colName)
-    .doc(docId)
-    .update(object)
-    .catch(error => console.log('error', error))
+    db.collection(colName)
+        .doc(docId)
+        .update(object)
+        .catch(error => console.log('error', error))
 }
 
 /**
@@ -31,5 +35,5 @@ export function dbUpdate(colName, docId, object) {
  * @param {string} collection
  */
 export function getNewDocId(colName) {
-  return db.collection(colName).doc().id
+    return db.collection(colName).doc().id
 }
