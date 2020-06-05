@@ -10,27 +10,28 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
 import DrawerSettings from '../layout/DrawerSettings'
 import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
+import { fetchRequest } from '../../utils/fetch'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
  * @param {} props
  */
 function MaterialPageFirebaseContainer(props) {
-  const { material } = useSelector((state) => state.firestore.data)
+  const { material } = useSelector(state => state.firestore.data)
   const dispatch = useDispatch()
   const { materialId, trLang } = props.match.params
   const [allDataIsLoaded, setAllDataIsLoaded] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
-      const material0 = await fetch(`/api/material?_id=${materialId}`)
-      const material = await material0.json()
-      const translation0 = await fetch(`/api/material-tr?for=${materialId}&lang=${trLang}`)
-      const translation = await translation0.json()
+      const [material, translation] = await Promise.all([
+        fetchRequest(`/api/material?_id=${materialId}`),
+        fetchRequest(`/api/material-tr?for=${materialId}&lang=${trLang}`)
+      ])
       dispatch(
         fillPageContent({
           materialId,
-          material: material.data[0],
+          material: material.data,
           translation: translation.data[0],
           mode: 'forEdit'
         })

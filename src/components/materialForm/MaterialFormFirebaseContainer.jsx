@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import MaterialForm from './MaterialForm'
 import { fillPageContent } from '../../store/pageContentActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { fetchRequest } from '../../utils/fetch'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -15,16 +16,16 @@ function MaterialFormHOC(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const material0 = await fetch(`/api/material?_id=${materialId}`)
-      const material = await material0.json()
-      const translation0 = await fetch(`/api/material-tr?for=${materialId}&lang=${trLang}`)
-      const translation = await translation0.json()
+      const [material, translation] = await Promise.all([
+        fetchRequest(`/api/material?_id=${materialId}`),
+        fetchRequest(`/api/material-tr?for=${materialId}&lang=${trLang}`)
+      ])
       dispatch(
         fillPageContent({
           materialId,
-          material: material.data[0],
+          material: material.data,
           translation: translation.data[0],
-          mode: 'forEdit',
+          mode: 'forEdit'
         })
       )
       setAllDataIsLoaded(true)
@@ -37,8 +38,3 @@ function MaterialFormHOC(props) {
 }
 
 export default MaterialFormHOC
-
-/*
-        _id: '5ed47711cb0e6b61da83fd4e',
-        for: '5ed47585cb0e6b61da83fd4d', 
-*/
