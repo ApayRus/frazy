@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
 import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
-import { clearCachedDocs } from '../../store/appStateActions'
-import { setMenuParameters } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
 import DrawerSettings from '../layout/DrawerSettings'
 import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
 import { fetchRequest } from '../../utils/fetch'
+import { getDownloadUrlById } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -28,26 +27,18 @@ function MaterialPageFirebaseContainer(props) {
         fetchRequest(`/api/material?_id=${materialId}`),
         fetchRequest(`/api/material-tr?for=${materialId}&lang=${trLang}`)
       ])
+      const [mediaLink] = await getDownloadUrlById([material.data.mediaLink])
       dispatch(
         fillPageContent({
           materialId,
-          material: material.data,
+          material: { ...material.data, mediaLink },
           translation: translation.data[0],
           mode: 'forEdit'
         })
       )
-      // dispatch(setMenuParameters(['unit', unit]))
       setAllDataIsLoaded(true)
     }
     fetchData()
-    return () => {
-      // dispatch(clearPageContent())
-      // dispatch(clearCachedDocs())
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [materialId])
-
-  useEffect(() => {
     return () => {
       dispatch(clearPageContent())
     }
