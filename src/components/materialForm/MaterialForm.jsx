@@ -57,14 +57,14 @@ export default function MaterialForm(props) {
     phrases,
     //temporary values
     uploadProgress,
-    textareaOriginal
+    textareaOriginal,
+    materialAction,
+    translationAction
   } = useSelector(state => state.pageContent)
 
   const history = useHistory()
   const [initMaterial, setInitMaterial] = useState({})
   const [initTranslation, setInitTranslation] = useState({})
-  const [materialAction, setMaterialAction] = useState('create')
-  const [translationAction, setTranslationAction] = useState('create')
   const dispatch = useDispatch()
   const { sticked: playerSticked } = useSelector(state => state.playerSettings)
 
@@ -99,13 +99,13 @@ export default function MaterialForm(props) {
     // if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     // add or update is needed for Event
     if (materialId) {
-      setMaterialAction('update')
+      dispatch(setPageParameter(['materialAction', 'update']))
     } else {
       //we'll use this id where create translationId (+_trLang) and fileId (the same)
       dispatch(setPageParameter(['materialId', nanoid(24)]))
     }
     if (translationId) {
-      setTranslationAction('update')
+      dispatch(setPageParameter(['translationAction', 'update']))
     } else {
       dispatch(setPageParameter(['translationId', nanoid(24)]))
     }

@@ -119,7 +119,12 @@ const pageContentReducer = (state = initState, action) => {
             }
         case 'UPDATE_FROM_TRANSLATION':
             {
-                const { title: trTitle, lang: trLang, phrases: phrasesRevision } = action.payload.doc
+                const {
+                    title: trTitle,
+                    lang: trLang,
+                    phrases: phrasesRevision,
+                    _id: translationId
+                } = action.payload.doc
                 let { phrases } = state
                 //rewrite text
                 phrases = phrases.map(elem => {
@@ -134,7 +139,14 @@ const pageContentReducer = (state = initState, action) => {
                     }
                 })
 
-                const stateAfter = {...state, trLang, trTitle, phrases }
+                const stateAfter = {
+                    ...state,
+                    translationId,
+                    translationAction: 'update',
+                    trLang,
+                    trTitle,
+                    phrases
+                }
 
                 return stateAfter
             }

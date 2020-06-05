@@ -8,12 +8,13 @@ import switchTranslation from '../translations/switchTranslation'
 import HelperTooltip from './HelperIconTooltip'
 import { materialEditHelpers as local } from '../../localization/en'
 import htmlParser from 'html-react-parser'
+import nanoid from 'nanoid'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   textField: {
     marginRight: 10,
-    marginBottom: 20,
-  },
+    marginBottom: 20
+  }
 }))
 
 /**
@@ -26,16 +27,19 @@ const useStyles = makeStyles((theme) => ({
 function MaterialFormTitle(props) {
   const { lang, title, langId, langLabel, titleId, titleLabel } = props
   const dispatch = useDispatch()
-  const { translations, materialId } = useSelector((state) => state.pageContent)
+  const { translations } = useSelector(state => state.pageContent)
   const classes = useStyles()
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     const { id, value } = event.target
     dispatch(setPageParameter([id, value]))
     if (id === 'trLang') {
-      if (translations.includes(value)) {
-        const docId = `${materialId}_${value}`
-        switchTranslation(docId)
+      const translation = translations.find(elem => elem.lang === value)
+      if (translation) {
+        switchTranslation(translation._id)
+      } else {
+        dispatch(setPageParameter(['translationAction', 'create']))
+        dispatch(setPageParameter(['translationId', nanoid(24)]))
       }
     }
   }
