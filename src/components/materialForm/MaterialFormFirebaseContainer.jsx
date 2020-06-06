@@ -26,7 +26,7 @@ function MaterialFormHOC(props) {
         fillPageContent({
           materialId,
           material: { ...material.data, mediaLink },
-          translation: translation.data[0],
+          translation: translation.data,
           mode: 'forEdit'
         })
       )
