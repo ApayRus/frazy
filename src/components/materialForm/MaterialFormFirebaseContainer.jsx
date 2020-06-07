@@ -4,7 +4,6 @@ import MaterialForm from './MaterialForm'
 import { fillPageContent } from '../../store/pageContentActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { fetchRequest } from '../../utils/fetch'
-import { getDownloadUrlById } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -21,11 +20,10 @@ function MaterialFormHOC(props) {
         fetchRequest(`/api/material?_id=${materialId}`),
         fetchRequest(`/api/material-tr?for=${materialId}&lang=${trLang}`)
       ])
-      const [mediaLink] = await getDownloadUrlById([material.data.mediaLink])
       dispatch(
         fillPageContent({
           materialId,
-          material: { ...material.data, mediaLink },
+          material: { ...material.data },
           translation: translation.data,
           mode: 'forEdit'
         })

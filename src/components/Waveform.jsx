@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import youtubeModule from '../youtube/youtube'
 import { map } from 'lodash'
+import { getDownloadUrlById } from '../utils/firebase'
 
 function Waveform(props) {
   let waveformElem = useRef(),
@@ -36,9 +37,16 @@ function Waveform(props) {
       })
     }
 
-    if (mediaLink) {
-      initWaveform(mediaLink)
+    const init = async () => {
+      if (mediaLink.match('http')) {
+        initWaveform(mediaLink)
+      } else if (!mediaLink) {
+      } else {
+        const [url] = await getDownloadUrlById([mediaLink])
+        initWaveform(url)
+      }
     }
+    init()
 
     return () => {
       //component will UNmount

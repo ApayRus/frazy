@@ -9,7 +9,6 @@ import { langTheme, LangFonts } from '../../theme/functions'
 import DrawerSettings from '../layout/DrawerSettings'
 import HeadingFirebaseHOC from '../materialHeading/HeadingFirebaseContainer'
 import { fetchRequest } from '../../utils/fetch'
-import { getDownloadUrlById } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -27,11 +26,10 @@ function MaterialPageFirebaseContainer(props) {
         fetchRequest(`/api/material?_id=${materialId}`),
         fetchRequest(`/api/material-tr?for=${materialId}&lang=${trLang}`)
       ])
-      const [mediaLink] = await getDownloadUrlById([material.data.mediaLink])
       dispatch(
         fillPageContent({
           materialId,
-          material: { ...material.data, mediaLink },
+          material: { ...material.data },
           translation: translation.data,
           mode: 'forEdit'
         })
