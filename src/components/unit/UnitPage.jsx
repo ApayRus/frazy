@@ -1,5 +1,5 @@
 import React from 'react'
-import HeadingFirebaseContainer from './HeadingFirebaseContainer'
+import HeadingFirebaseContainer from './UnitPageDataContainer'
 import Grid from '@material-ui/core/Grid'
 import { MuiThemeProvider, makeStyles } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'

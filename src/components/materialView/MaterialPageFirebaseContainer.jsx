@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
 import DrawerSettings from '../layout/DrawerSettings'
-import HeadingFirebaseHOC from '../unit/HeadingFirebaseContainer'
+import HeadingFirebaseHOC from '../unit/UnitPageDataContainer'
 import { fetchRequest } from '../../utils/fetch'
 
 /**
