@@ -2,7 +2,7 @@ import React from 'react'
 import PlayArrow from '@material-ui/icons/PlayArrow'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import { makeStyles } from '@material-ui/core/styles'
-import { setPageParameter } from '../../store/pageContentActions'
+import { setPageParameters } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
@@ -49,12 +49,12 @@ function Phrases(props) {
     const newSelectedPhrases = isChecked
       ? selectedPhrases.concat(id)
       : selectedPhrases.filter(elem => elem !== id)
-    dispatch(setPageParameter(['selectedPhrases', newSelectedPhrases]))
+    dispatch(setPageParameters({ selectedPhrases: newSelectedPhrases }))
   }
   const onSelectAll = event => {
     const { checked: isChecked } = event.target
     const newSelectedPhrases = isChecked ? map(phrases, 'id') : []
-    dispatch(setPageParameter(['selectedPhrases', newSelectedPhrases]))
+    dispatch(setPageParameters({ selectedPhrases: newSelectedPhrases }))
   }
 
   return (

@@ -4,30 +4,30 @@ import { makeStyles } from '@material-ui/core/styles'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import clsx from 'clsx'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPageParameter } from '../../store/pageContentActions'
+import { setPageParameters } from '../../store/pageContentActions'
 
-const useStyles = makeStyles((theme) => ({
-  button: { fontWeight: 100, textTransform: 'none', padding: '0px 10px' },
+const useStyles = makeStyles(theme => ({
+  button: { fontWeight: 100, textTransform: 'none', padding: '0px 10px' }
 }))
 
 export default function InputsViewSwitcher() {
   const classes = useStyles()
-  const { showOriginalInputs, showTranslationInputs } = useSelector((state) => state.pageContent)
+  const { showOriginalInputs, showTranslationInputs } = useSelector(state => state.pageContent)
   const dispatch = useDispatch()
 
   const handleClickOriginal = () => {
-    dispatch(setPageParameter(['showOriginalInputs', !showOriginalInputs]))
+    dispatch(setPageParameters({ showOriginalInputs: !showOriginalInputs }))
     //if both are empty, make other true
     if (!(showOriginalInputs && showTranslationInputs)) {
-      dispatch(setPageParameter(['showTranslationInputs', true]))
+      dispatch(setPageParameters({ showTranslationInputs: true }))
     }
   }
 
   const handleClickTranslation = () => {
-    dispatch(setPageParameter(['showTranslationInputs', !showTranslationInputs]))
+    dispatch(setPageParameters({ showTranslationInputs: !showTranslationInputs }))
     //if both are empty, make other true
     if (!(showOriginalInputs && showTranslationInputs)) {
-      dispatch(setPageParameter(['showOriginalInputs', true]))
+      dispatch(setPageParameters({ showOriginalInputs: true }))
     }
   }
 

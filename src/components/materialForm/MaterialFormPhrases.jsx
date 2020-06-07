@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
-import { setPageParameter } from '../../store/pageContentActions'
+import { setPageParameters } from '../../store/pageContentActions'
 import MaterialFormTitle from './MaterialFormTitle'
 import { map } from 'lodash'
 import Revisions from './Revisions'
@@ -51,7 +51,7 @@ function Phrases(props) {
     const textareaOriginal = event.target.value
     if (!phrases.length) {
       //it is import of subtitles
-      dispatch(setPageParameter(['textareaOriginal', textareaOriginal]))
+      dispatch(setPageParameters({ textareaOriginal }))
     } else {
       //we rewrite text of phrases from textarea lines
       const newText = textareaOriginal.split('\n')
@@ -59,7 +59,7 @@ function Phrases(props) {
       newPhrases = phrases.map((elem, index) => {
         return { ...elem, text: newText[index] }
       })
-      dispatch(setPageParameter(['phrases', newPhrases]))
+      dispatch(setPageParameters({ phrases: newPhrases }))
     }
   }
 
@@ -75,7 +75,7 @@ function Phrases(props) {
         }
       }
     })
-    dispatch(setPageParameter(['phrases', newPhrases]))
+    dispatch(setPageParameters({ phrases: newPhrases }))
   }
 
   const TitleOriginal = (
@@ -130,9 +130,7 @@ function Phrases(props) {
             <PhrasesColumn />
             {TextareaOriginal('calc(100% - 46px)')}
             <div style={{ marginLeft: 40, marginRight: 1 }}>
-              {materialId && (
-                <Revisions docId={materialId} collection='material' />
-              )}
+              {materialId && <Revisions docId={materialId} collection='material' />}
             </div>
           </Grid>
           <Grid item sm={5} xs={12}>
@@ -141,12 +139,7 @@ function Phrases(props) {
             </div>
             {TitleTranslation}
             {TextareaTranslation('100%')}
-            {materialId && (
-              <Revisions
-                docId={`${materialId}_${trLang}`}
-                collection='materialTr'
-              />
-            )}
+            {materialId && <Revisions docId={`${materialId}_${trLang}`} collection='materialTr' />}
           </Grid>
         </Grid>
       )
@@ -160,9 +153,7 @@ function Phrases(props) {
             <PhrasesColumn />
             {TextareaOriginal('calc(100% - 46px)')}
             <div style={{ marginLeft: 40, marginRight: 1 }}>
-              {materialId && (
-                <Revisions docId={materialId} collection='material' />
-              )}
+              {materialId && <Revisions docId={materialId} collection='material' />}
             </div>
           </Grid>
         </Grid>
@@ -181,10 +172,7 @@ function Phrases(props) {
             {TextareaTranslation('calc(100% - 46px)')}
             <div style={{ marginLeft: 40, marginRight: 1 }}>
               {materialId && (
-                <Revisions
-                  docId={`${materialId}_${trLang}`}
-                  collection='materialTr'
-                />
+                <Revisions docId={`${materialId}_${trLang}`} collection='materialTr' />
               )}
             </div>
           </Grid>

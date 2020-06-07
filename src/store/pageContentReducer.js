@@ -29,10 +29,9 @@ const initState = {
 
 const pageContentReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'SET_PAGE_PARAMETER':
+        case 'SET_PAGE_PARAMETERS':
             {
-                const [key, value] = action.payload // ['mediaLink', "hobbit/hobbit1_1.mp3"]
-                return {...state, [key]: value }
+                return {...state, ...action.payload }
             }
         case 'CLEAR_PAGE_CONTENT':
             {

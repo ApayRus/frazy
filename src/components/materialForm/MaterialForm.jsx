@@ -19,7 +19,7 @@ import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
 import Waveform from '../Waveform'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPageParameter, fillPageContent } from '../../store/pageContentActions'
+import { setPageParameters, fillPageContent } from '../../store/pageContentActions'
 import wavesurferModule from '../../wavesurfer/wavesurfer'
 import MaterialInfo from './MaterialFormInfo'
 import MaterialExportTable from './ExportTable'
@@ -99,15 +99,15 @@ export default function MaterialForm(props) {
     // if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     // add or update is needed for Event
     if (materialId) {
-      dispatch(setPageParameter(['materialAction', 'update']))
+      dispatch(setPageParameters({ materialAction: 'update' }))
     } else {
       //we'll use this id where create translationId (+_trLang) and fileId (the same)
-      dispatch(setPageParameter(['materialId', nanoid(24)]))
+      dispatch(setPageParameters({ materialId: nanoid(24) }))
     }
     if (translationId) {
-      dispatch(setPageParameter(['translationAction', 'update']))
+      dispatch(setPageParameters({ translationAction: 'update' }))
     } else {
-      dispatch(setPageParameter(['translationId', nanoid(24)]))
+      dispatch(setPageParameters({ translationId: nanoid(24) }))
     }
   }
 

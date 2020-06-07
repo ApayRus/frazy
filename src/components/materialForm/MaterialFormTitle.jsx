@@ -2,7 +2,7 @@ import React from 'react'
 
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
-import { setPageParameter } from '../../store/pageContentActions'
+import { setPageParameters } from '../../store/pageContentActions'
 import { useDispatch, useSelector } from 'react-redux'
 import switchTranslation from '../translations/switchTranslation'
 import HelperTooltip from './HelperIconTooltip'
@@ -32,14 +32,18 @@ function MaterialFormTitle(props) {
 
   const handleChange = event => {
     const { id, value } = event.target
-    dispatch(setPageParameter([id, value]))
+    dispatch(setPageParameters({ [id]: value }))
     if (id === 'trLang') {
       const translation = translations.find(elem => elem.lang === value)
       if (translation) {
         switchTranslation(translation._id)
       } else {
-        dispatch(setPageParameter(['translationAction', 'create']))
-        dispatch(setPageParameter(['translationId', nanoid(24)]))
+        dispatch(
+          setPageParameters({
+            translationAction: 'create',
+            translationId: nanoid(24)
+          })
+        )
       }
     }
   }

@@ -5,7 +5,7 @@
 import React from 'react'
 import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { setPageParameter } from '../../store/pageContentActions'
+import { setPageParameters } from '../../store/pageContentActions'
 import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
 import firebase from '../../firebase/firebase'
 
@@ -16,9 +16,13 @@ const MediaAddDeleteButton = props => {
   const handleFileDelete = () => {
     // console.log('mediaLink', mediaLink)
     const resetMediaSettings = () => {
-      dispatch(setPageParameter(['mediaLink', '']))
-      dispatch(setPageParameter(['uploadProgress', -1]))
-      dispatch(setPageParameter(['waveformRenderProgress', -1]))
+      dispatch(
+        setPageParameters({
+          mediaLink: '',
+          uploadProgress: -1,
+          waveformRenderProgress: -1
+        })
+      )
     }
 
     //file on our hosting, not external link
@@ -33,7 +37,7 @@ const MediaAddDeleteButton = props => {
           console.log('File deleted successfully')
           resetMediaSettings()
         })
-        .catch(function(error) {
+        .catch(function (error) {
           // Uh-oh, an error occurred!
           console.log(error)
         })
@@ -45,7 +49,7 @@ const MediaAddDeleteButton = props => {
 
   const handleExternalMedialink = event => {
     const link = event.target.value
-    dispatch(setPageParameter(['mediaLink', link]))
+    dispatch(setPageParameters({ mediaLink: link }))
   }
 
   const handleFileSelect = event => {
@@ -61,13 +65,13 @@ const MediaAddDeleteButton = props => {
     uploadTask.on('state_changed', snapshot => {
       const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       // console.log('uploadProgress', uploadProgress)
-      dispatch(setPageParameter(['uploadProgress', +uploadProgress.toFixed(0)]))
+      dispatch(setPageParameters({ uploadProgress: +uploadProgress.toFixed(0) }))
     })
 
     uploadTask
       .then(snapshot => {
         // console.log('fullPath', snapshot.ref.fullPath)
-        dispatch(setPageParameter(['mediaLink', snapshot.ref.fullPath]))
+        dispatch(setPageParameters({ mediaLink: snapshot.ref.fullPath }))
         return snapshot.ref.getDownloadURL()
       })
       .catch(err => console.error('error uploading file', err))
