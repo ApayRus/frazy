@@ -8,7 +8,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
-import { setAppStateParam, clearCachedDocs } from '../../store/appStateActions'
+import { setAppStateParams, clearCachedDocs } from '../../store/appStateActions'
 import { loginDialog as local } from '../../localization/en'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -49,7 +49,7 @@ function Appbar(props) {
       <Fab
         className={`${classes.bottom} ${classes.menu}`}
         onClick={() => {
-          dispatch(setAppStateParam({ showHeadingDrawer: true }))
+          dispatch(setAppStateParams({ showHeadingDrawer: true }))
         }}
         color='primary'
         size='medium'
@@ -84,7 +84,7 @@ function Appbar(props) {
       <Fab
         className={`${classes.bottom} ${classes.settings}`}
         onClick={() => {
-          dispatch(setAppStateParam({ showSettingsDrawer: true }))
+          dispatch(setAppStateParams({ showSettingsDrawer: true }))
         }}
         color='primary'
         size='medium'

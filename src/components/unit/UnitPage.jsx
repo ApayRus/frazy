@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import EditIcon from '@material-ui/icons/Edit'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import { loginDialog as local } from '../../localization/en'
-import { setAppStateParam } from '../../store/appStateActions'
+import { setAppStateParams } from '../../store/appStateActions'
 import UnitForm from './UnitForm'
 import clsx from 'clsx'
 
@@ -45,7 +45,7 @@ function HeadingPage(props) {
   const classes = useStyles({ background })
   const dispatch = useDispatch()
 
-  const toggleEditMode = () => dispatch(setAppStateParam({ editMode: !editMode }))
+  const toggleEditMode = () => dispatch(setAppStateParams({ editMode: !editMode }))
 
   const EditButton = () => (
     <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>

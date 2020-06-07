@@ -2,17 +2,17 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import MultipleSelect from '../layout/MultipleSelect'
 import { useDispatch, useSelector } from 'react-redux'
-import { setAppStateParam } from '../../store/appStateActions'
+import { setAppStateParams } from '../../store/appStateActions'
 
 function ToolBar() {
   const dispatch = useDispatch()
-  const { lastEventsDoc } = useSelector((state) => state.firestore.data)
-  const { langsUserInterestedIn } = useSelector((state) => state.appState)
+  const { lastEventsDoc } = useSelector(state => state.firestore.data)
+  const { langsUserInterestedIn } = useSelector(state => state.appState)
 
   const extractOriginalLangs = (lastEventsDoc = {}) => {
     let langs = new Set()
 
-    Object.keys(lastEventsDoc).forEach((key) => {
+    Object.keys(lastEventsDoc).forEach(key => {
       const { lang } = lastEventsDoc[key]
       langs.add(lang)
     })
@@ -23,8 +23,8 @@ function ToolBar() {
 
   const langs = extractOriginalLangs(lastEventsDoc)
 
-  const handleChangeLang = (event) => {
-    dispatch(setAppStateParam({ langsUserInterestedIn: event.target.value }))
+  const handleChangeLang = event => {
+    dispatch(setAppStateParams({ langsUserInterestedIn: event.target.value }))
   }
 
   return (

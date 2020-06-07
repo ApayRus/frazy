@@ -5,13 +5,13 @@ import { Button } from '@material-ui/core'
 import OndemandVideoIcon from '@material-ui/icons/OndemandVideo'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 
-import { setAppStateParam } from '../../store/appStateActions'
+import { setAppStateParams } from '../../store/appStateActions'
 
 function TopButtons() {
   const dispatch = useDispatch()
 
   const handleDonateOpen = () => {
-    dispatch(setAppStateParam({ showFullscreenDialog: true }))
+    dispatch(setAppStateParams({ showFullscreenDialog: true }))
   }
 
   return (

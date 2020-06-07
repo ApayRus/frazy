@@ -8,7 +8,7 @@ const initState = {
 
 const appStateReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'SET_APP_STATE_PARAM':
+        case 'SET_APP_STATE_PARAMS':
             {
                 return {...state, ...action.payload }
             }

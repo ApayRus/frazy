@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { setAppStateParam } from '../../store/appStateActions'
+import { setAppStateParams } from '../../store/appStateActions'
 import { Link } from 'react-router-dom'
 import orderBy from 'lodash/orderBy'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,7 +44,7 @@ function Heading(props) {
   const classes = useStyles()
 
   const handleClick = () => {
-    dispatch(setAppStateParam({ showHeadingDrawer: false }))
+    dispatch(setAppStateParams({ showHeadingDrawer: false }))
     // dispatch(clearCachedDocs())
   }
 

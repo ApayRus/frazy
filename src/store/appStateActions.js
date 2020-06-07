@@ -1,7 +1,7 @@
 import { actionTypes } from 'redux-firestore'
 
 export const clearCachedDocs = () => {
-  return { type: actionTypes.CLEAR_DATA, preserve: { ordered: true } }
+    return { type: actionTypes.CLEAR_DATA, preserve: { ordered: true } }
 }
 
 /**
@@ -22,9 +22,9 @@ const examplesetAppStateParamToFalse = {
   payload: { showFullscreenDialog: true }
 } 
  */
-export const setAppStateParam = (payload) => {
-  return {
-    type: 'SET_APP_STATE_PARAM',
-    payload,
-  }
+export const setAppStateParams = (payload) => {
+    return {
+        type: 'SET_APP_STATE_PARAMS',
+        payload,
+    }
 }
