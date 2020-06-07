@@ -1,7 +1,7 @@
 import React from 'react'
 
 import './App.css'
-import HeadingPage from './components/materialHeading/HeadingPage'
+import HeadingPage from './components/unit/HeadingPage'
 import MaterialPageHOC from './components/materialView/MaterialPageFirebaseContainer'
 import MaterialForm from './components/materialForm/MaterialForm'
 import MaterialFormHOC from './components/materialForm/MaterialFormFirebaseContainer'
