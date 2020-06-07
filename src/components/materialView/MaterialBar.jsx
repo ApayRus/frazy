@@ -11,36 +11,38 @@ import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import { setAppStateParam, clearCachedDocs } from '../../store/appStateActions'
 import { loginDialog as local } from '../../localization/en'
 import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   bottom: {
     position: 'fixed',
     bottom: 2,
-    zIndex: 5,
+    zIndex: 5
   },
   menu: {
-    left: 3,
+    left: 3
   },
   home: {
-    left: 58,
+    left: 58
   },
   settings: {
-    right: 3,
+    right: 3
   },
   help: {
-    right: 55,
+    right: 55
   },
   edit: {
-    right: 110,
-  },
+    right: 110
+  }
 }))
 
 function Appbar(props) {
   const dispatch = useDispatch()
-  const { materialId, trLang } = useSelector((state) => state.pageContent)
+  const { materialId, trLang } = useSelector(state => state.pageContent)
   const classes = useStyles()
 
   const materialEditLink = materialId ? `/material/edit/${materialId}/${trLang}` : `/material/edit/`
+  const history = useHistory()
 
   return (
     <div>
@@ -73,7 +75,7 @@ function Appbar(props) {
       </Fab>
       <div className={`${classes.bottom} ${classes.edit}`}>
         <ButtonWithAuthPopover
-          redirectUrl={materialEditLink}
+          actionOnSuccess={() => history.push(materialEditLink)}
           message={local.loginButtonMessageForEditMaterial}
           buttonIcon={<EditIcon />}
         />

@@ -13,19 +13,21 @@ import Donate from '../donate/Donate'
 import TopButtons from './TopButtons'
 import FullscreenDialog from '../layout/FullscreenDialog'
 import ToolBar from './ToolBar'
+import { useHistory } from 'react-router-dom'
 
 function MainPage() {
   const [isDataLoaded, setIsDataLoaded] = useState(false)
+  const history = useHistory()
 
   useFirestoreConnect(() => [
     {
       collection: 'lastEvents',
       doc: 'main',
-      storeAs: 'lastEventsDoc',
-    },
+      storeAs: 'lastEventsDoc'
+    }
   ])
 
-  const { lastEventsDoc } = useSelector((state) => state.firestore.data)
+  const { lastEventsDoc } = useSelector(state => state.firestore.data)
 
   useEffect(() => {
     if (isLoaded(lastEventsDoc)) {
@@ -41,7 +43,7 @@ function MainPage() {
   const AddButton = () => (
     <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
       <ButtonWithAuthPopover
-        redirectUrl={materialAddLink}
+        actionOnSuccess={() => history.push(materialAddLink)}
         message={local.loginButtonMessageForAddMaterial}
         buttonIcon={<AddIcon />}
       />
