@@ -8,16 +8,9 @@ import { setAppStateParams } from '../../store/appStateActions'
 import { Link } from 'react-router-dom'
 import orderBy from 'lodash/orderBy'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDownloadUrlById } from '../../utils/firebase'
 
 function Heading(props) {
-  const { title, author, heading, logo, background } = useSelector(state => state.menu)
-  const [logoUrl, setLogoUrl] = useState()
-  const [backgroundUrl, setBackgroundUrl] = useState()
-  getDownloadUrlById([logo, background]).then(result => {
-    setLogoUrl(result[0])
-    setBackgroundUrl(result[1])
-  })
+  const { title, author, heading, logoUrl, backgroundUrl } = useSelector(state => state.menu)
   const { trLang } = useSelector(state => state.pageContent)
   const dispatch = useDispatch()
 
@@ -53,7 +46,7 @@ function Heading(props) {
       <div className={classes.header}>
         <Typography variant='h6'>{title}</Typography>
         <Typography variant='subtitle1'>{author}</Typography>
-        {logo && <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logoUrl} />}
+        {logoUrl && <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logoUrl} />}
       </div>
       <List>
         {headingOrdered.map(elem => {

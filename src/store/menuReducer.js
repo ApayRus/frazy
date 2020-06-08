@@ -5,6 +5,8 @@ const initState = {
     unit: '',
     logo: 'default-files/default-logo.png',
     background: 'default-files/default-background.jpg',
+    logoUrl: '',
+    backgroundUrl: '',
     heading: []
 }
 

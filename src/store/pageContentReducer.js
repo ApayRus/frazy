@@ -14,6 +14,7 @@ const initState = {
     trTitle: '',
     trLang: '',
     mediaLink: '', // saved in db, folder/filename.mp3
+    mediaLinkUrl: '',
     youtubeId: '',
     duration: 0, // 45.035 (sec)
     translations: [], // ['ru', 'ar', 'ch']

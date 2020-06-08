@@ -6,13 +6,12 @@ import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import youtubeModule from '../youtube/youtube'
 import { map } from 'lodash'
-import { getDownloadUrlById } from '../utils/firebase'
 
 function Waveform(props) {
   let waveformElem = useRef(),
     timelineElem = useRef()
   const [isReady, setIsReady] = useState(false)
-  const { phrases, mediaLink, youtubeId, waveformRenderProgress, trLang } = useSelector(
+  const { phrases, mediaLinkUrl, youtubeId, waveformRenderProgress, trLang } = useSelector(
     state => state.pageContent
   )
   const { readOnly } = props
@@ -37,25 +36,18 @@ function Waveform(props) {
       })
     }
 
-    const init = async () => {
-      if (mediaLink.match('http')) {
-        initWaveform(mediaLink)
-      } else if (!mediaLink) {
-      } else {
-        const [url] = await getDownloadUrlById([mediaLink])
-        initWaveform(url)
-      }
+    if (mediaLinkUrl) {
+      initWaveform(mediaLinkUrl)
     }
-    init()
 
     return () => {
       //component will UNmount
-      if (mediaLink) {
+      if (mediaLinkUrl) {
         wavesurferModule.wavesurfer.destroy()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mediaLink])
+  }, [mediaLinkUrl])
 
   //phrases changed
   useEffect(() => {

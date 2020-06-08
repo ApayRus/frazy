@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import MaterialPage from './MaterialPage'
 import MaterialBar from './MaterialBar'
-import { fillPageContent, clearPageContent } from '../../store/pageContentActions'
+import {
+  fillPageContent,
+  setPageParameters,
+  clearPageContent
+} from '../../store/pageContentActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { langTheme, LangFonts } from '../../theme/functions'
 import DrawerSettings from '../layout/DrawerSettings'
 import HeadingFirebaseHOC from '../unit/UnitPageDataContainer'
 import { fetchRequest } from '../../utils/fetch'
+import { getDownloadUrlById } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -22,19 +27,31 @@ function MaterialPageFirebaseContainer(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [material, translation] = await Promise.all([
+      const [materialResponse, translationResponse] = await Promise.all([
         fetchRequest(`/api/material?_id=${materialId}`),
         fetchRequest(`/api/material-tr?for=${materialId}&lang=${trLang}`)
       ])
+      const { data: material } = materialResponse
+      const { data: translation } = translationResponse
       dispatch(
         fillPageContent({
           materialId,
-          material: { ...material.data },
-          translation: translation.data,
-          mode: 'forEdit'
+          material,
+          translation,
+          mode: 'forView'
         })
       )
       setAllDataIsLoaded(true)
+      const getAsyncMediaUrl = async () => {
+        const { mediaLink = '' } = material
+        if (!mediaLink.match('http')) {
+          const [mediaLinkUrl] = await getDownloadUrlById([mediaLink])
+          dispatch(setPageParameters({ mediaLinkUrl }))
+        } else {
+          dispatch(setPageParameters({ mediaLinkUrl: mediaLink }))
+        }
+      }
+      getAsyncMediaUrl()
     }
     fetchData()
     return () => {

@@ -5,6 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import HeadingDrawer from './UnitDrawerContainer'
 import Heading from './Heading'
 import { fetchRequest } from '../../utils/fetch'
+import { getDownloadUrlById } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase
@@ -18,9 +19,17 @@ function HeadingFirebaseContainer(props) {
   useEffect(() => {
     const fetchData = async () => {
       const [unitResponse] = await Promise.all([fetchRequest(`/api/unit?_id=${unitId}`)])
+      const { data: unit } = unitResponse
       if (unitResponse.success) {
-        dispatch(setMenuParameters({ ...unitResponse.data }))
+        dispatch(setMenuParameters(unit))
       }
+
+      const getAsyncUrls = async () => {
+        const { logo = '', background = '' } = unit
+        const [logoUrl, backgroundUrl] = await getDownloadUrlById([logo, background])
+        dispatch(setMenuParameters({ logoUrl, backgroundUrl }))
+      }
+      getAsyncUrls()
 
       setAllDataIsLoaded(true)
     }
