@@ -31,14 +31,14 @@ import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../uti
 import PhrasesForTextArea from './MaterialFormPhrases'
 import YoutubePlayer from '../YoutubePlayer'
 
-const MaterialForm = props => {
+const MaterialForm = (props) => {
   const { mediaLink, youtubeId, uploadProgress } = props
   const history = useHistory()
   const [prevMaterial, setPrevMaterial] = useState({})
   const [prevTranslation, setPrevTranslation] = useState({})
   const [materialAction, setMaterialAction] = useState('')
   const dispatch = useDispatch()
-  const { sticked: playerSticked } = useSelector(state => state.playerSettings)
+  const { sticked: playerSticked } = useSelector((state) => state.playerSettings)
 
   // we get initial data snapshots for compare them with user input
   // and detect what has changed
@@ -97,7 +97,7 @@ const MaterialForm = props => {
       profile,
       materialId,
       materialCreated = {},
-      translationCreated = {}
+      translationCreated = {},
     } = props
 
     let actions = [] // materialAction and translationAction both, or one of them.
@@ -118,7 +118,7 @@ const MaterialForm = props => {
         title: trTitle,
         lang: trLang,
         for: materialId,
-        phrases: translationPhrases
+        phrases: translationPhrases,
       }
     }
 
@@ -130,7 +130,7 @@ const MaterialForm = props => {
       lang,
       unit,
       order,
-      phrases: materialPhrases
+      phrases: materialPhrases,
     }
     if (!youtubeId) {
       delete materialContent.youtubeId
@@ -151,17 +151,17 @@ const MaterialForm = props => {
         materialAction === 'material added'
           ? {
               created: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
             }
           : {
               created: materialCreated,
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
             }
 
       const materialMeta = {
         ...materialCreateUpdateInfo,
         duration,
-        translations: newTranslations
+        translations: newTranslations,
       }
 
       const uploadMaterialTask = dbSet(
@@ -169,7 +169,7 @@ const MaterialForm = props => {
         materialId,
         {
           ...materialContent,
-          meta: materialMeta
+          meta: materialMeta,
         },
         { merge: false }
       )
@@ -184,11 +184,11 @@ const MaterialForm = props => {
         translationAction === 'translation added'
           ? {
               created: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
             }
           : {
               created: materialCreated,
-              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() }
+              updated: { userId: profile.uid, userName: profile.displayName, time: Date.now() },
             }
 
       const translationMeta = { ...translationCreateUpdateInfo, created: translationCreated }
@@ -198,7 +198,7 @@ const MaterialForm = props => {
         translationId,
         {
           ...translationContent,
-          meta: translationMeta
+          meta: translationMeta,
         },
         { merge: false }
       )
@@ -207,14 +207,14 @@ const MaterialForm = props => {
       const uploadMaterialTask =
         translationAction === 'translation added'
           ? dbSet('material', materialId, {
-              meta: { translations: newTranslations }
+              meta: { translations: newTranslations },
             })
           : null
 
       waitPromisesBeforeRedirect.push(uploadTranslationTask, uploadMaterialTask)
     }
 
-    Promise.all([waitPromisesBeforeRedirect]).then(values => {
+    Promise.all([waitPromisesBeforeRedirect]).then((values) => {
       const addEventToMainPage = () => {
         const event = {
           title,
@@ -224,9 +224,10 @@ const MaterialForm = props => {
           trTitle,
           trLang,
           actions,
-          time: Date.now()
+          time: Date.now(),
         }
-        dbUpdate('lastEvents', 'main', { [unit]: event })
+
+        dbUpdate('lastEvents', 'main', { [unit ? unit : 'uncategorized']: event })
       }
       addEventToMainPage()
       history.push(`/material/${materialId}/${trLang}`)
@@ -249,7 +250,7 @@ const MaterialForm = props => {
           position: playerSticked ? 'sticky' : 'unset',
           top: 0,
           backgroundColor: 'white',
-          zIndex: 2
+          zIndex: 2,
         }}
       >
         {youtubeId && (
@@ -285,7 +286,7 @@ const MaterialForm = props => {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const pc = state.pageContent
   return {
     //from Material
@@ -313,7 +314,7 @@ const mapStateToProps = state => {
     uploadProgress: pc.uploadProgress,
     textareaOriginal: pc.textareaOriginal,
     //auth, profile
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
   }
 }
 
