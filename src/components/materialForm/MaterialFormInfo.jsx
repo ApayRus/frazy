@@ -32,7 +32,7 @@ function MaterialInfo(props) {
   const uploadButtonProps = {
     parentId: materialId,
     iconComponent: AudioIcon,
-    mediaLink: mediaLink ? mediaLink : materialId,
+    mediaLink: mediaLink ? mediaLink : materialId, // default naming of file (on create first)
     mediaLinkUrl,
     uploadProgress,
     accept: 'audio/*',
