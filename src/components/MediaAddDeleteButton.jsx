@@ -6,7 +6,7 @@ import React from 'react'
 import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
-import firebase from '../../firebase/firebase'
+import firebase from '../firebase/firebase'
 
 /**
  * * final goal is: 
