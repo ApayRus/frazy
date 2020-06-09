@@ -50,7 +50,9 @@ export default function MediaAddDeleteButton(props) {
 
   const handleExternalMedialink = event => {
     const mediaLinkUrl = event.target.value
-    onUploaded(mediaLinkUrl, mediaLinkUrl)
+    if (mediaLinkUrl.match('http')) {
+      onUploaded(mediaLinkUrl, mediaLinkUrl)
+    }
   }
 
   const handleFileSelect = event => {
