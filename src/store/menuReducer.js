@@ -7,7 +7,12 @@ const initState = {
     background: 'default-files/default-background.jpg',
     logoUrl: '',
     backgroundUrl: '',
-    heading: []
+    heading: [],
+    trId: '',
+    trTitle: '',
+    trAuthor: '',
+    trLang: '',
+    trDescription: ''
 }
 
 const menuReducer = (state = initState, action) => {
