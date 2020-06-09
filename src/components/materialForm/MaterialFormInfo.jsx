@@ -30,7 +30,6 @@ function MaterialInfo(props) {
   const classes = useStyles()
 
   const uploadButtonProps = {
-    parentId: materialId,
     iconComponent: AudioIcon,
     mediaLink: mediaLink ? mediaLink : materialId, // default naming of file (on create first)
     mediaLinkUrl,
