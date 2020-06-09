@@ -7,6 +7,7 @@ import { Button, TextField, IconButton, CircularProgress, Typography } from '@ma
 import { useSelector } from 'react-redux'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import firebase from '../firebase/firebase'
+import ImageIcon from '@material-ui/icons/Image'
 
 /**
  * * final goal is: 
@@ -25,13 +26,14 @@ import firebase from '../firebase/firebase'
 
 export default function MediaAddDeleteButton(props) {
   const {
+    buttonTitle = 'upload',
     mediaLink,
     mediaLinkUrl,
     uploadProgress,
     onUploading,
     onUploaded,
     onDelete,
-    iconComponent: Icon,
+    iconComponent: Icon = ImageIcon,
     accept
   } = props
   const { profile } = useSelector(state => state.firebase)
@@ -92,7 +94,7 @@ export default function MediaAddDeleteButton(props) {
   // console.log('mediaState', mediaState)
 
   const MediaNotExists = () => (
-    <div style={{ marginTop: 0, marginRight: 10, position: 'relative' }}>
+    <div style={{ marginTop: 0, marginRight: 10, position: 'relative', marginBottom: 10 }}>
       <input
         style={{ display: 'none' }}
         onChange={handleFileSelect}
@@ -101,18 +103,15 @@ export default function MediaAddDeleteButton(props) {
         type='file'
       />
       <label htmlFor='contained-button-file'>
-        <Button variant='contained' component='span'>
-          Upload <Icon />
+        <Button variant='contained' size='small' component='span' style={{ marginTop: 15 }}>
+          {buttonTitle} <Icon />
           {mediaState === 'loading' ? <CircularProgress size={20} /> : null}
         </Button>
-        <Typography type='body1' style={{ display: 'inline-block', margin: 20 }}>
-          or type{' '}
-        </Typography>
         <TextField
-          label='external link'
+          label='or type external link'
           onBlur={handleExternalMedialink}
           defaultValue={mediaLinkUrl}
-          style={{ width: 250 }}
+          style={{ marginLeft: 15, width: 148 }}
         />
       </label>
     </div>
