@@ -4,57 +4,58 @@
  */
 import React from 'react'
 import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
-import { useSelector, useDispatch } from 'react-redux'
-import { setPageParameters } from '../../store/pageContentActions'
-import { Audiotrack as AudioIcon, DeleteForever as DeleteIcon } from '@material-ui/icons'
+import { useSelector } from 'react-redux'
+import DeleteIcon from '@material-ui/icons/DeleteForever'
 import firebase from '../../firebase/firebase'
 
-const MediaAddDeleteButton = props => {
-  const { mediaLink, uploadProgress, materialId } = useSelector(state => state.pageContent)
-  const { profile } = useSelector(state => state.firebase)
-  const dispatch = useDispatch()
-  const handleFileDelete = () => {
-    // console.log('mediaLink', mediaLink)
-    const resetMediaSettings = () => {
-      dispatch(
-        setPageParameters({
-          mediaLink: '',
-          uploadProgress: -1,
-          waveformRenderProgress: -1
-        })
-      )
-    }
+/**
+ * * final goal is: 
+ * 1) upload or delete file to/from server 
+ * 2) to set up 2 values: mediaLink and mediaLinkUrl
+ * in case of external link both are the same
+ * in case of bucket file, we'll get downloadUrl async(mediaLink)
+ * 
+ * @param {Object} props
+ * @param {object} props.icon -
+ * @param {string} props.mediaLink - path in bucket 'audio/fileid', or external link 'https://bbc.com/audios/file.mp3
+ * @param {string} props.mediaLinkUrl - async generated download link, or external link
+ * 
 
+ */
+
+export default function MediaAddDeleteButton(props) {
+  const {
+    mediaLink,
+    mediaLinkUrl,
+    uploadProgress,
+    onUploading,
+    onUploaded,
+    onDelete,
+    iconComponent: Icon,
+    accept
+  } = props
+  const { profile } = useSelector(state => state.firebase)
+
+  const handleFileDelete = () => {
     //file on our hosting, not external link
     if (!mediaLink.match('http')) {
       const fileRef = firebase.storage().ref(mediaLink)
-
       const deleteTask = fileRef.delete()
-
-      deleteTask
-        .then(() => {
-          // File deleted successfully
-          console.log('File deleted successfully')
-          resetMediaSettings()
-        })
-        .catch(function (error) {
-          // Uh-oh, an error occurred!
-          console.log(error)
-        })
+      deleteTask.then(() => onDelete()).catch(error => console.log(error))
     } else {
       //file is external link
-      resetMediaSettings()
+      onDelete()
     }
   }
 
   const handleExternalMedialink = event => {
-    const link = event.target.value
-    dispatch(setPageParameters({ mediaLink: link }))
+    const mediaLinkUrl = event.target.value
+    onUploaded(mediaLinkUrl, mediaLinkUrl)
   }
 
   const handleFileSelect = event => {
     const [file] = event.target.files
-    const fileRef = firebase.storage().ref(materialId)
+    const fileRef = firebase.storage().ref(mediaLink)
     const metadata = {
       customMetadata: {
         owner: profile.uid
@@ -63,16 +64,14 @@ const MediaAddDeleteButton = props => {
     const uploadTask = fileRef.put(file, metadata)
 
     uploadTask.on('state_changed', snapshot => {
-      const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      let uploadProgress = +((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0)
       // console.log('uploadProgress', uploadProgress)
-      dispatch(setPageParameters({ uploadProgress: +uploadProgress.toFixed(0) }))
+      onUploading(uploadProgress)
     })
 
     uploadTask
       .then(snapshot => {
-        // console.log('fullPath', snapshot.ref.fullPath)
-        dispatch(setPageParameters({ mediaLink: snapshot.ref.fullPath }))
-        return snapshot.ref.getDownloadURL()
+        snapshot.ref.getDownloadURL().then(url => onUploaded(mediaLink, url))
       })
       .catch(err => console.error('error uploading file', err))
   }
@@ -80,13 +79,13 @@ const MediaAddDeleteButton = props => {
   /**
    * notExist -> loading -> exist
    */
-  const stateOfMedia = (link, progress) => {
-    if (progress < 0 && !link) return 'notExists'
-    else if (progress >= 0 && !link) return 'loading'
-    else if (link) return 'exists'
+  const stateOfMedia = (mediaLinkUrl, progress) => {
+    if (progress < 0 && !mediaLinkUrl) return 'notExists'
+    else if (progress >= 0 && !mediaLinkUrl) return 'loading'
+    else if (mediaLinkUrl) return 'exists'
   }
 
-  const mediaState = stateOfMedia(mediaLink, uploadProgress)
+  const mediaState = stateOfMedia(mediaLinkUrl, uploadProgress)
 
   // console.log('mediaState', mediaState)
 
@@ -95,13 +94,13 @@ const MediaAddDeleteButton = props => {
       <input
         style={{ display: 'none' }}
         onChange={handleFileSelect}
-        accept='audio/*'
+        accept={accept}
         id='contained-button-file'
         type='file'
       />
       <label htmlFor='contained-button-file'>
         <Button variant='contained' component='span'>
-          Upload <AudioIcon />
+          Upload <Icon />
           {mediaState === 'loading' ? <CircularProgress size={20} /> : null}
         </Button>
         <Typography type='body1' style={{ display: 'inline-block', margin: 20 }}>
@@ -110,7 +109,7 @@ const MediaAddDeleteButton = props => {
         <TextField
           label='external link'
           onBlur={handleExternalMedialink}
-          defaultValue={mediaLink}
+          defaultValue={mediaLinkUrl}
           style={{ width: 250 }}
         />
       </label>
@@ -132,5 +131,3 @@ const MediaAddDeleteButton = props => {
     </div>
   )
 }
-
-export default MediaAddDeleteButton

@@ -7,6 +7,7 @@ import MediaAddDeleteButton from './MediaAddDeleteButton'
 import HelperTooltip from './HelperIconTooltip'
 import { materialEditHelpers as local } from '../../localization/en'
 import htmlParser from 'html-react-parser'
+import AudioIcon from '@material-ui/icons/Audiotrack'
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -16,9 +17,43 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function MaterialInfo(props) {
-  const { unit, order, youtubeId } = useSelector(state => state.pageContent)
+  const {
+    materialId,
+    unit,
+    order,
+    youtubeId,
+    mediaLink,
+    mediaLinkUrl,
+    uploadProgress
+  } = useSelector(state => state.pageContent)
   const dispatch = useDispatch()
   const classes = useStyles()
+
+  const uploadButtonProps = {
+    parentId: materialId,
+    iconComponent: AudioIcon,
+    mediaLink: mediaLink ? mediaLink : materialId,
+    mediaLinkUrl,
+    uploadProgress,
+    accept: 'audio/*',
+    onDelete: () => {
+      dispatch(
+        setPageParameters({
+          mediaLinkUrl: '',
+          mediaLink: '',
+          uploadProgress: -1,
+          waveformRenderProgress: -1
+        })
+      )
+      console.log('file successefully deleted')
+    },
+    onUploaded: (mediaLink, mediaLinkUrl) => {
+      dispatch(setPageParameters({ mediaLink, mediaLinkUrl }))
+    },
+    onUploading: uploadProgress => {
+      dispatch(setPageParameters({ uploadProgress }))
+    }
+  }
 
   const handleChange = event => {
     const { id, value } = event.target
@@ -28,7 +63,7 @@ function MaterialInfo(props) {
   return (
     <div style={{ padding: 10 }}>
       <HelperTooltip title={htmlParser(local.mediaAddDelete)} />
-      <MediaAddDeleteButton />
+      <MediaAddDeleteButton {...uploadButtonProps} />
       <HelperTooltip title={htmlParser(local.unitInput)} />
       <TextField
         value={unit}
