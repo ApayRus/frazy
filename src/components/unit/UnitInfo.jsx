@@ -5,8 +5,19 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { useSelector } from 'react-redux'
 
-function Heading(props) {
-  const { title, author, logoUrl, backgroundUrl } = useSelector(state => state.menu)
+export default function Heading(props) {
+  const {
+    title,
+    author,
+    lang,
+    description,
+    trTitle,
+    trAuthor,
+    trLang,
+    trDescription,
+    logoUrl,
+    backgroundUrl
+  } = useSelector(state => state.menu)
 
   const useStyles = makeStyles(theme => ({
     header: {
@@ -21,13 +32,40 @@ function Heading(props) {
 
   const classes = useStyles()
 
+  const Title = props => {
+    const { title, lang, author } = props
+    return (
+      <>
+        <Typography variant='h6'>{title}</Typography>
+        <Typography variant='body2' style={{ marginTop: -11 }} color='primary'>
+          {lang}
+        </Typography>
+        <Typography variant='subtitle1' style={{ marginTop: -7 }}>
+          {author}
+        </Typography>
+      </>
+    )
+  }
+
   return (
     <div className={classes.header}>
-      <Typography variant='h6'>{title}</Typography>
-      <Typography variant='subtitle1'>{author}</Typography>
+      <Title {...{ title, lang, author }} />
       {logoUrl && <img style={{ maxWidth: 200, borderRadius: 100 }} alt={title} src={logoUrl} />}
+      <Title {...{ title: trTitle, lang: trLang, author: trAuthor }} />
+      <div style={{ textAlign: 'left' }}>
+        {description && (
+          <>
+            <hr />
+            <Typography variant='body1'>{description}</Typography>
+          </>
+        )}
+        {trDescription && (
+          <>
+            <hr />
+            <Typography variant='body1'>{trDescription}</Typography>
+          </>
+        )}
+      </div>
     </div>
   )
 }
-
-export default Heading
