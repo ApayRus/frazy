@@ -119,7 +119,7 @@ export default function MediaAddDeleteButton(props) {
 
   const MediaExists = () => (
     <div style={{ marginRight: 10 }}>
-      <TextField label='media' disabled defaultValue={mediaLink} style={{ width: 250 }} />
+      <TextField label='media' disabled defaultValue={mediaLink} style={{ width: 148 }} />
       <IconButton onClick={handleFileDelete}>
         <DeleteIcon />
       </IconButton>
