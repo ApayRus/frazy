@@ -1,5 +1,6 @@
 import React from 'react'
 import HeadingFirebaseContainer from './UnitPageDataContainer'
+import UnitInfo from './UnitInfo'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -11,6 +12,7 @@ import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
 import { loginDialog as local } from '../../localization/en'
 import { setAppStateParams } from '../../store/appStateActions'
 import UnitForm from './UnitForm'
+import UnitTrForm from './UnitTrForm'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
@@ -79,7 +81,7 @@ function HeadingPage(props) {
               <Typography variant='subtitle1'>Preview</Typography>
             </div>
             <div style={{ boxShadow: `0px 1px 5px lightgrey` }}>
-              <HeadingFirebaseContainer unitId={unitId} displayMode='page' />
+              <UnitInfo />
             </div>
           </Grid>
           <Grid className={clsx(classes.editForm, classes.middleBlock)} item xs={12} sm={4} md={4}>
@@ -92,7 +94,7 @@ function HeadingPage(props) {
             <div className={classes.blockTitle}>
               <Typography variant='subtitle1'>Unit (translation)</Typography>
             </div>
-            <UnitForm />
+            <UnitTrForm />
             <div style={{ marginTop: 20, padding: 5, textAlign: 'right' }}>
               <Button
                 variant='contained'

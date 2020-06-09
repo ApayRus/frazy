@@ -1,6 +1,7 @@
 import React from 'react'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import Heading from './Heading'
+import UnitInfo from './UnitInfo'
+import UnitHeading from './UnitHeading'
 import { setAppStateParams } from '../../store/appStateActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { langDirection } from '../../theme/functions'
@@ -19,7 +20,8 @@ function HeadingDrawerContainer() {
         onOpen={() => dispatch(setAppStateParams({ showHeadingDrawer: true }))}
         onClose={() => dispatch(setAppStateParams({ showHeadingDrawer: false }))}
       >
-        <Heading />
+        <UnitInfo />
+        <UnitHeading />
       </SwipeableDrawer>
     </div>
   )

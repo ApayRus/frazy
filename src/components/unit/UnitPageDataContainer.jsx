@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux'
 import { setMenuParameters } from '../../store/menuActions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import HeadingDrawer from './UnitDrawerContainer'
-import Heading from './Heading'
+import UnitInfo from './UnitInfo'
+import UnitHeading from './UnitHeading'
 import { fetchRequest } from '../../utils/fetch'
 import { getDownloadUrlById } from '../../utils/firebase'
 
@@ -45,7 +46,10 @@ function HeadingFirebaseContainer(props) {
     displayMode === 'drawer' ? (
       <HeadingDrawer />
     ) : (
-      <Heading />
+      <div>
+        <UnitInfo />
+        <UnitHeading />
+      </div>
     )
   ) : (
     <div style={{ marginTop: 20, textAlign: 'center' }}>
