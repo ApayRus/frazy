@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
-import RoundButton from '../../translations0/RoundButton'
-import TranslationSwitcher from '../../translations0/TranslationSwitcher'
+import RoundButton from '../../translations/RoundButton'
+import TranslationSwitcher from '../../translations/TranslationSwitcher'
 import { useSelector } from 'react-redux'
 
 export default function MaterialTitle() {

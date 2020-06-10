@@ -8,7 +8,7 @@ function RoundButton(props) {
       size='small'
       edge='start'
       style={{ padding: 2, marginRight: 0, display: 'inline' }}
-      onClick={props.onClick(props._id)}
+      onClick={props.onClick(props.lang)}
       title={props.title}
     >
       <Avatar

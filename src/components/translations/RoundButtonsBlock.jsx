@@ -14,7 +14,7 @@ const RoundButtonsBlock = props => {
         _id={_id}
         color={props.activeLang === langCode ? 'skyblue' : 'lightgray'}
         materialId={props.materialId}
-        trLang={lang}
+        trLang={langCode}
         onClick={props.onClick}
       />
     )
