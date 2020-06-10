@@ -3,7 +3,6 @@ import RoundButton from './RoundButton'
 
 const RoundButtonsBlock = props => {
   const { langs = [], title, size } = props
-  console.log('props', props)
   return langs.map(lang => {
     const { lang: langCode, _id } = lang
     return (

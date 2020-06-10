@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 
 function RoundButton(props) {
-  console.log(props)
   return (
     <IconButton
       size='small'
