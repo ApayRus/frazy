@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setData } from '../../store/dataActions'
+import { setAppStateParams } from '../../store/appStateActions'
 import { fetchRequest } from '../../utils/fetch'
+import Page from './Page'
 
 /**
  * this component loads data from Firebase:  material and translation, join them and pass for display
@@ -9,12 +11,18 @@ import { fetchRequest } from '../../utils/fetch'
  */
 export default function MaterialDataContainer(props) {
   const dispatch = useDispatch()
-  const { materialId, trLang } = props.match.params
+  const { materialId, trLang } = useSelector(state => state.appState)
   const [isLoadedMaterial, setIsLoadedMaterial] = useState(false)
   const [isLoadedMaterialTr, setIsLoadedMaterialTr] = useState(false)
   const [isLoadedUnit, setIsLoadedUnit] = useState(false)
   const [isLoadedUnitTr, setIsLoadedUnitTr] = useState(false)
   const [unitId, setUnitId] = useState()
+
+  // MATERIAL
+  useEffect(() => {
+    const { materialId, trLang } = props.match.params
+    dispatch(setAppStateParams({ trLang, materialId }))
+  }, [])
 
   // MATERIAL
   useEffect(() => {
@@ -25,7 +33,9 @@ export default function MaterialDataContainer(props) {
       dispatch(setData({ material }))
       setIsLoadedMaterial(true)
     }
-    fetchData()
+    if (materialId) {
+      fetchData()
+    }
   }, [materialId])
 
   // TRANSLATION for MATERIAL
@@ -38,7 +48,7 @@ export default function MaterialDataContainer(props) {
       dispatch(setData({ materialTranslations: { [trLang]: translation } }))
       setIsLoadedMaterialTr(true)
     }
-    if (setIsLoadedMaterial) fetchData()
+    if (setIsLoadedMaterial && trLang) fetchData()
   }, [materialId, trLang, setIsLoadedMaterial])
 
   // UNIT
@@ -70,6 +80,7 @@ export default function MaterialDataContainer(props) {
         null,
         2
       )}
+      <Page />
     </div>
   )
 }
