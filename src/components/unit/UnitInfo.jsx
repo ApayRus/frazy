@@ -6,18 +6,17 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useSelector } from 'react-redux'
 
 export default function Heading(props) {
+  const { trLang } = useSelector(state => state.appState)
+
   const {
-    title,
-    author,
-    lang,
-    description,
-    trTitle,
-    trAuthor,
-    trLang,
-    trDescription,
-    logoUrl,
-    backgroundUrl
-  } = useSelector(state => state.menu)
+    unit: { title, author, lang, description, logoUrl, backgroundUrl }
+  } = useSelector(state => state.data) || {}
+
+  const {
+    unitTranslations: {
+      [trLang]: { title: trTitle, author: trAuthor, description: trDescription } = {}
+    }
+  } = useSelector(state => state.data) || {}
 
   const useStyles = makeStyles(theme => ({
     header: {

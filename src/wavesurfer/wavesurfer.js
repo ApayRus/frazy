@@ -80,6 +80,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
             return {...oldPhrase, id, start, end, color }
         })
         phrases = orderBy(phrases, 'start')
+        console.log('from wavesurfer module')
         store.dispatch(setPageParameters({ 'phrases': phrases }))
     }
 
@@ -104,7 +105,7 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
     })
 
     wavesurfer.on('region-removed', (region) => {
-        regionsToPhrasesArray()
+        // regionsToPhrasesArray()
     })
 
     // Time stretcher (preserve pitch on speeds != 1 )

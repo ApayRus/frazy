@@ -10,8 +10,8 @@ import orderBy from 'lodash/orderBy'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function UnitHeading(props) {
-  const { heading } = useSelector(state => state.menu)
-  const { trLang } = useSelector(state => state.pageContent)
+  const { heading } = useSelector(state => state.data.unit)
+  const { trLang } = useSelector(state => state.appState)
   const dispatch = useDispatch()
 
   const headingOrdered = orderBy(heading, ['created.time'], ['asc'])
@@ -27,9 +27,8 @@ export default function UnitHeading(props) {
 
   const classes = useStyles()
 
-  const handleClick = () => {
+  const handleClick = materialId => event => {
     dispatch(setAppStateParams({ showHeadingDrawer: false }))
-    // dispatch(clearCachedDocs())
   }
 
   return (
@@ -42,7 +41,7 @@ export default function UnitHeading(props) {
             className={classes.listItem}
             button
             divider
-            onClick={handleClick}
+            onClick={handleClick(elem._id)}
             key={`heading-${elem._id}`}
           >
             <ListItemText primary={elem.title} /* secondary={elem.title.ru} */ />

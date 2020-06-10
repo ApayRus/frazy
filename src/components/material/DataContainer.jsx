@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setData } from '../../store/dataActions'
+import { setData, clearData, clearMaterial } from '../../store/dataActions'
 import { setAppStateParams } from '../../store/appStateActions'
 import { fetchRequest } from '../../utils/fetch'
 import Page from './Page'
@@ -11,18 +11,29 @@ import Page from './Page'
  */
 export default function MaterialDataContainer(props) {
   const dispatch = useDispatch()
-  const { materialId, trLang } = useSelector(state => state.appState)
-  const [isLoadedMaterial, setIsLoadedMaterial] = useState(false)
-  const [isLoadedMaterialTr, setIsLoadedMaterialTr] = useState(false)
-  const [isLoadedUnit, setIsLoadedUnit] = useState(false)
-  const [isLoadedUnitTr, setIsLoadedUnitTr] = useState(false)
+
+  const { trLang } = useSelector(state => state.appState)
+
+  const { isLoadedMaterial, isLoadedMaterialTr, isLoadedUnit, isLoadedUnitTr } = useSelector(
+    state => state.data
+  )
+
   const [unitId, setUnitId] = useState()
+  const { materialId } = props.match.params
 
   // MATERIAL
   useEffect(() => {
-    const { materialId, trLang } = props.match.params
+    const { trLang } = props.match.params
     dispatch(setAppStateParams({ trLang, materialId }))
+    return () => {
+      dispatch(clearData())
+    }
   }, [])
+
+  useEffect(() => {
+    const { materialId } = props.match.params
+    dispatch(setAppStateParams({ materialId }))
+  }, [materialId])
 
   // MATERIAL
   useEffect(() => {
@@ -31,10 +42,13 @@ export default function MaterialDataContainer(props) {
       const { data: material } = materialResponse
       setUnitId(material.unit)
       dispatch(setData({ material }))
-      setIsLoadedMaterial(true)
+      dispatch(setData({ isLoadedMaterial: true }))
     }
     if (materialId) {
       fetchData()
+    }
+    return () => {
+      dispatch(clearMaterial())
     }
   }, [materialId])
 
@@ -46,10 +60,10 @@ export default function MaterialDataContainer(props) {
       )
       const { data: translation } = translationResponse
       dispatch(setData({ materialTranslations: { [trLang]: translation } }))
-      setIsLoadedMaterialTr(true)
+      dispatch(setData({ isLoadedMaterialTr: true }))
     }
-    if (setIsLoadedMaterial && trLang) fetchData()
-  }, [materialId, trLang, setIsLoadedMaterial])
+    if (materialId && trLang) fetchData()
+  }, [materialId, trLang])
 
   // UNIT
   useEffect(() => {
@@ -57,7 +71,7 @@ export default function MaterialDataContainer(props) {
       const unitResponse = await fetchRequest(`/api/unit?_id=${unitId}`)
       const { data: unit } = unitResponse
       dispatch(setData({ unit }))
-      setIsLoadedUnit(true)
+      dispatch(setData({ isLoadedUnit: true }))
     }
     if (unitId) fetchData()
   }, [unitId])
@@ -68,7 +82,7 @@ export default function MaterialDataContainer(props) {
       const unitTrResponse = await fetchRequest(`/api/unit-tr?for=${unitId}&lang=${trLang}`)
       const { data: unitTr } = unitTrResponse
       dispatch(setData({ unitTranslations: { [trLang]: unitTr } }))
-      setIsLoadedUnitTr(true)
+      dispatch(setData({ isLoadedUnitTr: true }))
     }
     if (unitId) fetchData()
   }, [unitId])

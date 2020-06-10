@@ -3,7 +3,9 @@ const initState = {
     showSettingsDrawer: false,
     showFullscreenDialog: false,
     langsUserInterestedIn: [],
-    editMode: false
+    editMode: false,
+    trLang: "",
+    materialId: ""
 }
 
 const appStateReducer = (state = initState, action) => {

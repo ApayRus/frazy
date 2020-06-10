@@ -3,21 +3,10 @@ import nanoid from 'nanoid'
 import { map, orderBy } from 'lodash'
 
 const initState = {
-    materialId: '',
-    translationId: '',
-    title: '',
-    lang: '',
-    unit: '',
-    order: '',
     phrases: [],
     selectedPhrases: [],
-    trTitle: '',
     trLang: '',
-    mediaLink: '', // saved in db, folder/filename.mp3
     mediaLinkUrl: '',
-    youtubeId: '',
-    duration: 0, // 45.035 (sec)
-    translations: [], // ['ru', 'ar', 'ch']
     materialAction: 'create', // or 'update'
     translationAction: 'create', // or 'update'
     uploadProgress: -1,
@@ -41,62 +30,18 @@ const pageContentReducer = (state = initState, action) => {
         case 'FILL_PAGE_CONTENT':
             {
                 //material
-                const { materialId, material, translation, mode = 'forView' } = action.payload
-                const {
-                    lang,
-                    title,
-                    unit,
-                    order,
-                    mediaLink,
-                    phrases: materialPhrases,
-                    youtubeId,
-                    translations,
-                    meta: {
-                        duration = 0,
-                        created: materialCreated = {},
-                        revisions: materialRevisions = {}
-                    } = {}
-                } = material
+                const { material, translation, mode = 'forView' } = action.payload
+                const { phrases: materialPhrases } = material
 
                 let phrases = makePhrasesArray(materialPhrases, mode)
 
                 //translations
-                const {
-                    lang: trLang = '',
-                    title: trTitle = '',
-                    phrases: translationPhrases,
-                    for: forMaterial = '',
-                    meta: { revisions: translationRevisions = {}, created: translationCreated = {} } = {},
-                    _id: translationId = ''
-                } = translation || {}
-
-                if (translation) {
-                    if (translationPhrases) {
-                        phrases = addTranslation(phrases, translation, mode)
-                    }
+                const { phrases: translationPhrases, lang: trLang } = translation || {}
+                if (translationPhrases) {
+                    phrases = addTranslation(phrases, translation, mode)
                 }
 
-                return {
-                    ...state,
-                    materialId,
-                    translationId,
-                    lang,
-                    title,
-                    unit,
-                    order,
-                    mediaLink,
-                    youtubeId,
-                    translations,
-                    duration,
-                    materialRevisions,
-                    trLang,
-                    trTitle,
-                    for: forMaterial,
-                    translationRevisions,
-                    translationCreated,
-                    materialCreated,
-                    phrases
-                }
+                return {...state, trLang, phrases }
             }
         case 'UPDATE_FROM_MATERIAL':
             {

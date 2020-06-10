@@ -5,6 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import wavesurferModule from '../wavesurfer/wavesurfer'
 import youtubeModule from '../youtube/youtube'
+import ControlsPanel from './materialForm/ControlsPanel'
 import { map } from 'lodash'
 
 function Waveform(props) {
@@ -14,6 +15,7 @@ function Waveform(props) {
   const { phrases, mediaLinkUrl, youtubeId, waveformRenderProgress, trLang } = useSelector(
     state => state.pageContent
   )
+  const { showWaveform } = useSelector(state => state.playerSettings)
   const { readOnly } = props
 
   //mediaLink changed
@@ -104,7 +106,7 @@ function Waveform(props) {
   }, [phrases, trLang])
 
   return (
-    <div className='waveform'>
+    <div className='waveform' style={{ display: !showWaveform ? 'none' : '' }}>
       {!isReady && (
         <div style={{ textAlign: 'center' }}>
           <Typography variant='body2' color='textSecondary'>
@@ -116,6 +118,7 @@ function Waveform(props) {
       <div style={isReady ? {} : { visibility: 'hidden' }}>
         <div ref={waveformElem} />
         <div ref={timelineElem} />
+        <ControlsPanel />
       </div>
     </div>
   )

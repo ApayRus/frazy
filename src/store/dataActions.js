@@ -4,3 +4,14 @@ export const setData = payload => {
         payload
     }
 }
+export const clearMaterial = () => {
+    return {
+        type: 'CLEAR_MATERIAL',
+
+    }
+}
+export const clearData = () => {
+    return {
+        type: 'CLEAR_DATA',
+    }
+}

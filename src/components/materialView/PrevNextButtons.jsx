@@ -1,5 +1,4 @@
 import React from 'react'
-import map from 'lodash/map'
 import orderBy from 'lodash/orderBy'
 import findIndex from 'lodash/findIndex'
 import Button from '@material-ui/core/Button'
@@ -10,8 +9,10 @@ import { Link } from 'react-router-dom'
 import { clearCachedDocs } from '../../store/appStateActions'
 
 function PrevNextButtons(props) {
-  const { heading } = useSelector(state => state.menu)
-  const { materialId, trLang } = useSelector(state => state.pageContent)
+  const {
+    unit: { heading }
+  } = useSelector(state => state.data)
+  const { materialId, trLang } = useSelector(state => state.appState)
   const dispatch = useDispatch()
   const headingOrdered = orderBy(heading, ['created.time'], ['asc'])
   const materialIndex = findIndex(headingOrdered, { _id: materialId })
