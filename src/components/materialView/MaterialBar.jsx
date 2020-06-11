@@ -41,7 +41,6 @@ function Appbar(props) {
   const classes = useStyles()
 
   const toggleEditMode = () => {
-    console.log('hiiiiii')
     dispatch(setAppStateParams({ editMode: !editMode }))
   }
 
