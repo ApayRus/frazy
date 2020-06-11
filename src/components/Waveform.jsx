@@ -15,7 +15,7 @@ function Waveform(props) {
   const { phrases, mediaLinkUrl, youtubeId, waveformRenderProgress, trLang } = useSelector(
     state => state.pageContent
   )
-  const { showWaveform } = useSelector(state => state.playerSettings)
+  const { showWaveform, sticked } = useSelector(state => state.playerSettings)
   const { editMode } = useSelector(state => state.appState)
 
   //mediaLink changed
@@ -105,7 +105,6 @@ function Waveform(props) {
   }, [phrases, trLang])
 
   useEffect(() => {
-    console.log('editMode', editMode)
     const { wavesurfer } = wavesurferModule
     if (wavesurfer) {
       const regions = wavesurfer.regions.list
@@ -125,7 +124,16 @@ function Waveform(props) {
   }, [editMode, isReady])
 
   return (
-    <div className='waveform' style={{ display: !showWaveform ? 'none' : '' }}>
+    <div
+      className='waveform'
+      style={{
+        display: !showWaveform ? 'none' : '',
+        position: sticked ? 'sticky' : 'unset',
+        top: 0,
+        backgroundColor: 'white',
+        zIndex: 2
+      }}
+    >
       {!isReady && (
         <div style={{ textAlign: 'center' }}>
           <Typography variant='body2' color='textSecondary'>
