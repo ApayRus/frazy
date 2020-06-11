@@ -117,10 +117,10 @@ export default function MaterialForm(props) {
   const handleSubmit = async () => {
     // MATERIAL data for submit
 
-    let actions = [] // materialAction and translationAction both, or one of them.
+    // let actions = [] // materialAction and translationAction both, or one of them.
 
     // answers what finally has happend after user input
-    const getEvent = () => {
+    /* const getEvent = () => {
       return {
         _id: nanoid(24),
         title,
@@ -133,13 +133,13 @@ export default function MaterialForm(props) {
         time: Date.now(),
         action: 'create'
       }
-    }
+    } */
 
     const finalMaterial = getSnapshotFromMaterial()
     const finalTranslation = getSnapshotFromTranslation()
 
-    const diffMaterial = diff(initMaterial, finalMaterial) //diff object after user input
-    const diffTranslation = diff(initTranslation, finalTranslation) //diff object after user input
+    // const diffMaterial = diff(initMaterial, finalMaterial) //diff object after user input
+    // const diffTranslation = diff(initTranslation, finalTranslation) //diff object after user input
 
     const authtoken = await firebase.auth().currentUser.getIdToken(true)
 

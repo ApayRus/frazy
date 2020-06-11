@@ -3,7 +3,7 @@
  * displays Upload button , or link + Delete
  */
 import React from 'react'
-import { Button, TextField, IconButton, CircularProgress, Typography } from '@material-ui/core'
+import { Button, TextField, IconButton, CircularProgress } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import DeleteIcon from '@material-ui/icons/DeleteForever'
 import firebase from '../firebase/firebase'

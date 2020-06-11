@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 function Appbar(props) {
   const dispatch = useDispatch()
-  const { materialId, trLang, editMode } = useSelector(state => state.appState)
+  const { editMode } = useSelector(state => state.appState)
   const classes = useStyles()
 
   const toggleEditMode = () => {

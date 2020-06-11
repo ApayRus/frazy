@@ -2,14 +2,12 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import PlayerControls from '../../materialView/PlayerControls'
 import Phrases from '../../materialView/Phrases'
-
 import PlayerSlideShow from '../../materialView/PlayerSlideShow'
 import { makeStyles } from '@material-ui/core/styles'
 import wavesurferModule from '../../../wavesurfer/wavesurfer'
 import { setPlayerState } from '../../../store/playerStateActions'
 import PrevNextButtons from '../../materialView/PrevNextButtons'
 import clsx from 'clsx'
-import ControlsPanel from '../../materialForm/ControlsPanel'
 import HeadingDrawer from '../../unit/UnitDrawerContainer'
 
 const useStyles = makeStyles(theme => ({
@@ -21,9 +19,7 @@ const useStyles = makeStyles(theme => ({
 export default function MaterialPage(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { currentPhraseId, dictationCurrentRepeat, dictationTimerId } = useSelector(
-    state => state.playerState
-  )
+  const { currentPhraseId, dictationTimerId } = useSelector(state => state.playerState)
   const { dictationRepeats, dictationDelay, showSlideshow } = useSelector(
     state => state.playerSettings
   )

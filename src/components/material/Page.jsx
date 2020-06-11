@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setAppStateParams } from '../../store/appStateActions'
 import { setPageParameters, fillPageContent } from '../../store/pageContentActions'
 import AboveWaveformView from './partials/AboveWaveformView'
 import AboveWaveformEdit from './partials/AboveWaveformEdit'
