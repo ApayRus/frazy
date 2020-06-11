@@ -16,7 +16,7 @@ function Waveform(props) {
     state => state.pageContent
   )
   const { showWaveform } = useSelector(state => state.playerSettings)
-  const { readOnly } = props
+  const { editMode } = useSelector(state => state.appState)
 
   //mediaLink changed
   useEffect(() => {
@@ -27,8 +27,7 @@ function Waveform(props) {
         waveformElem.current,
         timelineElem.current,
         url,
-        phrases,
-        readOnly
+        phrases
       )
       wavesurferModule.wavesurfer.on('ready', e => {
         if (youtubeId) {
@@ -104,6 +103,26 @@ function Waveform(props) {
       }
     }
   }, [phrases, trLang])
+
+  useEffect(() => {
+    console.log('editMode', editMode)
+    const { wavesurfer } = wavesurferModule
+    if (wavesurfer) {
+      const regions = wavesurfer.regions.list
+
+      if (editMode) {
+        for (let id in regions) {
+          regions[id].update({ drag: true, resize: true })
+        }
+        wavesurfer.enableDragSelection(true)
+      } else {
+        for (let id in regions) {
+          regions[id].update({ drag: false, resize: false })
+        }
+        wavesurfer.disableDragSelection(true)
+      }
+    }
+  }, [editMode, isReady])
 
   return (
     <div className='waveform' style={{ display: !showWaveform ? 'none' : '' }}>

@@ -11,18 +11,7 @@ import soundtouch from './soundtouchFilter'
 
 let wavesurfer
 
-const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, readOnly) => {
-    const readModeRegionOptions = { drag: false, resize: false } // should be added to each region
-    let phrasesArray = phrasesArray0
-    let dragSelection = true
-
-    if (readOnly) {
-        phrasesArray = phrasesArray0.map((elem) => ({
-            ...elem,
-            ...readModeRegionOptions
-        }))
-        dragSelection = false
-    }
+const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray) => {
 
     wavesurfer = WaveSurfer.create({
         container: waveformConteiner,
@@ -31,7 +20,6 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
         plugins: [
             RegionsPlugin.create({
                 regions: phrasesArray,
-                dragSelection,
             }),
             TimelinePlugin.create({
                 container: timelineContainer,
@@ -80,12 +68,10 @@ const init = (waveformConteiner, timelineContainer, mediaLink, phrasesArray0, re
             return {...oldPhrase, id, start, end, color }
         })
         phrases = orderBy(phrases, 'start')
-        console.log('from wavesurfer module')
         store.dispatch(setPageParameters({ 'phrases': phrases }))
     }
 
     wavesurfer.on('region-update-end', (region) => {
-        console.log('region-update-end')
         regionsToPhrasesArray()
     })
 
