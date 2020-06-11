@@ -8,10 +8,9 @@ import HomeIcon from '@material-ui/icons/Home'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import ButtonWithAuthPopover from '../auth/ButtonWithAuthPopover'
-import { setAppStateParams, clearCachedDocs } from '../../store/appStateActions'
+import { setAppStateParams } from '../../store/appStateActions'
 import { loginDialog as local } from '../../localization/en'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   bottom: {
@@ -38,11 +37,13 @@ const useStyles = makeStyles(theme => ({
 
 function Appbar(props) {
   const dispatch = useDispatch()
-  const { materialId, trLang } = useSelector(state => state.pageContent)
+  const { materialId, trLang, editMode } = useSelector(state => state.appState)
   const classes = useStyles()
 
-  const materialEditLink = materialId ? `/material/edit/${materialId}/${trLang}` : `/material/edit/`
-  const history = useHistory()
+  const toggleEditMode = () => {
+    console.log('hiiiiii')
+    dispatch(setAppStateParams({ editMode: !editMode }))
+  }
 
   return (
     <div>
@@ -61,9 +62,6 @@ function Appbar(props) {
         className={`${classes.bottom} ${classes.home}`}
         component={Link}
         to='/'
-        onClick={() => {
-          dispatch(clearCachedDocs())
-        }}
         color='primary'
         size='medium'
       >
@@ -75,7 +73,7 @@ function Appbar(props) {
       </Fab>
       <div className={`${classes.bottom} ${classes.edit}`}>
         <ButtonWithAuthPopover
-          actionOnSuccess={() => history.push(materialEditLink)}
+          actionOnSuccess={toggleEditMode}
           message={local.loginButtonMessageForEditMaterial}
           buttonIcon={<EditIcon />}
         />

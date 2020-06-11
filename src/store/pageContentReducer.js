@@ -31,17 +31,17 @@ const pageContentReducer = (state = initState, action) => {
             {
                 //material
                 const { material, translation, mode = 'forView' } = action.payload
-                const { phrases: materialPhrases } = material
+                const { phrases: materialPhrases, mediaLink, unit, order, title, lang, youtubeId } = material
 
                 let phrases = makePhrasesArray(materialPhrases, mode)
 
                 //translations
-                const { phrases: translationPhrases, lang: trLang } = translation || {}
+                const { phrases: translationPhrases, lang: trLang, title: trTitle, _id: translationId } = translation || {}
                 if (translationPhrases) {
                     phrases = addTranslation(phrases, translation, mode)
                 }
 
-                return {...state, trLang, phrases }
+                return {...state, trLang, phrases, mediaLink, unit, order, title, lang, youtubeId, trTitle, translationId }
             }
         case 'UPDATE_FROM_MATERIAL':
             {

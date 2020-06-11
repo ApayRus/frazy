@@ -4,8 +4,10 @@ import RoundButton from '../translations/RoundButton'
 import TranslationSwitcher from '../translations/TranslationSwitcher'
 import { useSelector } from 'react-redux'
 
-function MaterialTitle() {
-  const { title, trTitle, lang } = useSelector(state => state.pageContent)
+export default function MaterialTitle() {
+  const { trLang } = useSelector(state => state.appState) || {}
+  const { title, lang } = useSelector(state => state.data.material) || {}
+  const { title: trTitle } = useSelector(state => state.data.materialTranslations[trLang]) || {}
 
   return (
     <div style={{ margin: 20, position: 'relative' }}>
@@ -18,5 +20,3 @@ function MaterialTitle() {
     </div>
   )
 }
-
-export default MaterialTitle

@@ -13,30 +13,27 @@
 
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Typography from '@material-ui/core/Typography'
 import SaveIcon from '@material-ui/icons/Save'
 import { useHistory } from 'react-router-dom'
-import Waveform from '../Waveform'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPageParameters, fillPageContent } from '../../store/pageContentActions'
-import wavesurferModule from '../../wavesurfer/wavesurfer'
-import MaterialInfo from './MaterialFormInfo'
-import MaterialExportTable from './ExportTable'
-import { parseImportedSubs } from '../../utils/phrases'
+import { setPageParameters, fillPageContent } from '../../../store/pageContentActions'
+import wavesurferModule from '../../../wavesurfer/wavesurfer'
+import MaterialExportTable from '../../materialForm/ExportTable'
+import { parseImportedSubs } from '../../../utils/phrases'
 import { diff } from 'deep-object-diff'
-import ControlsPanel from './ControlsPanel'
-import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../utils/phrases'
-import PhrasesForTextArea from './MaterialFormPhrases'
-import YoutubePlayer from '../YoutubePlayer'
-import firebase from '../../firebase/firebase'
+import { localPhrasesToDBphrases, localPhrasesToDBtranslations } from '../../../utils/phrases'
+import PhrasesForTextArea from '../../materialForm/MaterialFormPhrases'
+import firebase from '../../../firebase/firebase'
 import nanoid from 'nanoid'
-import { fetchRequest } from '../../utils/fetch'
+import { fetchRequest } from '../../../utils/fetch'
 
 export default function MaterialForm(props) {
+  const { materialId, trLang } = useSelector(state => state.appState)
+
   const {
-    //from Material
-    materialId,
+    phrases,
+    materialAction,
+    translationAction,
     title,
     mediaLink,
     youtubeId,
@@ -44,29 +41,14 @@ export default function MaterialForm(props) {
     unit,
     order,
     duration,
-    translations,
-    materialCreated,
-    //from Translation (MaterialTr)
-    translationId,
     trTitle,
-    trLang,
-    for: forMaterial,
-    translationRevisions,
-    translationCreated,
-    //combined phrases Material+Translation
-    phrases,
-    //temporary values
-    uploadProgress,
-    textareaOriginal,
-    materialAction,
-    translationAction
+    translationId
   } = useSelector(state => state.pageContent)
 
   const history = useHistory()
   const [initMaterial, setInitMaterial] = useState({})
   const [initTranslation, setInitTranslation] = useState({})
   const dispatch = useDispatch()
-  const { sticked: playerSticked } = useSelector(state => state.playerSettings)
 
   // get actual data from redux, related to data-model
   // we'll make spapshots twice -
@@ -186,36 +168,7 @@ export default function MaterialForm(props) {
   }
 
   return (
-    <div style={{ textAlign: 'left', paddingBottom: 50 }}>
-      <MaterialInfo />
-      {uploadProgress > 0 && uploadProgress < 100 ? (
-        <div style={{ textAlign: 'center' }}>
-          <Typography variant='body2' color='textSecondary'>
-            File uploading ...
-          </Typography>
-          <CircularProgress value={uploadProgress} variant='static' />
-        </div>
-      ) : null}
-      <div
-        style={{
-          position: playerSticked ? 'sticky' : 'unset',
-          top: 0,
-          backgroundColor: 'white',
-          zIndex: 2
-        }}
-      >
-        {youtubeId && (
-          <div>
-            <YoutubePlayer videoId={youtubeId} />
-          </div>
-        )}
-        {mediaLink && (
-          <div>
-            <Waveform />
-            <ControlsPanel editMode />
-          </div>
-        )}
-      </div>
+    <>
       <div>
         <PhrasesForTextArea />
       </div>
@@ -233,6 +186,6 @@ export default function MaterialForm(props) {
           Save <SaveIcon style={{ marginLeft: 10 }} />
         </Button>
       </div>
-    </div>
+    </>
   )
 }

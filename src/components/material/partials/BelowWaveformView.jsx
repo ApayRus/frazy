@@ -10,7 +10,6 @@ import { setPlayerState } from '../../../store/playerStateActions'
 import PrevNextButtons from '../../materialView/PrevNextButtons'
 import clsx from 'clsx'
 import ControlsPanel from '../../materialForm/ControlsPanel'
-import MaterialBar from '../../materialView/MaterialBar'
 import HeadingDrawer from '../../unit/UnitDrawerContainer'
 
 const useStyles = makeStyles(theme => ({
@@ -122,7 +121,6 @@ export default function MaterialPage(props) {
       </div>
       <Phrases playPhrase={playPhrase} />
       <PrevNextButtons />
-      <MaterialBar />
       <HeadingDrawer />
     </>
   )

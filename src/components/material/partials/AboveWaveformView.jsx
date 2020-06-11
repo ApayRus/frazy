@@ -1,5 +1,5 @@
 import React from 'react'
-import MaterialTitle from './Title'
+import MaterialTitle from '../../materialView/MaterialTitle'
 import YoutubePlayer from '../../YoutubePlayer'
 import { useSelector } from 'react-redux'
 

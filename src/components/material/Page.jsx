@@ -3,10 +3,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setAppStateParams } from '../../store/appStateActions'
 import { setPageParameters, fillPageContent } from '../../store/pageContentActions'
 import AboveWaveformView from './partials/AboveWaveformView'
+import AboveWaveformEdit from './partials/AboveWaveformEdit'
 import BelowWaveformView from './partials/BelowWaveformView'
+import BelowWaveformEdit from './partials/BelowWaveformEdit'
 import Waveform from '../Waveform'
 import { getDownloadUrlById } from '../../utils/firebase'
 import DrawerSettings from '../layout/DrawerSettings'
+import MaterialBar from '../materialView/MaterialBar'
 
 export default function MaterialPage() {
   const { editMode, trLang, materialId } = useSelector(state => state.appState)
@@ -49,19 +52,17 @@ export default function MaterialPage() {
     }
   }, [isLoadedMaterial, isLoadedMaterialTr, material, translation])
 
-  /*   const AboveWaveform = !editMode ? (
-
-  ):(
-
-  ) */
+  const AboveWaveform = () => (!editMode ? <AboveWaveformView /> : <AboveWaveformEdit />)
+  const BelowWaveform = () => (!editMode ? <BelowWaveformView /> : <BelowWaveformEdit />)
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <AboveWaveformView />
+      <AboveWaveform />
       <Waveform />
-      <BelowWaveformView />
+      <BelowWaveform />
 
       <DrawerSettings />
+      <MaterialBar />
     </div>
   )
 }
