@@ -14,7 +14,7 @@ export default function MaterialForm(props) {
   const { sticked: playerSticked } = useSelector(state => state.playerSettings)
 
   return (
-    <div style={{ textAlign: 'left', paddingBottom: 50 }}>
+    <div style={{ textAlign: 'left' }}>
       <MaterialInfo />
       {uploadProgress > 0 && uploadProgress < 100 ? (
         <div style={{ textAlign: 'center' }}>

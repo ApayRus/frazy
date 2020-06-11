@@ -123,7 +123,8 @@ function ControlsPanel(props) {
     <div
       style={{
         marginTop: editMode ? -10 : -24,
-        borderBottom: editMode ? '1px solid lightgrey' : 'none'
+        borderBottom: editMode ? '1px solid lightgrey' : 'none',
+        textAlign: 'left'
       }}
     >
       <Grid container>

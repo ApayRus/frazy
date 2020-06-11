@@ -172,7 +172,7 @@ export default function MaterialForm(props) {
       <div>
         <PhrasesForTextArea />
       </div>
-      <div>
+      <div style={{ textAlign: 'left' }}>
         <MaterialExportTable />
       </div>
       <div style={{ textAlign: 'right' }}>
