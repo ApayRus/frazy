@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 function ControlsPanel(props) {
   const { selectedPhrases, waveformRenderProgress } = useSelector(state => state.pageContent)
   const { sticked: playerSticked } = useSelector(state => state.playerSettings)
-  const { editMode } = props
+  const { editMode } = useSelector(state => state.appState)
   const dispatch = useDispatch()
   const deltaInput = useRef()
 
