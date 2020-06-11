@@ -50,7 +50,8 @@ export function addTranslation(phrases, translation, mode = 'forView') {
 
         const oldTranslations = elem.translations
         const newTranslation = {
-            [trLang]: {...phraseObjectFromText } }
+            [trLang]: {...phraseObjectFromText }
+        }
         return {
             ...elem,
             attributes: {...elem.attributes, label2: phraseObjectFromText.text.replace(/<.+?>/g, '') },
@@ -100,8 +101,12 @@ export function localPhrasesToDBtranslations(phrases, trLang) {
         return {}
     }
     return phrases.reduce((obj, item) => {
-        let { id, translations } = item
-        const text = translations[trLang].text || ''
+        let {
+            id,
+            translations: {
+                [trLang]: { text = '' } = {}
+            } = {}
+        } = item || {}
         id = id.replace('wavesurfer_', '')
         obj[id] = { text }
         return obj

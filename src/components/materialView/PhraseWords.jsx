@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 
 function PhraseWords(props) {
   const { phrase, trLang } = props
-  const { /* dict = [] */ text, translations = {} } = phrase
+  const { /* dict = [] */ text = '', translations = {} } = phrase
   const { dict: trDict = [] } = translations[trLang] || {}
   const classes = useStyles()
   const phraseTextArray = text.split(' ')
