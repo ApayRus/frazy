@@ -135,7 +135,7 @@ function Waveform(props) {
       }}
     >
       {!isReady && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', visibility: mediaLinkUrl ? 'visible' : 'hidden' }}>
           <Typography variant='body2' color='textSecondary'>
             Waveform rendering...
           </Typography>
