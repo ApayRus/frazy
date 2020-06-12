@@ -122,7 +122,7 @@ function ControlsPanel(props) {
   return (
     <div
       style={{
-        marginTop: editMode ? -10 : -24,
+        marginTop: -10,
         borderBottom: editMode ? '1px solid lightgrey' : 'none',
         textAlign: 'left'
       }}
