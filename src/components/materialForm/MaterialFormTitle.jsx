@@ -27,7 +27,10 @@ const useStyles = makeStyles(theme => ({
 function MaterialFormTitle(props) {
   const { lang, title, langId, langLabel, titleId, titleLabel } = props
   const dispatch = useDispatch()
-  const { translations } = useSelector(state => state.pageContent)
+  let {
+    material: { translations = [] }
+  } = useSelector(state => state.data)
+  translations = translations.map(elem => elem.lang)
   const classes = useStyles()
 
   const handleChange = event => {
