@@ -28,6 +28,10 @@ export default function MaterialDataContainer(props) {
     const { trLang } = props.match.params
     const editMode = props.location.search.match('editMode=true') ? true : false
     dispatch(setAppStateParams({ trLang, materialId, editMode }))
+    if (!trLang) {
+      dispatch(setData({ isLoadedMaterialTr: true }))
+      dispatch(setData({ isLoadedUnitTr: true }))
+    }
     return () => {
       dispatch(clearData())
       dispatch(clearPageContent())
@@ -88,8 +92,8 @@ export default function MaterialDataContainer(props) {
       dispatch(setData({ unitTranslations: { [trLang]: unitTr } }))
       dispatch(setData({ isLoadedUnitTr: true }))
     }
-    if (unitId) fetchData()
-  }, [unitId])
+    if (unitId && trLang) fetchData()
+  }, [unitId, trLang])
 
   return (
     <div>

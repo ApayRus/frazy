@@ -40,7 +40,7 @@ export default function MaterialPage() {
 
   // PHRASES
   useEffect(() => {
-    if (isLoadedMaterial & isLoadedMaterialTr) {
+    if (isLoadedMaterial && isLoadedMaterialTr) {
       dispatch(
         fillPageContent({
           materialId,
