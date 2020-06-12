@@ -6,7 +6,6 @@ import HeadingDrawer from './UnitDrawerContainer'
 import UnitInfo from './UnitInfo'
 import UnitHeading from './UnitHeading'
 import { fetchRequest } from '../../utils/fetch'
-import { getDownloadUrlById } from '../../utils/firebase'
 
 /**
  * this component loads data from Firebase
@@ -24,13 +23,6 @@ function HeadingFirebaseContainer(props) {
       if (unitResponse.success) {
         dispatch(setMenuParameters(unit))
       }
-
-      const getAsyncUrls = async () => {
-        const { logo = '', background = '' } = unit
-        const [logoUrl, backgroundUrl] = await getDownloadUrlById([logo, background])
-        dispatch(setMenuParameters({ logoUrl, backgroundUrl }))
-      }
-      getAsyncUrls()
 
       setAllDataIsLoaded(true)
     }

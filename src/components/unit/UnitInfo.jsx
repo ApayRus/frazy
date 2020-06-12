@@ -1,16 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { getDownloadUrlById } from '../../utils/firebase'
+import { setMenuParameters } from '../../store/menuActions'
 
 export default function Heading(props) {
   const { trLang } = useSelector(state => state.appState)
+  const dispatch = useDispatch()
 
   const {
-    unit: { title, author, lang, description, logoUrl, backgroundUrl }
+    unit: {
+      title,
+      author,
+      lang,
+      description,
+      logo = 'default-files/default-logo.png',
+      background = 'default-files/default-background.jpg'
+    }
   } = useSelector(state => state.data) || {}
+
+  const { logoUrl, backgroundUrl } = useSelector(state => state.menu)
+
+  useEffect(() => {
+    const getAsyncUrls = async () => {
+      console.log('logo, bckg', logo, background)
+      const [logoUrl, backgroundUrl] = await getDownloadUrlById([
+        logo ? logo : 'default-files/default-logo.png',
+        background ? background : 'default-files/default-background.jpg'
+      ])
+      dispatch(setMenuParameters({ logoUrl, backgroundUrl }))
+    }
+    if (!(logoUrl && backgroundUrl)) getAsyncUrls()
+  }, [logo, background])
 
   const {
     unitTranslations: {
