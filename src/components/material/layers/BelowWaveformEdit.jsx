@@ -14,8 +14,8 @@ export default function MaterialForm(props) {
         <MaterialExportTable />
       </div>
       <div style={{ textAlign: 'right' }}>
-        <ButtonSubmit />
         <ButtonImportSubtitles />
+        <ButtonSubmit />
       </div>
     </>
   )
