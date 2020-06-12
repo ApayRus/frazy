@@ -30,24 +30,31 @@ function MaterialFormTitle(props) {
   let {
     material: { translations = [] }
   } = useSelector(state => state.data)
-  translations = translations.map(elem => elem.lang)
   const classes = useStyles()
 
   const handleChange = event => {
     const { id, value } = event.target
     dispatch(setPageParameters({ [id]: value }))
+    // if user types a new lang into trLang field, we should generate Id for a new doc
+    // if user returns to one of existing codes, we should get Id from existing ids
     if (id === 'trLang') {
-      const translation = translations.find(elem => elem.lang === value)
-      if (translation) {
-        // switchTranslation(translation._id)
-      } else {
-        dispatch(
-          setPageParameters({
-            translationAction: 'create',
-            translationId: nanoid(24)
-          })
-        )
+      const trCode = event.target.value
+
+      const actionAfterTrLangChanged = (trCode, translations) => {
+        const { _id: translationId } = translations.find(elem => elem.lang === trCode) || {}
+
+        return translationId
+          ? {
+              translationId,
+              translationAction: 'update'
+            }
+          : {
+              translationId: nanoid(24),
+              translationAction: 'create'
+            }
       }
+
+      dispatch(setPageParameters(actionAfterTrLangChanged(trCode, translations)))
     }
   }
 

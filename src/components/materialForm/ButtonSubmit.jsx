@@ -1,16 +1,3 @@
-/**
- * In this  component joins together and happens many things
- * There is editing of two models: Material and Translation.
- * Maybe it is their creation, or update, both of them or only one of them.
- * Before editing we do snapshop of material and translation, and then using diff(obj1, obj2)
- * we decide what has happend and run related promises.
- * After promises fullfilled we writes Event about what happend, and redirect to material view page.
- * Also, if has created translation, we writes to material Doc new avaliableTranslation language.
- * If we not changed material, but only translation,
- * we should update 'translations' in material, but event won't include that record,
- * and we see on main page as if material not changed, only added translation.
- */
-
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import SaveIcon from '@material-ui/icons/Save'
@@ -41,16 +28,16 @@ export default function MaterialForm(props) {
     translationId
   } = useSelector(state => state.pageContent)
 
+  const {
+    material: initMaterial,
+    materialTranslations: { [trLang]: initTranslation }
+  } = useSelector(state => state.data)
+
   const history = useHistory()
-  const [initMaterial, setInitMaterial] = useState({})
-  const [initTranslation, setInitTranslation] = useState({})
+
   const dispatch = useDispatch()
 
-  // get actual data from redux, related to data-model
-  // we'll make spapshots twice -
-  // 1) on mount component 2) on submit
-  // and will compare them
-  // with inputed by user new data and detect what has changed
+  // extracting Material model data from redux-store
   const getSnapshotFromMaterial = () => {
     return {
       _id: materialId,
@@ -64,6 +51,8 @@ export default function MaterialForm(props) {
       duration
     }
   }
+
+  // extracting MaterialTr model data from redux-store
   const getSnapshotFromTranslation = () => {
     return {
       _id: translationId,
@@ -73,6 +62,7 @@ export default function MaterialForm(props) {
       phrases: localPhrasesToDBtranslations(phrases, trLang)
     }
   }
+
   const checkMaterialTranslationIds = () => {
     // if id of doc (material or translation) exists, then we are updating the doc, elsewhere we are adding the doc
     // add or update is needed for Event
@@ -85,6 +75,7 @@ export default function MaterialForm(props) {
     if (translationId) {
       dispatch(setPageParameters({ translationAction: 'update' }))
     } else {
+      console.log('from checkMaterialTranslationIds')
       dispatch(setPageParameters({ translationId: nanoid(24) }))
     }
   }
@@ -92,31 +83,13 @@ export default function MaterialForm(props) {
   useEffect(() => {
     //onMount
     checkMaterialTranslationIds()
-    setInitMaterial(getSnapshotFromMaterial())
-    setInitTranslation(getSnapshotFromTranslation())
+    /*     setInitMaterial(getSnapshotFromMaterial())
+    setInitTranslation(getSnapshotFromTranslation()) */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSubmit = async () => {
     // MATERIAL data for submit
-
-    // let actions = [] // materialAction and translationAction both, or one of them.
-
-    // answers what finally has happend after user input
-    /* const getEvent = () => {
-      return {
-        _id: nanoid(24),
-        title,
-        lang,
-        materialId,
-        translationId,
-        trTitle,
-        trLang,
-        actions: ['added material', 'added translation'],
-        time: Date.now(),
-        action: 'create'
-      }
-    } */
 
     const finalMaterial = getSnapshotFromMaterial()
     const finalTranslation = getSnapshotFromTranslation()
@@ -135,15 +108,16 @@ export default function MaterialForm(props) {
 
     const translationToSend = { ...finalTranslation, action: translationAction }
 
-    const materialRes = fetchRequest('/api/material', 'PATCH', authtoken, materialToSend)
+    /*     const materialRes = fetchRequest('/api/material', 'PATCH', authtoken, materialToSend)
     const translationRes = fetchRequest('/api/material-tr', 'PATCH', authtoken, translationToSend)
 
     const response = await Promise.all([materialRes, translationRes])
     console.log('response', response)
     const [materialResponse, translationResponse] = response
+
     if (materialResponse.success && translationResponse.success) {
       history.push(`/material/${materialId}/${trLang}`)
-    }
+    } */
 
     // const eventTask = sendToServer('/api/event', 'PATCH', authtoken, getEvent())
 
