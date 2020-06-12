@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setData, clearData, clearMaterial } from '../../store/dataActions'
+import { clearPageContent } from '../../store/pageContentActions'
 import { setAppStateParams } from '../../store/appStateActions'
 import { fetchRequest } from '../../utils/fetch'
 import Page from './Page'
@@ -25,9 +26,11 @@ export default function MaterialDataContainer(props) {
   // MATERIAL
   useEffect(() => {
     const { trLang } = props.match.params
-    dispatch(setAppStateParams({ trLang, materialId }))
+    const editMode = props.location.search.match('editMode=true') ? true : false
+    dispatch(setAppStateParams({ trLang, materialId, editMode }))
     return () => {
       dispatch(clearData())
+      dispatch(clearPageContent())
     }
   }, [])
 

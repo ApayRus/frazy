@@ -38,7 +38,7 @@ function MainPage() {
     }
   }, [lastEventsDoc])
 
-  const materialAddLink = 'material/add'
+  const materialAddLink = '/material?editMode=true'
 
   const AddButton = () => (
     <div style={{ position: 'fixed', bottom: 2, zIndex: 1, right: 2 }}>
