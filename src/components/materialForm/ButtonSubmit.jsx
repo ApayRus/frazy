@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import SaveIcon from '@material-ui/icons/Save'
-import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPageParameters } from '../../store/pageContentActions'
 import { diff } from 'deep-object-diff'
@@ -33,7 +32,16 @@ export default function MaterialForm(props) {
     materialTranslations: { [trLang]: initTranslation }
   } = useSelector(state => state.data)
 
-  const history = useHistory()
+  const removeAutoFields = doc => {
+    if (!doc) return
+    delete doc.updated
+    delete doc.created
+    delete doc.translations
+    delete doc.__v
+  }
+
+  removeAutoFields(initMaterial)
+  removeAutoFields(initTranslation)
 
   const dispatch = useDispatch()
 
@@ -94,18 +102,24 @@ export default function MaterialForm(props) {
     const finalMaterial = getSnapshotFromMaterial()
     const finalTranslation = getSnapshotFromTranslation()
 
-    // const diffMaterial = diff(initMaterial, finalMaterial) //diff object after user input
-    // const diffTranslation = diff(initTranslation, finalTranslation) //diff object after user input
+    const diffMaterial = diff(initMaterial, finalMaterial) //diff object after user input
+    const diffTranslation = diff(initTranslation, finalTranslation) //diff object after user input
 
     const authtoken = await firebase.auth().currentUser.getIdToken(true)
 
-    console.log('initMaterial', initMaterial)
-    console.log('finalMaterial', finalMaterial)
-    console.log('initTranslation', initTranslation)
-    console.log('finalTranslation', finalTranslation)
+    const countOfChanges = diffObj => {
+      return Object.keys(diffObj).length
+    }
+
+    console.log('diffMaterial', diffMaterial, countOfChanges(diffMaterial), materialAction)
+    console.log(
+      'diffTranslation',
+      diffTranslation,
+      countOfChanges(diffTranslation),
+      translationAction
+    )
 
     const materialToSend = { ...finalMaterial, action: materialAction }
-
     const translationToSend = { ...finalTranslation, action: translationAction }
 
     /*     const materialRes = fetchRequest('/api/material', 'PATCH', authtoken, materialToSend)
