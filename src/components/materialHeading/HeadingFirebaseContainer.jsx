@@ -13,7 +13,7 @@ import { afterFirebaseFileDownloadUrlReady } from '../../utils/firebase'
  */
 function HeadingFirebaseContainer(props) {
   const { unit } = useSelector((state) => state.firestore.data)
-  const { unitId, displayMode } = props
+  const { unitId, displayMode, trLang } = props
   const dispatch = useDispatch()
   const [dataLoaded, setDataLoaded] = useState(false)
 
@@ -40,6 +40,7 @@ function HeadingFirebaseContainer(props) {
         dispatch(setMenuParameter(['title', title ? title : defaultUnitInfo.title]))
         dispatch(setMenuParameter(['author', author ? author : defaultUnitInfo.author]))
         dispatch(setMenuParameter(['lang', lang]))
+        dispatch(setMenuParameter(['trLang', trLang]))
         setParamAsync('logo', logo ? logo : defaultUnitInfo.logo)
         setParamAsync('background', background ? background : defaultUnitInfo.background)
         if (unit.heading) {
@@ -63,7 +64,7 @@ function HeadingFirebaseContainer(props) {
     displayMode === 'drawer' ? (
       <HeadingDrawer />
     ) : (
-      <Heading />
+      <Heading trLang={trLang} />
     )
   ) : (
     <div style={{ marginTop: 20, textAlign: 'center' }}>

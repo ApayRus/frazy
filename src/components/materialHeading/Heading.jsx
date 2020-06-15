@@ -12,7 +12,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 function Heading(props) {
   const { title, author, heading, logo, background } = useSelector((state) => state.menu)
-  const { trLang } = useSelector((state) => state.pageContent)
+  const { trLang: trLang1 } = useSelector((state) => state.pageContent)
+  const { trLang: trLang2 } = useSelector((state) => state.menu)
+  const trLang = trLang1 || trLang2
   const dispatch = useDispatch()
   let headingOrdered = map(heading, (elem, key) => ({ id: key, ...elem }))
   headingOrdered = orderBy(headingOrdered, ['order'], ['asc'])

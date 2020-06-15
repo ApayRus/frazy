@@ -23,6 +23,7 @@ function App(props) {
           <Route path='/material/edit/:materialId/' component={MaterialFormHOC} />
           <Route path='/material/:materialId/:trLang' component={MaterialPageHOC} />
           <Route path='/material/:materialId' component={MaterialPageHOC} />
+          <Route path='/unit/:unitId/:trLang' component={HeadingPage} />
           <Route path='/unit/:unitId' component={HeadingPage} />
           <Route path='/admin-custom-material-list' component={AdminMaterialList} />
           <Route path='/testnetworking' component={Testnetworking} />

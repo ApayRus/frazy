@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 function HeadingPage(props) {
   // console.log('props', props)
-  const { unitId = '' } = props.match.params || {}
+  const { unitId = '', trLang = '' } = props.match.params || {}
   const { lang, background } = useSelector((state) => state.menu)
   const theme = langTheme(lang)
   const classes = useStyles({ background })
@@ -23,7 +23,7 @@ function HeadingPage(props) {
         <Grid className={classes.background} item xs={0} sm={2} md={4}></Grid>
         <Grid item xs={12} sm={8} md={4}>
           <div style={{ boxShadow: `0px 1px 5px lightgrey` }}>
-            <HeadingFirebaseContainer unitId={unitId} displayMode='page' />
+            <HeadingFirebaseContainer unitId={unitId} trLang={trLang} displayMode='page' />
           </div>
         </Grid>
         <Grid className={classes.background} item xs={0} sm={2} md={4}></Grid>
