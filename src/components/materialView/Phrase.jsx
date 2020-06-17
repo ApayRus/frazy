@@ -158,8 +158,8 @@ function Phrases(props) {
             <div className={classes.detailedInfo}>
               {dict && dictBlock(dict)}
               {trDict && dictBlock(trDict)}
-              {comment && <div>{comment}</div>}
-              {trComment && <div>{trComment}</div>}
+              {comment && <div>{comment.text}</div>}
+              {trComment && <div>{trComment.text}</div>}
             </div>
           </Collapse>
         )}
