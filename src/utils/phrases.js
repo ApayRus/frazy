@@ -1,8 +1,8 @@
 import { map, orderBy } from 'lodash'
 import { assRowToPhraseObject } from './subtitlesFunctions.js'
-import { timeStringToSeconds } from './subtitlesFunctions'
+import { timeStringToSeconds } from './subtitlesFunctions.js'
 import nanoid from 'nanoid'
-import { phraseTextToObject } from './phrasesXmlParser'
+import { phraseTextToObject } from './phrasesXmlParser.js'
 
 // phrases = { id: { start, end, text } } - how it stored in DB
 // make array [ id, start, end, text ]
@@ -200,7 +200,7 @@ CHAPTER 1
 00:00:01.560 --> 00:00:03.640
 of Alice's Adventures in Wonderland
  */
-function parseSrtWebvtt(subsText) {
+export function parseSrtWebvtt(subsText) {
     /**
      * The main rule - is that blocks are separated by empty line (\n\n)
      * variants: webvtt can began from info-block, without timings
@@ -210,7 +210,7 @@ function parseSrtWebvtt(subsText) {
      *
      */
 
-    const subsTextWithoutEmptyBlocks = subsText.replace(/(\d\d:\d\d:\d\d,\d\d\d)\n\n/g, '$1\n \n')
+    const subsTextWithoutEmptyBlocks = subsText.trim().replace(/(\d\d:\d\d:\d\d,\d\d\d)\n\n/g, '$1\n \n')
     const subsArray = subsTextWithoutEmptyBlocks.split('\n\n')
     let materialInfo = {}
     const firstBlock = subsArray[0]
@@ -243,7 +243,7 @@ function parseSrtWebvtt(subsText) {
     // const material = { title, lang, phrases, order: '' }
     // return { material }
 
-    return { materialId: nanoid(20), material: {...materialInfo, phrases } }
+    return { material: {...materialInfo, phrases } }
 }
 
 /**
