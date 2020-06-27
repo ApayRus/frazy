@@ -39,11 +39,14 @@ function getFileHeader(fileName) {
     const materialId = `${materialPrefix}${order}`
     const mediaLink = getMediaLink('aliceinwonderland_02_02', fileNameWithoutExt)
     const unit = 'Alices-Adventures-In-Wonderland-En'
+    const lang = 'en'
 
     const newFileHeader = `WEBVTT
 materialId: ${materialId}
+title: ${materialId}
 order: ${order}
 mediaLink: ${mediaLink}
-unit: ${unit}`
+unit: ${unit}
+lang: ${lang}`
     return newFileHeader
 }
