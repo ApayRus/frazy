@@ -1,9 +1,10 @@
-import { map, orderBy } from 'lodash'
+import lodash from 'lodash'
 import { assRowToPhraseObject } from './subtitlesFunctions.js'
 import { timeStringToSeconds } from './subtitlesFunctions.js'
 import nanoid from 'nanoid'
 import { phraseTextToObject } from './phrasesXmlParser.js'
 
+const { map, orderBy } = lodash
 // phrases = { id: { start, end, text } } - how it stored in DB
 // make array [ id, start, end, text ]
 // add colors [ ..., color ]
@@ -210,7 +211,9 @@ export function parseSrtWebvtt(subsText) {
      *
      */
 
-    const subsTextWithoutEmptyBlocks = subsText.trim().replace(/(\d\d:\d\d:\d\d,\d\d\d)\n\n/g, '$1\n \n')
+    const subsTextWithoutEmptyBlocks = subsText
+        .trim()
+        .replace(/(\d\d:\d\d:\d\d,\d\d\d)\n\n/g, '$1\n \n')
     const subsArray = subsTextWithoutEmptyBlocks.split('\n\n')
     let materialInfo = {}
     const firstBlock = subsArray[0]
