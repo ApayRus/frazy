@@ -142,7 +142,7 @@ function Phrases(props) {
         )}
 
         {showOriginalText ? (
-          <div>
+          <div style={{ textAlign: direction === 'rtl' ? 'right' : 'left' }}>
             <PhraseWords phrase={phrase} trLang={trLang} />
           </div>
         ) : null}
