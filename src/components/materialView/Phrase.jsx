@@ -123,7 +123,7 @@ function Phrases(props) {
 
   return (
     <div>
-      {phrase.actor && <Actor actor={actor} trActor={trActor} />}
+      {phrase.actor && <Actor actor={actor} direction={direction} trActor={trActor} />}
       <div className={classes.phrase}>
         {phraseHasHiddenParts && (
           <ButtonBase className={clsx(classes.expandButton)} onClick={handleExpand}>
