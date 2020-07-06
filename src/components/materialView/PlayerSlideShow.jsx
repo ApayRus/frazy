@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
+import { langDirection } from '../../theme/functions'
 
 const useStyles = makeStyles((theme) => ({
   root: (props) => ({
@@ -44,11 +45,13 @@ function PlayerSlideShow(props) {
     showOriginalText,
     showTranslation,
     trLang,
+    lang,
   } = props
   const currentPhrase = phrases[currentPhraseNum]
   const { img = {} } = currentPhrase || {}
   const classes = useStyles({ hasImage: Boolean(img.src) })
   const phrasesCount = phrases.length
+  const direction = langDirection(lang)
 
   return (
     <Paper className={classes.root}>
@@ -60,7 +63,9 @@ function PlayerSlideShow(props) {
             </div>
           )}
           {showOriginalText ? (
-            <Typography variant='subtitle1'>{currentPhrase.text}</Typography>
+            <Typography variant='subtitle1' style={{ direction }}>
+              {currentPhrase.text}
+            </Typography>
           ) : null}
           {showTranslation && currentPhrase.translations ? (
             <Typography variant='body2' color='textSecondary'>
@@ -93,7 +98,7 @@ const mapStateToProps = (state) => {
 
   const { dictationTimerId, dictationCurrentRepeat } = state.playerState
 
-  const { phrases, trLang } = state.pageContent
+  const { phrases, trLang, lang } = state.pageContent
 
   return {
     showTranslation,
@@ -104,6 +109,7 @@ const mapStateToProps = (state) => {
     dictationTimerId,
     dictationCurrentRepeat,
     trLang,
+    lang,
   }
 }
 
