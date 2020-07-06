@@ -9,13 +9,17 @@ import { langDirection } from '../../theme/functions'
 import PhraseWords from './PhraseWords'
 
 const useStyles = makeStyles((theme) => ({
-  phrase: (props) => ({
-    boxShadow: `0px 1px 5px ${props.isCurrentPhrase ? theme.palette.primary.main : 'lightgrey'}`,
-    textAlign: 'left',
-    padding: '10px 10px 10px 10px',
-    position: 'relative',
-    margin: 5,
-  }),
+  phrase: (props) => {
+    const { direction } = props
+    return {
+      boxShadow: `0px 1px 5px ${props.isCurrentPhrase ? theme.palette.primary.main : 'lightgrey'}`,
+      textAlign: direction === 'ltr' ? 'left' : 'right',
+
+      padding: '10px 10px 10px 10px',
+      position: 'relative',
+      margin: 5,
+    }
+  },
   translation: {
     color: 'gray',
   },
@@ -142,7 +146,7 @@ function Phrases(props) {
         )}
 
         {showOriginalText ? (
-          <div style={{ textAlign: direction === 'rtl' ? 'right' : 'left' }}>
+          <div style={{ direction }}>
             <PhraseWords phrase={phrase} trLang={trLang} />
           </div>
         ) : null}

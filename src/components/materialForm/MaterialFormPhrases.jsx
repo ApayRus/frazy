@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import TranslationSwitcher from '../translations/TranslationSwitcher'
 import PhrasesColumn from './PhrasesColumn'
 import clsx from 'clsx'
+import { langDirection } from '../../theme/functions'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   textarea: {
     resize: 'none',
     whiteSpace: 'nowrap',
@@ -21,9 +22,9 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '15px',
     /* horizontal lines: */
     backgroundImage: `linear-gradient(white, white 14px, #ccc 14px, #ccc 15px, white 15px)`,
-    backgroundSize: `100% 15px`
+    backgroundSize: `100% 15px`,
   },
-  rtl: { textAlign: 'right', direction: 'rtl' }
+  rtl: { textAlign: 'right', direction: 'rtl' },
 }))
 
 function Phrases(props) {
@@ -36,22 +37,18 @@ function Phrases(props) {
     materialId,
     textareaOriginal,
     showOriginalInputs,
-    showTranslationInputs
-  } = useSelector(state => state.pageContent)
+    showTranslationInputs,
+  } = useSelector((state) => state.pageContent)
   const dispatch = useDispatch()
   const classes = useStyles()
   const text = phrases.length
-    ? map(phrases, 'text')
-        .join('\n')
-        .trim()
+    ? map(phrases, 'text').join('\n').trim()
     : //if phrases exists, we use textarea for display their text
       textareaOriginal //if phrases doesn't exist yet, we use textarea for paste import subtitles text
 
-  const trText = map(phrases, `translations.${trLang}.text`)
-    .join('\n')
-    .trim() //textarea content translation text
+  const trText = map(phrases, `translations.${trLang}.text`).join('\n').trim() //textarea content translation text
 
-  const handleTextChanged = event => {
+  const handleTextChanged = (event) => {
     const textareaOriginal = event.target.value
     if (!phrases.length) {
       //it is import of subtitles
@@ -68,7 +65,7 @@ function Phrases(props) {
     }
   }
 
-  const handleTrTextChanged = event => {
+  const handleTrTextChanged = (event) => {
     const newText = event.target.value.split('\n')
     let newPhrases = [...phrases]
     newPhrases = phrases.map((elem, index) => {
@@ -99,17 +96,17 @@ function Phrases(props) {
     />
   )
   // width: 'calc(100% - 46px)'
-  const TextareaOriginal = width => (
+  const TextareaOriginal = (width) => (
     <textarea
       value={text}
       onChange={handleTextChanged}
       rows={phrases.length}
-      className={clsx(classes.textarea, { [classes.rtl]: lang === 'ar' })}
+      className={clsx(classes.textarea, { [classes.rtl]: langDirection(lang) === 'rtl' })}
       style={{ width }}
     />
   )
 
-  const TextareaTranslation = width => (
+  const TextareaTranslation = (width) => (
     <textarea
       value={trText}
       onChange={handleTrTextChanged}
