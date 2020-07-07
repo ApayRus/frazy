@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       direction: props.direction,
     }
   },
-  avatar: { width: 14, height: 14 },
+  avatar: { width: 14, height: 14, color: theme.palette.primary.main },
   name: (props) => {
     const margin = props.direction === 'ltr' ? { marginLeft: 3 } : { marginRight: 3 }
     return { display: 'flex', ...margin }
@@ -30,7 +30,7 @@ function Phrases(props) {
       <Avatar className={classes.avatar}>
         <PersonIcon style={{ fontSize: 14 }} />
       </Avatar>
-      <Typography className={classes.name} variant='body1' color='textSecondary'>
+      <Typography className={classes.name} variant='body1' color='primary'>
         {props.actor.name}
       </Typography>
     </div>
