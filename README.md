@@ -1,30 +1,31 @@
-<p align="center">
-<img src="https://frazy-7d371.web.app/logo.png" width="200" />
- </p>
+<img src="https://frazy-7d371.web.app/logo.png" width="200">
 
 # FraZy
 
-<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png"  align="right" hspace="10" />
+<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png" align="right" hspace="10">
 
-[Demo](https://frazy-7d371.web.app/material/72z3rX4hunX2eHscZZx1/ru)
+[Live demo](https://frazy.me/material/UUpEU_vKqHEwvfPIKylV/ru)
+[Video demo](https://www.youtube.com/watch?v=Tk_lzrnaNfE)
+Article about the project on Medium:
+[Learning a Language by Audio — for the Chosen Few or for Everyone?](https://medium.com/@aparus/learning-by-audio-for-the-chosen-few-or-for-everyone-84de8c5f4ae9?source=friends_link&sk=334462505b464893e68c1e2b2fc32f66)
 
 Frazy is a new kind of language learning materials.
 
 The main idea is that **in an audio file you can play each phrase separately, and at the same time see its text and a translation**.
 
 1. You can play the whole audio and watch captions.
-1. Or you can scroll through the text and play only particular phrases.
-1. You can set up a dictation and each phrase will be repeated a given number of times with a given delay.
+2. Or you can scroll through the text and play only particular phrases.
+3. You can set up a dictation and each phrase will be repeated a given number of times with a given delay.
 
 You can also create similar materials yourself.
 
 1. Add your audio file.
-1. Highlight phrases in it.
-1. Enter the language and the title.
-1. Place the text so that each line corresponds to a phrase in the audio.
-1. If necessary, add text for translation too.
-1. Save and share with friends.
-1. Then other people will offer their improvements and add translations in different languages.
+2. Highlight phrases in it.
+3. Enter the language and the title.
+4. Place the text so that each line corresponds to a phrase in the audio.
+5. If necessary, add text for translation too.
+6. Save and share with friends.
+7. Then other people will offer their improvements and add translations in different languages.
 
 **In this way, both a small poem and a large book can be adapted.**
 
@@ -119,11 +120,11 @@ Material is the basic data model in the whole app. It contains the following fie
 
 `duration` the length of an audio file in seconds.
 
-`translations` - all avaliable languages. Array auto updates every time when someone adds new translation for the material. Used for generating links to each translation.
+`translations` \- all avaliable languages\. Array auto updates every time when someone adds new translation for the material\. Used for generating links to each translation\.
 
-`revisions` - short info for display revisions list. Main data stored in subcollection 'revisions' at the document.
+`revisions` \- short info for display revisions list\. Main data stored in subcollection 'revisions' at the document\.
 
-`created, updated` - assigned to the material when you add your own material or edit an existing one. Used for ordering materials and for revisions history.
+`created, updated` \- assigned to the material when you add your own material or edit an existing one\. Used for ordering materials and for revisions history\.
 
 ### MaterialTr
 
@@ -145,7 +146,7 @@ Each material can have only one translation for each language. Also we use agree
 
 For example:
 
-`greatExpectationChapter1` --> `greatExpectationChapter1_ru` - a Russian translation for the material.
+`greatExpectationChapter1` --> `greatExpectationChapter1_ru` \- a Russian translation for the material\.
 
 ### Unit
 
@@ -190,23 +191,23 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
+The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
+Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.<br>
+Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
+The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
