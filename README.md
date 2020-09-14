@@ -2,12 +2,11 @@
 
 # FraZy
 
-<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png" align="right" hspace="10">
-
-[Live demo](https://frazy.me/material/UUpEU_vKqHEwvfPIKylV/ru)
-[Video demo](https://www.youtube.com/watch?v=Tk_lzrnaNfE)
-Article about the project on Medium:
-[Learning a Language by Audio — for the Chosen Few or for Everyone?](https://medium.com/@aparus/learning-by-audio-for-the-chosen-few-or-for-everyone-84de8c5f4ae9?source=friends_link&sk=334462505b464893e68c1e2b2fc32f66)
+<img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png" align="right" hspace="10">  
+[Live demo](https://frazy.me/material/UUpEU_vKqHEwvfPIKylV/ru)  
+[Video demo](https://www.youtube.com/watch?v=Tk_lzrnaNfE)  
+Article about the project on Medium:  
+[Learning a Language by Audio — for the Chosen Few or for Everyone?](https://medium.com/@aparus/learning-by-audio-for-the-chosen-few-or-for-everyone-84de8c5f4ae9?source=friends_link&sk=334462505b464893e68c1e2b2fc32f66)&nbsp;
 
 Frazy is a new kind of language learning materials.
 
