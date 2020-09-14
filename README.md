@@ -3,6 +3,7 @@
 # FraZy
 
 <img src="https://user-images.githubusercontent.com/1222611/70366383-f9562980-18a7-11ea-82b3-13092feebaf9.png" align="right" hspace="10" />
+
 [Live demo](https://frazy.me/material/UUpEU_vKqHEwvfPIKylV/ru)  
 [Video demo](https://www.youtube.com/watch?v=Tk_lzrnaNfE)  
 Article about the project on Medium:  
