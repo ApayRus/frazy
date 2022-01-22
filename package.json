@@ -12,7 +12,7 @@
         "firebase": "^6.6.2",
         "html-react-parser": "^0.10.3",
         "moment": "^2.25.3",
-        "nanoid": "^2.1.11",
+        "nanoid": "^3.1.31",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-firebaseui": "^4.1.0",
